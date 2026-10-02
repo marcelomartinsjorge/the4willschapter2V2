@@ -229,6 +229,61 @@ function desenhaSprite(cx, quem, lut, p, o, agora) {
   return { k: kk };
 }
 
+
+// ------------------------------------------------------------------ trilha do duelo (sintetizada): tambores graves e um zumbido de fundo
+// Fica mais rápida a cada fase. Se um dia existir assets/audio/duelo-loop.mp3, é só trocar aqui.
+function trilhaDuelo(A) {
+  const nada = { fase() {}, corta() {}, volta() {}, para() {} };
+  if (!A || !A.ctx || !A.master || !A.noise) return nada;
+  const ctx = A.ctx, out = ctx.createGain(); out.gain.value = 0; out.connect(A.master);
+  out.gain.setTargetAtTime(.85, ctx.currentTime, 1.2);
+  const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 300; lp.connect(out);
+  const dg = ctx.createGain(); dg.gain.value = .045; dg.connect(lp);
+  const oscs = [55, 55.3, 82.4].map((f, i) => { const o = ctx.createOscillator(); o.type = i < 2 ? 'sawtooth' : 'triangle'; o.frequency.value = f; o.connect(dg); o.start(); return o; });
+  const lfo = ctx.createOscillator(), lg = ctx.createGain(); lfo.frequency.value = .07; lg.gain.value = 130; lfo.connect(lg); lg.connect(lp.frequency); lfo.start();
+  const ruido = (t, v, freq, tipo, dur) => {
+    const n = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain(); n.buffer = A.noise;
+    f.type = tipo; f.frequency.value = freq; g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.001, t + dur);
+    n.connect(f); f.connect(g); g.connect(out); n.start(t); n.stop(t + dur + .02);
+  };
+  const tambor = (t, v, f0, f1, dur) => {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + dur * .4);
+    g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(.001, t + dur);
+    o.connect(g); g.connect(out); o.start(t); o.stop(t + dur + .02);
+  };
+  const bumbo = (t, v) => { tambor(t, v, 110, 40, .5); ruido(t, v * .35, 900, 'lowpass', .08); };
+  const tom = (t, v) => tambor(t, v, 170, 95, .32);
+  const aro = (t, v) => ruido(t, v, 2600, 'bandpass', .05);
+  const PAD = [ // 8 colcheias por compasso
+    { k: [0, 4], t: [], a: [] },
+    { k: [0, 3, 4], t: [6], a: [2, 6] },
+    { k: [0, 3, 4, 6], t: [2, 7], a: [1, 3, 5, 7] },
+  ];
+  let bpm = 70, nivel = 0, prox = ctx.currentTime + .4, passo = 0, vivo = true;
+  const tick = () => {
+    if (!vivo) return;
+    const dt = 60 / bpm / 2;
+    while (prox < ctx.currentTime + .3) {
+      const p = PAD[Math.min(nivel, 2)], s = passo % 8;
+      if (p.k.includes(s)) bumbo(prox, s === 0 ? .6 : .4);
+      if (p.t.includes(s)) tom(prox, .26);
+      if (p.a.includes(s)) aro(prox, .05);
+      prox += dt; passo++;
+    }
+  };
+  const id = setInterval(tick, 50);
+  return {
+    fase(n) { nivel = Math.max(0, n - 1); bpm = [70, 84, 98][Math.min(nivel, 2)]; dg.gain.setTargetAtTime(.045 + nivel * .02, ctx.currentTime, .8); },
+    corta() { out.gain.setTargetAtTime(.2, ctx.currentTime, .25); },
+    volta() { out.gain.setTargetAtTime(.85, ctx.currentTime, .25); },
+    para() {
+      if (!vivo) return; vivo = false; clearInterval(id); out.gain.setTargetAtTime(0, ctx.currentTime, .7);
+      setTimeout(() => { try { oscs.forEach((o) => o.stop()); lfo.stop(); out.disconnect(); } catch (e) {} }, 3000);
+    },
+  };
+}
+
 // ------------------------------------------------------------------ o jogo
 function start(root, opts) {
   const T = TX[opts.lang] || TX.en, A = opts.A;
@@ -263,7 +318,7 @@ function start(root, opts) {
     const laura = new Lutador('laura'), simon = new Lutador('simon');
     carregaSprites();
     let agora = 0, ultimo = performance.now(), escala = 1, rodando = false, acabou = false, pausa = false;
-    let estado = 'pronto', tEstado = 0, ataque = null, resposta = null, janelaAbertura = 0, proxima = 0, fase = 1, congelado = false;
+    let estado = 'pronto', tEstado = 0, ataque = null, resposta = null, janelaAbertura = 0, proxima = 0, fase = 1, congelado = false, musica = null;
     const parts = [], flashes = [];
     const dica = { alvo: null, txt: '', ate: 0 };
 
@@ -295,7 +350,7 @@ function start(root, opts) {
     };
     const setFase = () => {
       const f = S.toques >= 4 ? 3 : S.toques >= 2 ? 2 : 1;
-      if (f !== fase) { fase = f; legenda(f === 2 ? T.fase2 : T.fase3, 2400); anuncia(f === 2 ? T.fase2 : T.fase3, 'fase'); }
+      if (f !== fase) { fase = f; musica && musica.fase(f); legenda(f === 2 ? T.fase2 : T.fase3, 2400); anuncia(f === 2 ? T.fase2 : T.fase3, 'fase'); }
     };
     const agenda = (extra = 0) => { const p = fx(); proxima = agora + p.gapMin + Math.random() * (p.gapMax - p.gapMin) + extra; estado = 'guarda'; simon.vai('guarda', 380, agora); };
 
@@ -360,12 +415,12 @@ function start(root, opts) {
 
     // ---- o ponto final: o jogo para e pergunta
     const congela = () => {
-      congelado = true; escala = .06;
+      congelado = true; escala = .06; musica && musica.corta();
       const c = document.createElement('div'); c.className = 'dl-congela';
       c.innerHTML = `<p>${T.congela}</p><div><button class="cta dl-tocar">${T.tocar}</button><button class="ghost dl-baixar">${T.baixar}</button></div>`;
       root.appendChild(c); requestAnimationFrame(() => c.classList.add('on'));
       A.tone(110, 2.2, 'sine', .08); A.batida && A.batida(.8);
-      c.querySelector('.dl-tocar').onclick = () => { c.remove(); escala = 1; congelado = false; tocar(); };
+      c.querySelector('.dl-tocar').onclick = () => { c.remove(); escala = 1; congelado = false; musica && musica.volta(); tocar(); };
       c.querySelector('.dl-baixar').onclick = () => {
         c.remove(); escala = 1; congelado = false; laura.vai('baixa', 600, agora); estado = 'fim';
         setTimeout(() => { simon.vai('golpeAlto', 400, agora); }, 500);
@@ -481,6 +536,7 @@ function start(root, opts) {
 
     // ---- fim
     const fim = (resultado) => {
+      musica && musica.para();
       if (acabou) return; acabou = true; estado = 'fim';
       if (resultado !== 'deixou') simon.vai(resultado === 'perdeu' ? 'guarda' : 'cansado', 600, agora);
       laura.vai(resultado === 'perdeu' ? 'cansado' : resultado === 'deixou' ? 'baixa' : 'guarda', 600, agora);
@@ -502,6 +558,7 @@ function start(root, opts) {
       root.querySelector('.dl-tela').classList.remove('on');
       legenda(T.fala0, 2800);
       setTimeout(() => { anuncia(T.emGuarda, 'grande'); som.sino(); }, 900);
+      musica = trilhaDuelo(opts.A); musica.fase(1);
       setTimeout(() => { anuncia(T.ja, 'grande'); rodando = true; agenda(-600); }, 2400);
     };
     requestAnimationFrame((n) => { ultimo = n; requestAnimationFrame(passo); });

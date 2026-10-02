@@ -555,6 +555,15 @@ const MG = {
   },
 
   // ---------- o duelo com Simon (ver duelo.js)
+  esconderijo(p) {
+    const o = abreOverlay('esconderijo');
+    return window.ESCONDERIJO.start(o, { lang: LANG, A, peso: st.peso, video: p.esconderijo.video, img: p.esconderijo.img }).then((res) => {
+      st.esconderijo = res;
+      const id = res.venceu ? 'escondidos' : 'descobertos';
+      st.escolhas.ronda = id; if (!res.venceu) aplicar({ flag: 'visto' }); else aplicar({ flag: 'estatua' });
+      registrar('ronda', id); salvar(); fechaOverlay();
+    });
+  },
   duelo(p) {
     const o = abreOverlay('duelo');
     return window.DUELO.start(o, {
@@ -611,9 +620,71 @@ function guardaEstado() {
     localStorage.setItem('aqv_estado', JSON.stringify(todos));
   } catch (e) {}
 }
+// ---------------------------------------------------------------- pontuação escondida (só aparece no fim)
+// Soma os dois minijogos do capítulo. A jornada soma com o Capítulo I (o hino do gelo), lido do mesmo navegador.
+function pontosDuelo(d) {
+  if (!d) return 0;
+  const p = 2500 * (d.leituras || 0) + 3000 * (d.toques || 0) + 2000 * (d.fintasLidas || 0) + 1500 * (d.maxCombo || 0)
+    - 2500 * (d.sofridos || 0) - 800 * (d.aparos || 0) - 6000 * (d.tentativas || 0) + (d.resultado === 'limpo' ? 10000 : 0);
+  return Math.max(2000, Math.round(p));
+}
+function pontosEsconderijo(e) {
+  if (!e) return 0;
+  const p = 600 * e.firmes + 150 * e.quase - 200 * e.falhas - 150 * e.fora + 4000 * e.holdsOk - 1500 * e.holdsFail
+    + (e.venceu ? 8000 : 0) + Math.max(0, 150 - e.bpmFinal) * 80;
+  return Math.max(0, Math.round(p));
+}
+function pontosCap1() {
+  try {
+    const e = JSON.parse(localStorage.getItem('aqv_estado') || '{}');
+    if (e.cap1 && Number.isFinite(e.cap1.pontos)) return Math.round(e.cap1.pontos);
+    const c1 = JSON.parse(localStorage.getItem('livro_cap01') || 'null');
+    if (c1 && c1.jogo && Number.isFinite(Number(c1.jogo.score))) return Math.round(Number(c1.jogo.score));
+  } catch (e) {}
+  return null;
+}
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+function jogadorId() {
+  try {
+    let j = localStorage.getItem('aqv_jogador');
+    if (!j || !UUID.test(j)) {
+      const c1 = JSON.parse(localStorage.getItem('livro_cap01') || 'null');
+      j = c1 && UUID.test(c1.sessao || '') ? c1.sessao : UUID.test(st.sessao) ? st.sessao : (crypto.randomUUID ? crypto.randomUUID() : null);
+      if (j) localStorage.setItem('aqv_jogador', j);
+    }
+    return j;
+  } catch (e) { return UUID.test(st.sessao) ? st.sessao : null; }
+}
+function calculaPontos() {
+  const duelo = pontosDuelo(st.duelo), esconde = pontosEsconderijo(st.esconderijo);
+  st.pontos = { total: duelo + esconde, duelo, esconde, cap1: pontosCap1() };
+  return st.pontos;
+}
+async function enviaPontos(pt) {
+  const j = jogadorId(); if (!j) return null;
+  const rpc = (cap, pontos, detalhes) => fetch(`${SUPA.url}/rest/v1/rpc/livro_salva_pontos`, {
+    method: 'POST', headers: { apikey: SUPA.key, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ p_jogador: j, p_capitulo: cap, p_pontos: pontos, p_detalhes: detalhes }),
+  }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+  if (pt.cap1 != null) await rpc('cap01', Math.min(2000000, pt.cap1), { origem: 'cap02' });
+  const r = await rpc('cap02', pt.total, { duelo: pt.duelo, esconderijo: pt.esconde, duelo_res: st.duelo && st.duelo.resultado, ronda: st.escolhas.ronda || null });
+  return r && r[0] ? r[0] : null;
+}
+function mostraPontos(pt, srv) {
+  const loc = LANG === 'en' ? 'en-US' : 'pt-BR', n = (x) => Number(x).toLocaleString(loc);
+  const jornada = srv && srv.total != null ? Number(srv.total) : pt.cap1 != null ? pt.cap1 + pt.total : null;
+  $('#rsPontos').innerHTML = `
+    <p class="eyebrow">${U('pontos')}</p>
+    <p class="rs-num">${n(pt.total)}</p>
+    <ul class="rs-pts"><li><span>${U('ptsEsconde')}</span><b>${n(pt.esconde)}</b></li><li><span>${U('ptsDuelo')}</span><b>${n(pt.duelo)}</b></li>
+    ${pt.cap1 != null ? `<li><span>${U('ptsCap1')}</span><b>${n(pt.cap1)}</b></li>` : ''}</ul>
+    ${jornada != null ? `<p class="rs-jornada"><span>${U('jornada')}</span><b>${n(jornada)}</b>${srv && srv.posicao ? `<em>${U('posicao')(n(srv.posicao), n(srv.leitores))}</em>` : ''}</p>` : `<p class="rs-sem">${U('semCap1')}</p>`}`;
+}
 async function resumo() {
+  const pt = calculaPontos();
   guardaEstado();
   $('#resumo').classList.add('show');
+  mostraPontos(pt, null); enviaPontos(pt).then((srv) => { if (srv) mostraPontos(pt, srv); });
   const R = L.resumo(st, LANG);
   $('#rsFrase').textContent = R.frase;
   $('#rsRel').innerHTML = R.notas.map((r) => `<li>${esc(r)}</li>`).join('');

@@ -1,5 +1,19 @@
 # Capítulo 2 (Laura) · Notas
 
+## Versão 5
+
+- **A ronda vira minijogo, "Prender o coração".** Laura e Simon sempre se escondem atrás da estátua. O vídeo roda em loop com o som dele, por cima das batidas do coração. Um anel se fecha sobre o coração e o leitor toca no instante da batida (barra de espaço ou toque). No compasso, o coração desacelera; errando, acelera; com a tocha mais perto, o medo sobe sozinho. Três vezes a luz chega à estátua e é preciso segurar o mesmo botão até ela passar. Se o coração passar de 150, Simon não aguenta e eles correm (o guarda vê, e isso fica gravado para Dolores). Se a tocha passar, passam impunes. O peso das mentiras faz o coração começar mais rápido.
+- **Som:** os ambientes vieram baixíssimos (laranjal em −50 dB, aula em −66 dB). Todos foram normalizados para uma faixa audível. O duelo ganhou uma trilha de tambores graves com um zumbido de fundo, sintetizada, que acelera a cada fase e baixa no último golpe.
+- **Brancarda:** Laura calça as botas na porta, pisa na flor, recolhe o pé e a encontra se levantando de novo.
+- **Fim do capítulo:** se Simon acertou Laura, ela vê as marcas escurecendo, pensa nas mãos da mãe, e o coração acelera. A última linha é sempre ela adormecendo.
+- **Pontuação escondida:** aparece só na tela final. Duelo: leituras, toques, fintas lidas, sequência; perde por golpes sofridos, aparos e tentativas; bônus por vencer sem ser tocada. Esconderijo: batidas firmes, fôlegos segurados, coração calmo no fim; bônus por passar sem ser visto. A tela mostra o total do capítulo, cada minijogo, o hino do gelo do Cap. 1 (lido do mesmo navegador) e o total da jornada com a posição entre os leitores.
+
+### Supabase (já aplicado no seu projeto)
+- `livro_escolhas` ganhou uma regra de leitura. Sem ela, toda gravação de escolha voltava 401 (inclusive do Cap. 1), e as estatísticas "X% fizeram o mesmo" nunca apareciam. Corrigido no servidor; o Cap. 1 não precisa de nova publicação.
+- Nova tabela `livro_pontuacao` (leitor, capítulo, pontos, detalhes) e a função `livro_salva_pontos`, que guarda a melhor pontuação de cada capítulo e devolve o total da jornada e a posição. A tabela não é lida nem escrita diretamente pelo site, só pela função.
+- O leitor é identificado por um código aleatório guardado no navegador (`aqv_jogador`); se ele jogou o Cap. 1 no mesmo navegador, usa o código daquela sessão.
+
+
 ## Versão 4
 
 - **O duelo com Laura e Simon de verdade.** As 19 poses das suas duas folhas foram recortadas (fundo verde removido, bordas limpas), espelhadas onde precisava (Simon inteiro; Laura nas poses 3 e 7) e alinhadas pelos pés. O jogo troca de imagem a cada movimento, com o deslize da pose, um véu azul de madrugada e contraluz. Se alguma imagem não carregar, aquele lutador volta a ser o boneco antigo. As regras do jogo não mudaram.
