@@ -259,6 +259,7 @@ const resultadoDe = (o, cid) => (nervosa(o, cid) && o.resultadoNervoso ? o.resul
 const marcaNervosa = (o, cid) => { (st.nervosas = st.nervosas || {})[cid + ':' + o.id] = nervosa(o, cid); };
 // as falas dubladas de Laura tocam sozinhas
 const vozUrl = (n) => 'assets/audio/voz/' + n + '.mp3';
+const vozDeOpcao = (o, cid) => { const v = nervosa(o, cid) ? o.vozNervosa : o.voz; return typeof v === 'function' ? v(st) : v; };
 const fala = (nome, ms = 0) => { if (!nome) return; later(() => { if (A.ctx && A.on) A.narrate(vozUrl(nome)); }, ms); };
 
 function render(dir = 1) {
@@ -381,7 +382,7 @@ function escolher(p, id) {
   if (o.pulso != null) Coracao.extra(o.pulso);
   aplicar(o); A.escolha(); registrar(e.id, id); salvar();
   later(() => { appendParas(resultadoDe(o, e.id)); setNext(true); }, 450);
-  if (o.voz) fala(typeof o.voz === 'function' ? o.voz(st) : o.voz, o.vozAtraso || 900);
+  fala(vozDeOpcao(o, e.id), o.vozAtraso || 900);
 }
 
 // ----- diálogo em rodadas: cada opção pode ter a própria resposta; a rodada pode abrir com uma fala do outro
@@ -406,7 +407,7 @@ function renderDialogo(p) {
     box.innerHTML = `<p class="eyebrow">${r.pergunta ? esc(tr(r.pergunta)) : U('resp') + ' ' + esc(tr(d.interlocutor))}</p>` + opcoesVis(r.opcoes).map(optHTML(r.id)).join('');
     box.querySelectorAll('.opt').forEach((b) => b.onclick = () => {
       const o = r.opcoes.find((x) => x.id === b.dataset.id);
-      marcaNervosa(o, r.id); (st.dialogo[p.id] = st.dialogo[p.id] || []).push([r.id, o.id]); st.escolhas[r.id] = o.id; if (o.voz) fala(o.voz, 150);
+      marcaNervosa(o, r.id); (st.dialogo[p.id] = st.dialogo[p.id] || []).push([r.id, o.id]); st.escolhas[r.id] = o.id; fala(vozDeOpcao(o, r.id), 150);
       aplicar(o); if (o.pulso != null) Coracao.extra(o.pulso); registrar(r.id, o.id); salvar(); A.escolha(); box.innerHTML = '';
       o.silencio ? log.insertAdjacentHTML('beforeend', '<p class="dlg sil novo">…</p>') : linha('eu', rotulo(o, r.id), true);
       later(() => { A.tone(196, .4, 'sine', .03); emite(resp(r, o), true); }, 900);

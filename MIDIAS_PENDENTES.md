@@ -1,10 +1,6 @@
-# Capítulo 2 (Laura) · Mídias, versão 5
+# Capítulo 2 (Laura) · Mídias, versão 7
 
-Nada obrigatório pendente. Opcionais:
+Nada pendente. Tudo o que o capítulo pede está no pacote e em uso.
 
-**1. Trilha do duelo** (hoje sintetizada): `assets/audio/duelo-loop.mp3`, 1 a 2 minutos, que possa repetir sem emenda. Prompt para o Udio:
+Opcional, só se quiser algum dia: trocar a trilha sintetizada do duelo por uma faixa de verdade em `assets/audio/duelo-loop.mp3` (1 a 2 minutos, em loop). Prompt para o Udio:
 > Dark medieval battle tension loop, slow heavy war drums and taiko, low cello ostinato, tense sustained strings, building intensity, no vocals, no melody lead, cinematic, seamless loop, 90 bpm
-
-**2. Espadas de madeira:** 3 poses de Laura e 3 de Simon (guarda, aparar, tocar) com espada de madeira, no mesmo formato das folhas, para o caminho em que Dolores tranca o arsenal.
-
-**3. Vídeo da ronda com tocha** (`ronda-tocha.mp4`): deixou de ser necessário, porque o vídeo do esconderijo cobre a cena.

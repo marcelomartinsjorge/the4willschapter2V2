@@ -152,7 +152,7 @@ window.LIVRO = {
             T('Engulo em seco. As lágrimas escorrem do mesmo jeito.', 'I swallow hard. The tears come anyway.'),
             T('— Você vai ser muito feliz, minha filha. Markus vai vencer o Torneio, com certeza. É um homem honrado. Vocês vão governar melhor do que eu e seu falecido pai.', '— You’ll be very happy, my daughter. Markus will win the Tournament, without question. He’s an honorable man. The two of you will govern better than your late father and I ever did.'),
           ] }, // NOVO
-        { id: 'recusar', eixo: 'mostra', flag: 'arsenalTrancado', pulso: 3, txt: T('Recusar', 'Refuse'),
+        { id: 'recusar', eixo: 'mostra', flag: 'arsenalTrancado', pulso: 3, voz: 'nao-posso-prometer', vozAtraso: 500, txt: T('Recusar', 'Refuse'),
           resultado: [
             T('— Não posso prometer isso, mãe.', '— I can’t promise that, mother.'),
             T('Ela solta minha mão de uma vez.', 'She lets go of my hand all at once.'),
@@ -229,7 +229,7 @@ window.LIVRO = {
       ],
       dialogo: { interlocutor: T('Justine', 'Justine'), rodadas: [
         { id: 'j1', opcoes: [
-          { id: 'naoquero', txt: T('Você sabe que eu não quero isso. Se eu pudesse, convenceria Dolores a escolher você, não a mim.', 'You know I don’t want this. If I could, I’d convince Dolores to choose you, not me.'),
+          { id: 'naoquero', voz: 'naoquero', vozNervosa: 'naoquero-nervosa', txt: T('Você sabe que eu não quero isso. Se eu pudesse, convenceria Dolores a escolher você, não a mim.', 'You know I don’t want this. If I could, I’d convince Dolores to choose you, not me.'),
             txtNervoso: T('Eu não... Você sabe que eu não quero isso. Se eu pudesse, eu... convenceria Dolores a escolher você.', 'I don’t... You know I don’t want this. If I could, I’d... I’d convince Dolores to choose you.'), // NOVO (versão com o peito apertado)
             resposta: [T('— Infelizmente o General-Rei se foi antes dela — ela diz, com sinceridade, com pesar. — É como as coisas costumam ser. Depois de tantos anos estudando juntas, sabemos disso melhor do que ninguém.', '— Unfortunately the General-King died before she did — she says, sincerely, with real regret. — It’s how things tend to go. After all these years studying together, we know that better than anyone.')] }, // canon
           { id: 'coragem', eixo: 'mostra', flag: 'justineDesconfia', pulso: 3, voz: 'coragem', txt: T('Vim pedir coragem.', 'I came to ask for courage.'),
@@ -238,10 +238,10 @@ window.LIVRO = {
         ] },
         { id: 'j2', antes: [T('— Eu não me canso de vir aqui clamar à Juíza. Me preparei, mesmo com chances tão pequenas, para ser a melhor Mãe-Rainha que Redom já teve. Se a justiça é tão importante quanto nos ensinaram, por que ela não é aplicada dentro do nosso próprio castelo?', '— I never tire of coming here to plead with the Judge. I prepared myself, even with chances so slim, to be the best Mother-Queen Redom has ever had. If justice is as important as we were taught, why isn’t it applied inside our own castle walls?')], // canon
           opcoes: [
-            { id: 'melhor', pulso: 3, txt: T('Você seria a melhor. Sempre foi a melhor aluna, em conhecimento, em oratória, e a mais bela também.', 'You would have been the best. You were always the best student, in knowledge, in speech, and the most beautiful too.'),
+            { id: 'melhor', pulso: 3, voz: 'melhor', vozNervosa: 'melhor-nervosa', txt: T('Você seria a melhor. Sempre foi a melhor aluna, em conhecimento, em oratória, e a mais bela também.', 'You would have been the best. You were always the best student, in knowledge, in speech, and the most beautiful too.'),
               txtNervoso: T('Você seria a melhor. Você é... a mais bela também. E a melhor aluna.', 'You’d be the best. You are... the most beautiful, too. And the best student.'), // NOVO (versão com o peito apertado)
               resposta: [T('O canto da boca dela sobe.', 'The corner of her mouth lifts.'), T('— Cuidado, Laura. Uma Mãe-Rainha não elogia a rival em voz alta.', '— Careful, Laura. A Mother-Queen doesn’t praise her rival out loud.')] }, // canon (fala de Laura) + NOVO (resposta)
-            { id: 'pesar', flag: 'justineDesconfia', txt: T('O Torneio ainda nem começou.', 'The Tournament hasn’t even started.'),
+            { id: 'pesar', flag: 'justineDesconfia', voz: 'torneio-nem-comecou', txt: T('O Torneio ainda nem começou.', 'The Tournament hasn’t even started.'),
               resposta: [T('Ela me olha por tempo demais.', 'She looks at me for too long.'), T('— Você fala como quem sabe de alguma coisa.', '— You talk like someone who knows something.')] }, // NOVO
             { id: 'casar', se: (st) => st.peso >= 2, tremida: true, flag: 'justineDesconfia', peso: -1, pulso: 4, voz: 'casar', txt: T('Eu não vou me casar com ele.', 'I’m not going to marry him.'),
               resposta: [T('Ela para de respirar um instante.', 'She stops breathing for a moment.'), T('— Não diga isso aqui, Laura. A Juíza escuta.', '— Don’t say that here, Laura. The Judge is listening.')] }, // NOVO (só aparece com o peito apertado: a verdade escapa)

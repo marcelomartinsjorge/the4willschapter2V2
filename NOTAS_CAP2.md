@@ -1,5 +1,23 @@
 # Capítulo 2 (Laura) · Notas
 
+## Versão 7
+
+- **As duas últimas dublagens de Laura:** `naoquero` ("You know I don't want this. If I could, I'd convince Dolores to choose you, not me.") toca com o peito calmo, e `melhor-nervosa` ("You'd be the best. You are... the most beautiful, too. And the best student.") toca com o peito apertado. Agora **todas as falas de Laura com versão calma e tremida têm voz** nas duas versões.
+- **Limpeza:** removidos 3 arquivos sem uso (`espadas-metal.mp3`, `respiracao-justine.mp3`, `oratorio-perfil.jpg`). Todo o resto está em uso (inclusive os `.webm` de cada vídeo, que o navegador usa quando não toca H.264).
+- **Decididos:** a trilha sintetizada do duelo fica; espadas de madeira em imagem não valem o trabalho (o texto e o som continuam de madeira no caminho do arsenal trancado).
+
+
+## Versão 6
+
+- **Correção de um erro meu na v3:** quem **não** trancou o arsenal ouvia a `line3v1`, que fala de espadas de madeira, enquanto o texto na tela dizia "as espadas longas de sempre". Agora a narração da noite é: `line3longswordsinsteadofwood` (espadas longas) quando o arsenal está aberto, e `line3v2` (madeira, "The armory is locked") quando Dolores o trancou. A `line3v1` não é mais usada.
+- **Cinco falas de Laura dubladas, cada uma no seu lugar:**
+  - "I can't promise that, mother." → ao escolher **Recusar** (a promessa).
+  - "You would have been the best..." → resposta a Justine, **só com o peito calmo**.
+  - "The Tournament hasn't even started." → resposta a Justine.
+  - "I don't... You know I don't want this. If I could, I'd..." → **só com o peito apertado** (é a versão tremida de "Você sabe que eu não quero isso").
+- Falas ainda **sem dublagem** (tocam mudas hoje): a versão calma de "You know I don't want this. If I could, I'd convince Dolores to choose you, not me." e a versão tremida de "You'd be the best. You are... the most beautiful, too. And the best student."
+
+
 ## Versão 5
 
 - **A ronda vira minijogo, "Prender o coração".** Laura e Simon sempre se escondem atrás da estátua. O vídeo roda em loop com o som dele, por cima das batidas do coração. Um anel se fecha sobre o coração e o leitor toca no instante da batida (barra de espaço ou toque). No compasso, o coração desacelera; errando, acelera; com a tocha mais perto, o medo sobe sozinho. Três vezes a luz chega à estátua e é preciso segurar o mesmo botão até ela passar. Se o coração passar de 150, Simon não aguenta e eles correm (o guarda vê, e isso fica gravado para Dolores). Se a tocha passar, passam impunes. O peso das mentiras faz o coração começar mais rápido.
@@ -21,7 +39,7 @@
 - **"I'm not going to marry him"** está no lugar do `casar.mp3` (e agora vai dentro do pacote).
 - **Brancarda:** todo leitor a vê. Ela entra no texto da página do esconderijo, com o vídeo no fundo.
 - **O "…" de quem espera** (ainda existe em "E se outro vencer?", com Dolores) agora pulsa devagar em dourado, para ser notado.
-- **Espadas de madeira** (quando Dolores tranca o arsenal): as imagens mostram espadas de aço; o texto e o som são de madeira. Se quiser o visual, mande 3 poses de cada com espada de madeira (guarda, aparar, tocar).
+- **Espadas de madeira** (quando Dolores tranca o arsenal): as imagens mostram espadas de aço; o texto e o som são de madeira. Decidido que não compensa trocar o visual.
 
 
 ## Versão 3
