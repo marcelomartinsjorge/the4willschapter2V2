@@ -92,7 +92,7 @@ function mixPose(a, b, k) {
 }
 class Lutador {
   constructor(nome) { this.nome = nome; this.de = POSES.guarda; this.para = POSES.guarda; this.t0 = 0; this.dur = 1; this.atual = POSES.guarda; }
-  vai(p, dur, agora) { this.de = this.atual; this.para = POSES[p] || p; this.t0 = agora; this.dur = Math.max(1, dur); this.nomePose = p; }
+  vai(p, dur, agora) { this.deNome = this.nomePose || 'guarda'; this.de = this.atual; this.para = POSES[p] || p; this.t0 = agora; this.dur = Math.max(1, dur); this.nomePose = p; }
   passa(agora) { const k = Math.min(1, (agora - this.t0) / this.dur); this.atual = mixPose(this.de, this.para, ease(k)); return this.atual; }
 }
 
@@ -172,6 +172,63 @@ function desenhaFigura(cx, p, o) {
   return { k, ponta };
 }
 
+
+// ------------------------------------------------------------------ Laura e Simon em imagem (assets/images/duelo)
+// Cada pose do jogo aponta para uma imagem recortada. meta: largura, altura, linha dos pés (base) e centro dos pés (ax).
+// Se uma imagem não carregar, aquele lutador volta a ser desenhado como antes.
+const SPR_META = {"laura":{"guarda":{"w":346,"h":381,"base":376,"ax":116.0,"alt":372},"recuar":{"w":308,"h":376,"base":371,"ax":141.2,"alt":367},"inclinar":{"w":283,"h":357,"base":352,"ax":141.5,"alt":348},"aparar":{"w":271,"h":436,"base":431,"ax":128.5,"alt":431},"apara-baixo":{"w":249,"h":358,"base":353,"ax":135.2,"alt":349},"tocar":{"w":531,"h":374,"base":369,"ax":138.0,"alt":365},"atingida":{"w":293,"h":363,"base":358,"ax":129.0,"alt":354},"cansada":{"w":157,"h":395,"base":390,"ax":81.9,"alt":386},"baixa":{"w":145,"h":389,"base":384,"ax":75.7,"alt":380}},"simon":{"guarda":{"w":295,"h":338,"base":333,"ax":180.5,"alt":329},"aviso-alto":{"w":266,"h":399,"base":394,"ax":142.1,"alt":390},"aviso-estocada":{"w":287,"h":324,"base":319,"ax":121.8,"alt":315},"aviso-baixo":{"w":286,"h":259,"base":254,"ax":149.2,"alt":250},"golpe-alto":{"w":233,"h":409,"base":404,"ax":85.7,"alt":400},"golpe-estocada":{"w":381,"h":295,"base":290,"ax":187.0,"alt":286},"golpe-baixo":{"w":292,"h":237,"base":232,"ax":104.0,"alt":228},"desequilibrado":{"w":314,"h":279,"base":274,"ax":121.7,"alt":270},"atingido":{"w":165,"h":312,"base":307,"ax":95.5,"alt":303},"cansado":{"w":155,"h":366,"base":361,"ax":74.1,"alt":357}}};
+const SPR_MAPA = {
+  laura: { guarda: 'guarda', respira: 'guarda', recuar: 'recuar', inclinar: 'inclinar', aparar: 'aparar', aparaBaixo: 'apara-baixo', tocar: 'tocar', atingido: 'atingida', cansado: 'cansada', baixa: 'baixa' },
+  simon: { guarda: 'guarda', respira: 'guarda', tellAlto: 'aviso-alto', tellEstocada: 'aviso-estocada', tellBaixo: 'aviso-baixo', golpeAlto: 'golpe-alto', golpeEstocada: 'golpe-estocada', golpeBaixo: 'golpe-baixo', desequilibrio: 'desequilibrado', atingido: 'atingido', cansado: 'cansado' },
+};
+// pontos que o jogo destaca, em fração da imagem (já espelhada): o pé que arrasta, o ombro que cai, os joelhos, a costela
+const SPR_PONTOS = {
+  simon: { 'aviso-alto': { peB: [.84, .95] }, 'aviso-estocada': { ombro: [.5, .24] }, 'aviso-baixo': { joelhoF: [.32, .62] }, desequilibrado: { costela: [.56, .32] }, guarda: { costela: [.6, .4] } },
+};
+const SPR_ALTURA = 99;   // altura de Laura em pé, nas unidades do boneco antigo
+const SPR = { laura: {}, simon: {}, ok: { laura: false, simon: false } };
+function carregaSprites() {
+  const tinge = (img) => { // luz de antes da alvorada: um véu azul por cima da imagem, só onde há corpo
+    const c = document.createElement('canvas'); c.width = img.naturalWidth; c.height = img.naturalHeight;
+    const x = c.getContext('2d'); x.drawImage(img, 0, 0); x.globalCompositeOperation = 'source-atop';
+    x.fillStyle = 'rgba(26,40,78,.30)'; x.fillRect(0, 0, c.width, c.height); return c;
+  };
+  const tudo = [];
+  for (const quem of ['laura', 'simon']) {
+    const nomes = Object.keys(SPR_META[quem]);
+    tudo.push(Promise.all(nomes.map((n) => new Promise((res) => {
+      const img = new Image(); img.decoding = 'async';
+      img.onload = () => { SPR[quem][n] = tinge(img); res(true); }; img.onerror = () => res(false);
+      img.src = `assets/images/duelo/${quem}-${n}.webp`;
+    }))).then((r) => { SPR.ok[quem] = r.every(Boolean); }));
+  }
+  return Promise.all(tudo);
+}
+const SPR_K = (s, mult = 1) => (SPR_ALTURA * s * mult) / SPR_META.laura.cansada.alt;
+function desenhaSprite(cx, quem, lut, p, o, agora) {
+  const k = SPR_K(o.s, o.mult || 1), mapa = SPR_MAPA[quem];
+  const b = mapa[lut.nomePose] || 'guarda', a = mapa[lut.deNome] || 'guarda';
+  const t = Math.min(1, (agora - lut.t0) / lut.dur);
+  const x0 = o.x + o.face * p.x * o.s * .5;                       // o deslize da pose (recuar, avançar)
+  const bob = (b === 'guarda' || b === 'cansada' || b === 'cansado') ? 1 + .007 * Math.sin(agora / 380 + (quem === 'simon' ? 1.7 : 0)) : 1;
+  const uma = (n, alfa) => {
+    const m = SPR_META[quem][n], img = SPR[quem][n]; if (!img || alfa <= .01) return null;
+    const w = m.w * k, h = m.h * k * bob, dx = x0 - m.ax * k, dy = o.chao - m.base * k * bob;
+    cx.globalAlpha = alfa; cx.drawImage(img, dx, dy, w, h);
+    return { m, dx, dy, w, h };
+  };
+  cx.save();
+  cx.shadowColor = 'rgba(150,180,235,.32)'; cx.shadowBlur = 14 * o.s * .5;      // contraluz das janelas
+  if (a !== b && t < 1) uma(a, Math.max(0, 1 - t * 2.2));   // a pose anterior some rápido (sem fantasma)
+  const r = uma(b, a !== b ? Math.min(1, t * 1.8) : 1);
+  cx.restore();
+  // os pontos que o jogo usa (dica e costela): da imagem, quando houver; senão, do esqueleto
+  const kk = esqueleto(p, o.x, o.chao, o.s, o.face);
+  const pts = (SPR_PONTOS[quem] || {})[b];
+  if (r && pts) for (const [nome, [fx, fy]] of Object.entries(pts)) kk[nome] = { x: r.dx + fx * r.w, y: r.dy + fy * r.h };
+  return { k: kk };
+}
+
 // ------------------------------------------------------------------ o jogo
 function start(root, opts) {
   const T = TX[opts.lang] || TX.en, A = opts.A;
@@ -204,6 +261,7 @@ function start(root, opts) {
     const META = 5, META_S = 3;
     const S = { toques: 0, sofridos: 0, leituras: 0, combo: 0, maxCombo: 0, aparos: 0, maos: 0, fintasLidas: 0 };
     const laura = new Lutador('laura'), simon = new Lutador('simon');
+    carregaSprites();
     let agora = 0, ultimo = performance.now(), escala = 1, rodando = false, acabou = false, pausa = false;
     let estado = 'pronto', tEstado = 0, ataque = null, resposta = null, janelaAbertura = 0, proxima = 0, fase = 1, congelado = false;
     const parts = [], flashes = [];
@@ -343,7 +401,7 @@ function start(root, opts) {
     document.addEventListener('visibilitychange', vis);
 
     const chao = () => (H > W ? H * .64 : H * .74);
-    const xL = () => (H > W ? .29 : .36), xS = () => (H > W ? .71 : .64);
+    const xL = () => (H > W ? .28 : .35), xS = () => (H > W ? .72 : .65);
     const escalaFig = () => Math.min(H * (H > W ? .0036 : .0042), W * (H > W ? .0053 : .0028));
 
     // ---- laço principal
@@ -387,8 +445,11 @@ function start(root, opts) {
       const pl = laura.passa(agora), ps = simon.passa(agora);
       sombra(W * xL() + pl.x * s); sombra(W * xS() - ps.x * s);
       const rim = 'rgba(150,180,235,.85)';
-      const fs = desenhaFigura(cx, ps, { x: W * xS(), chao: ch, s, face: -1, cor: '#0b0d13', rim, cabelo: 'curto', corCabelo: '#120f0d', madeira: opts.madeira });
-      desenhaFigura(cx, pl, { x: W * xL(), chao: ch, s, face: 1, cor: '#0d0c12', rim, cabelo: 'longo', corCabelo: 'rgba(214,176,98,.9)', madeira: opts.madeira, lenco: opts.lenco });
+      const mult = H > W ? 1.06 : 1.2;
+      const oS = { mult, x: W * xS(), chao: ch, s, face: -1, cor: '#0b0d13', rim, cabelo: 'curto', corCabelo: '#120f0d', madeira: opts.madeira };
+      const oL = { mult, x: W * xL(), chao: ch, s, face: 1, cor: '#0d0c12', rim, cabelo: 'longo', corCabelo: 'rgba(214,176,98,.9)', madeira: opts.madeira, lenco: opts.lenco };
+      const fs = SPR.ok.simon ? desenhaSprite(cx, 'simon', simon, ps, oS, agora) : desenhaFigura(cx, ps, oS);
+      if (SPR.ok.laura) desenhaSprite(cx, 'laura', laura, pl, oL, agora); else desenhaFigura(cx, pl, oL);
       // dicas da primeira fase: um anel onde o corpo dele avisa
       if (dica.alvo && agora < dica.ate && estado === 'tell') {
         const k = fs.k, alvo = dica.alvo === 'alto' ? k.peB : dica.alvo === 'estocada' ? k.ombro : k.joelhoF;

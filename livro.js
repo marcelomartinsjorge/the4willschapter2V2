@@ -289,7 +289,7 @@ function render(dir = 1) {
   if (narr) {
     ligaNarr(p, narr);
     if (A.ctx && A.on && dir >= 0) later(() => { const b = $('#narr'); if (b && P[st.i] === p && !A.narr) b.click(); }, 700);
-  } else if (p.vozAuto && dir >= 0) { const v = typeof p.vozAuto === 'function' ? p.vozAuto(st) : p.vozAuto; fala(v, (txt.children.length * .35 + 1.2) * 1000); }
+  } else if (p.vozAuto && dir >= 0) { const v = typeof p.vozAuto === 'function' ? p.vozAuto(st) : p.vozAuto; fala(v, p.vozAtraso != null ? p.vozAtraso : (txt.children.length * .35 + 1.2) * 1000); }
   if (cena) $('#cena').onclick = () => verCena(cena);
   if (p.efeito && !st.feitos['ef:' + p.id]) { st.feitos['ef:' + p.id] = 1; const ef = p.efeito; if (ef.flag) st.f[ef.flag] = true; if (ef.peso) later(() => mudaPeso(ef.peso), 1200); }
   if (p.quieto) renderQuieto(p);

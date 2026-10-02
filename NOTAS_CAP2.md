@@ -1,5 +1,25 @@
 # Capítulo 2 (Laura) · Notas
 
+## Versão 4
+
+- **O duelo com Laura e Simon de verdade.** As 19 poses das suas duas folhas foram recortadas (fundo verde removido, bordas limpas), espelhadas onde precisava (Simon inteiro; Laura nas poses 3 e 7) e alinhadas pelos pés. O jogo troca de imagem a cada movimento, com o deslize da pose, um véu azul de madrugada e contraluz. Se alguma imagem não carregar, aquele lutador volta a ser o boneco antigo. As regras do jogo não mudaram.
+- **Justine:** cada escolha agora tem seu vídeo de fundo. "Continuar ajoelhada" usa o vídeo original; "Levantar também" usa `oratorio-justine-de-pe`; "Esconder as mãos" usa `oratorio-justine-lenco-chao`.
+- **"I'm not going to marry him"** está no lugar do `casar.mp3` (e agora vai dentro do pacote).
+- **Brancarda:** todo leitor a vê. Ela entra no texto da página do esconderijo, com o vídeo no fundo.
+- **O "…" de quem espera** (ainda existe em "E se outro vencer?", com Dolores) agora pulsa devagar em dourado, para ser notado.
+- **Espadas de madeira** (quando Dolores tranca o arsenal): as imagens mostram espadas de aço; o texto e o som são de madeira. Se quiser o visual, mande 3 poses de cada com espada de madeira (guarda, aparar, tocar).
+
+
+## Versão 3
+
+- **Narração do oratório:** o áudio `oratorio-fome` toca sozinho na página da prece (o parágrafo "Não sinto fome..."), com botão para repetir.
+- **Narração do laranjal:** a `line3v1` toca normalmente; a `line3v2` ("The armory is locked") toca quando Dolores trancou o arsenal.
+- **`casar.mp3`:** ligado à fala "Eu não vou me casar com ele." (a que escapa quando o peito está apertado).
+- **Justine ajoelhada:** o vídeo agora roda no fundo no instante em que o leitor escolhe "Continuar ajoelhada", junto com o texto do lenço. Antes, ele estava só atrás de um botão na página seguinte, por erro meu. Em "Levantar" e "Esconder" continua a imagem parada (o vídeo mostra Laura ajoelhada).
+- **"Me mostra o que um homem de catorze anos consegue fazer"** e **"Espero que você esteja certo, irmãozinho. Vou precisar ser."** agora têm página própria: a frase aparece junto com a voz quando o leitor aperta Próxima, e o leitor avança de novo.
+- **Brancarda:** só aparece se o leitor esperar na página do esconderijo; o "…" surge depois de 3 segundos (antes, 5) e, ao tocar nele, o vídeo passa a rodar no fundo.
+
+
 ## Versão 2 (suas considerações + mídias)
 
 **Correções**
