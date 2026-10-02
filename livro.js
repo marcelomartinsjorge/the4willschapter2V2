@@ -515,11 +515,32 @@ const MG = {
       appendParas(p.depois); return true;
     }
     box.innerHTML = `<p class="eyebrow">${esc(tr(pr.pergunta))}</p><button class="segurar" id="segurar"><span class="anel"><i></i></span><b>${esc(tr(pr.botao))}</b></button><p class="dica">${IS_TOUCH ? U('dica').preceT : U('dica').preceK}</p>`;
-    const bt = $('#segurar'); let n = 0, segurando = false, iv = null, acabou = false, prog = 0, raf = null;
+    const bt = $('#segurar'); let n = 0, segurando = false, acabou = false, prog = 0, raf = null, tms = [];
     const passo = pr.passo || 1700;
-    const total = linhas.length;
+    // o plano da prece: quando cada linha aparece e quando cada trecho de voz começa.
+    // Com voz (som ligado), o texto acompanha a fala de Laura; sem voz, volta ao ritmo antigo (uma linha a cada "passo").
+    const ATRASO = 500, FOLGA = 350, FIM = 600;
+    const todas = pr.linhas.map((l) => paras([l])[0] || null);
+    const faixas = pr.faixas ? [].concat(pr.faixas(st)) : null;
+    if (A.ctx && faixas) faixas.forEach((f) => f.voz && A.buf(vozUrl(f.voz)));
+    const monta = () => {
+      const comVoz = !!(A.ctx && A.on && faixas), linhasP = [], vozes = []; let t = ATRASO;
+      if (comVoz) {
+        faixas.forEach((f) => {
+          if (f.voz) vozes.push({ t, voz: f.voz });
+          (f.i || []).forEach((idx, k) => { if (todas[idx]) linhasP.push({ t: t + ((f.marcas && f.marcas[k]) || 0) * 1000, txt: todas[idx] }); });
+          t += f.dur * 1000 + FOLGA;
+        });
+        return { linhasP, vozes, fim: t - FOLGA + FIM };
+      }
+      todas.filter(Boolean).forEach((txtL, k) => linhasP.push({ t: (k + 1) * passo, txt: txtL }));
+      return { linhasP, vozes, fim: (linhasP.length + 1) * passo };
+    };
+    let plano = monta();
+    const total = plano.linhasP.length;
+    const parar = () => { tms.forEach(clearTimeout); tms = []; A.stopNarr(); const nb = $('#narr'); nb && nb.classList.remove('on'); };
     const solta = () => {
-      if (!segurando || acabou) return; segurando = false; clearInterval(iv); cancelAnimationFrame(raf); bt.classList.remove('on');
+      if (!segurando || acabou) return; segurando = false; parar(); cancelAnimationFrame(raf); bt.classList.remove('on');
       document.body.classList.remove('aperta'); Coracao.extra(0);
       if (n === 0) { prog = 0; bt.style.setProperty('--prog', 0); return; } // soltou cedo demais: tenta de novo
       encerra();
@@ -530,19 +551,22 @@ const MG = {
       box.innerHTML = '';
       later(() => { appendParas(p.depois); setNext(true); }, 700);
     };
-    const anima = () => { prog = Math.min(1, prog + 1 / (passo / 16.7) / total); bt.style.setProperty('--prog', prog.toFixed(3)); if (segurando) raf = requestAnimationFrame(anima); };
     const aperta = (e) => {
       if (e) e.preventDefault(); if (segurando || acabou) return; segurando = true; bt.classList.add('on'); A.resume();
       document.body.classList.add('aperta');
+      plano = monta(); const T0 = performance.now(); n = 0;
+      A.stopNarr(); const nb = $('#narr'); nb && nb.classList.remove('on'); // a narração da página cede lugar à prece
+      const anima = () => { prog = Math.min(1, (performance.now() - T0) / plano.fim); bt.style.setProperty('--prog', prog.toFixed(3)); if (segurando) raf = requestAnimationFrame(anima); };
       anima();
-      const uma = () => {
-        if (n >= total) { solta(); return; }
-        txt.insertAdjacentHTML('beforeend', pHTML(linhas[n], 'novo prece-l')); n++;
+      plano.vozes.forEach((v) => tms.push(setTimeout(() => { if (segurando && A.ctx && A.on) A.narrate(vozUrl(v.voz)); }, v.t)));
+      plano.linhasP.forEach((l) => tms.push(setTimeout(() => {
+        if (!segurando) return;
+        txt.insertAdjacentHTML('beforeend', pHTML(l.txt, 'novo prece-l')); n++;
         Coracao.extra(clamp(n / total * 3, 0, 3));
         if (n === pr.sangraEm) { document.body.classList.add('sangra'); A.sfx('unhas', .5, () => A.hiss(.5, 1800, 4, .05)); }
         panel.scrollTop = panel.scrollHeight;
-      };
-      iv = setInterval(uma, passo);
+      }, l.t)));
+      tms.push(setTimeout(() => solta(), plano.fim));
     };
     bt.addEventListener('pointerdown', aperta); addEventListener('pointerup', solta); addEventListener('pointercancel', solta);
     bt.addEventListener('contextmenu', (e) => e.preventDefault());
@@ -550,7 +574,7 @@ const MG = {
     const ku = (e) => { if (e.key === ' ' || e.key === 'Enter') solta(); };
     addEventListener('keydown', kd, true); addEventListener('keyup', ku, true);
     later(() => {}, 0); // (os ouvintes de tecla saem quando a página muda)
-    const limpa = () => { removeEventListener('keydown', kd, true); removeEventListener('keyup', ku, true); removeEventListener('pointerup', solta); removeEventListener('pointercancel', solta); };
+    const limpa = () => { tms.forEach(clearTimeout); tms = []; removeEventListener('keydown', kd, true); removeEventListener('keyup', ku, true); removeEventListener('pointerup', solta); removeEventListener('pointercancel', solta); };
     MG._limpaPrece = limpa;
     return false;
   },

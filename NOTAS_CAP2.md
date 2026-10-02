@@ -1,5 +1,23 @@
 # Capítulo 2 (Laura) · Notas
 
+## Versão 9
+
+- **A prece está toda dublada, nos três caminhos.** A linha de perdão da manhã agora tem voz para quem prometeu (`prece-promessa`), para quem ficou calada (`prece-silencio`) e para quem recusou (`prece-chave-arsenal`). O resto é igual em todos: `prece-1` no começo e `prece-resto` no fim.
+- Duração segurando a prece inteira: **uns 25 s** (prometeu), **uns 27 s** (calada) e **uns 29 s** (recusou). O sangue chega na linha "quebrar uma ordem inquebrável", uns 7 s antes do fim.
+- Não resta nenhuma fala de Laura sem dublagem.
+
+
+## Versão 8
+
+- **A prece agora é falada.** Segurando o botão, Laura reza em voz alta (em inglês, como as outras falas dela) e **cada linha de texto aparece no instante em que ela a diz**, em vez de a cada 1,8 s:
+  - `prece-1` ("I feel He has watched over me since I was very small...") com a primeira linha;
+  - `prece-chave-arsenal` ("I ask that my mother leave the armory key somewhere and forget it...") com a segunda, **só no caminho em que ela recusou a promessa**;
+  - `prece-resto` (13 s) cobre as quatro últimas, e cada uma entra no ponto certo da fala: *steal* aos 0 s, *corrupt* aos 3,2 s, *break* aos 5,3 s, *courage* aos 9,1 s.
+- Soltar o botão corta a voz e encerra a prece, como antes. Com o som desligado, a prece volta ao ritmo antigo (uma linha a cada 1,8 s), sem esperar pela fala.
+- **A prece inteira agora leva uns 29 s segurando** (antes, 11 s). O sangue (a linha "quebrar uma ordem inquebrável") chega aos 21 s.
+- (Pendência resolvida na v9: as duas linhas de perdão da manhã foram gravadas.)
+
+
 ## Versão 7
 
 - **As duas últimas dublagens de Laura:** `naoquero` ("You know I don't want this. If I could, I'd convince Dolores to choose you, not me.") toca com o peito calmo, e `melhor-nervosa` ("You'd be the best. You are... the most beautiful, too. And the best student.") toca com o peito apertado. Agora **todas as falas de Laura com versão calma e tremida têm voz** nas duas versões.

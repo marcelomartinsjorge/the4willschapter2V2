@@ -198,6 +198,14 @@ window.LIVRO = {
       minijogo: 'prece',
       prece: {
         pergunta: T('A prece', 'The prayer'), botao: T('Apertar as mãos', 'Press my hands together'), passo: 1800, sangraEm: 5,
+        // a voz de Laura: o texto acompanha a fala. i = quais linhas cada trecho cobre; marcas = segundo em que cada linha começa dentro do trecho
+        faixas: (st) => [
+          { voz: 'prece-1', dur: 7.71, i: [0] },
+          st.escolhas.promessa === 'recusar' ? { voz: 'prece-chave-arsenal', dur: 6.84, i: [1] }
+            : st.escolhas.promessa === 'prometer' ? { voz: 'prece-promessa', dur: 3.16, i: [1] }
+            : { voz: 'prece-silencio', dur: 5.33, i: [1] }, // cada caminho da manhã tem a sua linha de perdão
+          { voz: 'prece-resto', dur: 13.01, i: [2, 3, 4, 5], marcas: [0, 3.23, 5.28, 9.13] },
+        ],
         linhas: [
           T('Sinto que Ele olha por mim desde que sou muito criança, e que é o único que vai entender o que estou prestes a fazer.', 'I feel He has watched over me since I was very small, and that He’s the only one who will understand what I’m about to do.'),
           (st) => ({

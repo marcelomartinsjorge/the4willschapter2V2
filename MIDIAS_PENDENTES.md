@@ -1,4 +1,4 @@
-# Capítulo 2 (Laura) · Mídias, versão 7
+# Capítulo 2 (Laura) · Mídias, versão 9
 
 Nada pendente. Tudo o que o capítulo pede está no pacote e em uso.
 
