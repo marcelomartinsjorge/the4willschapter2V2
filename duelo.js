@@ -27,9 +27,10 @@ const TX = {
     finta: 'Finta',
     botoes: ['Recuar', 'Inclinar', 'Aparar', 'Tocar'],
     fole: 'Fôlego', guarda: 'Guarda',
-    congela: 'A costela dele, aberta.', tocar: 'Tocar a costela', baixar: 'Baixar a espada',
-    venceu: 'Você venceu Simon.', marcas: 'Você venceu Simon, mas ele te acertou.', deixou: 'Você baixou a espada.', perdeu: 'Simon venceu.',
-    seguir: 'Continuar', comecar: 'Em guarda',
+    congela: 'A costela dele, aberta.', tocar: 'Tocar a costela', baixar: 'Deixar Simon ganhar',
+    venceu: 'Você venceu Simon.', marcas: 'Você venceu Simon, mas ele te acertou.', deixou: 'Você deixou Simon ganhar.', perdeu: 'Simon venceu.',
+    seguir: 'Continuar', comecar: 'Em guarda', denovo: 'Tentar de novo', perdeuSub: 'Não pode ser assim. Falta um mês.',
+    nervo: 'O coração não para quieto hoje. Cada abertura vai durar menos.',
     teclado: 'Teclado: setas ou 1 a 4.',
   },
   en: {
@@ -49,9 +50,10 @@ const TX = {
     finta: 'Feint',
     botoes: ['Step back', 'Lean', 'Parry', 'Touch'],
     fole: 'Breath', guarda: 'Guard',
-    congela: 'His ribs, wide open.', tocar: 'Touch his ribs', baixar: 'Lower the sword',
-    venceu: 'You beat Simon.', marcas: 'You beat Simon, but he landed a hit.', deixou: 'You lowered the sword.', perdeu: 'Simon won.',
-    seguir: 'Continue', comecar: 'En garde',
+    congela: 'His ribs, wide open.', tocar: 'Touch his ribs', baixar: 'Let Simon win',
+    venceu: 'You beat Simon.', marcas: 'You beat Simon, but he landed a hit.', deixou: 'You let Simon win.', perdeu: 'Simon won.',
+    seguir: 'Continue', comecar: 'En garde', denovo: 'Try again', perdeuSub: 'It can’t go like this. A month left.',
+    nervo: 'My heart won’t settle today. Every opening will last less.',
     teclado: 'Keyboard: arrows or 1 to 4.',
   },
 };
@@ -188,7 +190,7 @@ function start(root, opts) {
       <div class="dl-tela on">
         <h2>${T.titulo}</h2><p class="dl-sub">${T.sub}</p>
         <ul class="dl-regras">${T.regras.map((r) => `<li><span>${r[0]}</span><small>${r[1]}</small><b>${r[2]}</b></li>`).join('')}</ul>
-        <p class="dl-nunca">${T.nunca}</p>
+        <p class="dl-nunca">${T.nunca}</p>${(opts.peso || 0) >= 2 ? `<p class="dl-nervo">${T.nervo}</p>` : ''}
         <button class="cta dl-go">${T.comecar}</button>
         <p class="dl-teclado">${T.teclado}</p>
       </div>`;
@@ -230,6 +232,7 @@ function start(root, opts) {
       const p = fase === 1 ? { tell: 1150, gapMin: 1300, gapMax: 1900, finta: 0, abertura: 950, tipos: ['alto', 'estocada'] }
         : fase === 2 ? { tell: 900, gapMin: 1000, gapMax: 1500, finta: .2, abertura: 780, tipos: ['alto', 'estocada', 'baixo'] }
           : { tell: 680, gapMin: 750, gapMax: 1150, finta: .3, abertura: 620, tipos: ['alto', 'estocada', 'baixo'] };
+      p.abertura *= 1 - Math.min(opts.peso || 0, 4) * .08; // o peito apertado encurta cada abertura
       return p;
     };
     const setFase = () => {
@@ -423,7 +426,7 @@ function start(root, opts) {
       som.sino();
       setTimeout(() => {
         const t = document.createElement('div'); t.className = 'dl-tela on fim';
-        t.innerHTML = `<h2>${T[resultado === 'limpo' ? 'venceu' : resultado]}</h2><button class="cta dl-seguir">${T.seguir}</button>`;
+        t.innerHTML = `<h2>${T[resultado === 'limpo' ? 'venceu' : resultado]}</h2>` + (resultado === 'perdeu' ? `<p class="dl-sub">${T.perdeuSub}</p><button class="cta dl-seguir">${T.denovo}</button>` : `<button class="cta dl-seguir">${T.seguir}</button>`);
         root.appendChild(t);
         t.querySelector('.dl-seguir').onclick = () => {
           removeEventListener('keydown', kd, true); removeEventListener('resize', rs); document.removeEventListener('visibilitychange', vis);

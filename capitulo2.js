@@ -8,7 +8,7 @@
    Estado da história (st):
      st.peso       quantas mentiras Laura carrega (invisível: vira batida e aperto)
      st.perfil     { mostra, esconde }  quanto ela deixa ver de quem é
-     st.f          flags: rotas, gibao, viuPorta, arsenalTrancado, sangue,
+     st.f          flags: rotas, registro, viuPorta, arsenalTrancado, sangue,
                    justineDesconfia, levantou, visto, contou, brancarda ...
      st.duelo      resultado do jogo com Simon
    Cada parágrafo pode ser texto, { se: st => bool, t: texto } ou st => texto|null
@@ -59,37 +59,37 @@ window.LIVRO = {
           'The tailor measures every inch of my body for the thousandth time this week, the cold tape against my skin, the pins held in his mouth like the spines of some small animal. In a month the Royal Tournament takes place, and my mother, the Mother-Queen Dolores D’Orrose, seems more anxious than I am. She wants me flawless before the new General-King.'),
       ] },
 
-    { id: 'a02', zona: 'alfaiataria', fundo: { img: 'assets/images/alfaiate-sala.jpg', kb: 'none', foco: '50% 40%', dim: .55, clima: 'poeira' }, pulso: .5,
+    { id: 'a02', zona: 'alfaiataria', fundo: { img: 'assets/images/alfaiate-olhar.jpg', kb: 'none', foco: '35% 40%', dim: .55, clima: 'poeira' }, pulso: .5, avancaDepois: true,
       texto: [
         T('E pela milésima vez estou aqui, desconfortável, a respiração presa, enquanto o senhor alfaiate faz seu trabalho. Não posso virar a cabeça. Os olhos, posso.',
           'And for the thousandth time I’m here, uncomfortable, holding my breath, while the tailor does his work. I can’t turn my head. My eyes, I can.'), // NOVO (2ª e 3ª frases)
       ],
       minijogo: 'olhar',
       olhar: {
-        img: 'assets/images/alfaiate-sala.jpg', proporcao: 1.7778, olhares: 4,
+        img: 'assets/images/alfaiate-olhar.jpg', proporcao: 1916 / 821, olhares: 4,
         medidas: [T('Ombros', 'Shoulders'), T('Braços', 'Arms'), T('Cintura', 'Waist'), T('Quadril', 'Hips'), T('Gideon terminou', 'Gideon is done')],
         abertura: [T('Gideon começa pelos ombros. Tenho até ele chegar à barra do vestido.', 'Gideon starts at the shoulders. I have until he reaches the hem.')], // NOVO
         gideon: [null, T('Os ombros parados, por favor.', 'Shoulders still, please.'), null, T('Pronto. Pode respirar.', 'There. You may breathe.')], // NOVO
         fecho: [T('Gideon enrola a fita no dedo e dá um passo para trás.', 'Gideon winds the tape around his finger and steps back.')], // NOVO
         porta: T('Continuar', 'Continue'),
         pontos: [
-          { id: 'janela', rota: 'janela', x: 72, y: 20, w: 9, h: 22, rotulo: T('A janela', 'The window'),
+          { id: 'janela', rota: 'janela', x: 66.5, y: 32, w: 6, h: 34, rotulo: T('A janela', 'The window'),
             texto: [T('Uns vinte passos rápidos até a janela. O vidro está aberto um palmo, e entra cheiro de chuva.', 'Twenty quick steps or so to the window. The pane is open a hand’s width, and the smell of rain comes in.')] }, // canon (passos) + NOVO (chuva)
-          { id: 'telhado', rota: 'telhado', x: 64, y: 50, w: 8, h: 14, rotulo: T('Lá fora', 'Outside'),
+          { id: 'telhado', rota: 'telhado', x: 75, y: 50, w: 12, h: 14, rotulo: T('Lá fora', 'Outside'),
             texto: [T('Do parapeito até o telhado da biblioteca, um salto de um metro. As telhas desse lado são novas. Não escorregam.', 'From the sill to the library roof, a one-meter jump. The tiles on that side are new. They don’t slip.')] }, // canon + NOVO
-          { id: 'vinha', rota: 'vinha', x: 59, y: 9, w: 9, h: 14, rotulo: T('O muro', 'The wall'),
+          { id: 'vinha', rota: 'vinha', x: 75, y: 18, w: 11, h: 22, rotulo: T('O muro', 'The wall'),
             texto: [T('No muro do outro lado, a vinha-virgem. Os galhos têm a grossura do meu pulso e aguentam meu peso até o chão. Dali é só achar um cavalo.', 'On the far wall, the ivy. The branches are as thick as my wrist and hold my weight to the ground. From there, I only need a horse.')] }, // canon + NOVO
-          { id: 'porta', flag: 'viuPorta', x: 5, y: 42, w: 8, h: 30, rotulo: T('A porta', 'The door'),
+          { id: 'porta', flag: 'viuPorta', x: 5, y: 50, w: 9, h: 56, rotulo: T('A porta', 'The door'),
             texto: [T('A porta do corredor. A dobradiça de baixo range quando a porta abre além da metade. Minha mãe nunca abre só até a metade.', 'The door to the corridor. The lower hinge creaks when it opens past halfway. My mother never opens it only halfway.')] }, // NOVO
-          { id: 'vestido', flag: 'viuVestido', x: 92, y: 52, w: 10, h: 30, rotulo: T('O manequim', 'The dress form'),
+          { id: 'vestido', flag: 'viuVestido', x: 93, y: 40, w: 11, h: 46, rotulo: T('O manequim', 'The dress form'),
             texto: [T('No manequim, o vestido com os adornos de esmeralda. Gideon cortou o tecido nas minhas medidas da semana passada. O vestido já tem a minha forma, e eu ainda nem entrei nele.', 'On the dress form, the gown with the emerald trim. Gideon cut it to last week’s measurements. The gown already has my shape, and I haven’t even stepped into it.')] }, // NOVO
-          { id: 'mesa', flag: 'gibao', x: 78, y: 88, w: 12, h: 12, rotulo: T('A mesa de Gideon', 'Gideon’s table'),
-            texto: [T('Na mesa de Gideon, entre as sedas, um rolo de lona grossa e um molde que não é de vestido. Ombros largos, peito reto, mangas compridas. Um gibão de soldado, encomenda de alguém.', 'On Gideon’s table, among the silks, a roll of heavy canvas and a pattern that isn’t for a gown. Broad shoulders, flat chest, long sleeves. A soldier’s gambeson, someone’s order.')] }, // NOVO (proposta de canon: ver "Para você decidir")
+          { id: 'mesa', flag: 'registro', x: 76, y: 80, w: 16, h: 16, rotulo: T('A mesa de Gideon', 'Gideon’s table'),
+            texto: [T('Na mesa de Gideon, entre as sedas, uma carta aberta com o selo do Registro do Torneio. Encomenda de mantos para os arautos. Embaixo do selo, o nome do oficial que assina as inscrições. Leio duas vezes.', 'On Gideon’s table, among the silks, an open letter with the seal of the Tournament Registry. An order of cloaks for the heralds. Under the seal, the name of the officer who signs the entries. I read it twice.')] }, // NOVO (o oficial que ela vai subornar)
         ],
       },
       depois: [] },
 
-    { id: 'a03', zona: 'alfaiataria', fundo: { img: 'assets/images/laura-rosto.jpg', kb: 'in', foco: '50% 30%', dim: .5, lado: 'dir' }, pulso: 1,
+    { id: 'a03', zona: 'alfaiataria', fundo: { video: 'assets/video/alfaiataria-medidas.mp4', img: 'assets/images/laura-rosto.jpg', kb: 'none', foco: '50% 30%', dim: .45, lado: 'dir' }, pulso: 1,
       cena: 'assets/video/alfaiataria-medidas.mp4',
       texto: [
         (st) => (['janela', 'telhado', 'vinha'].every((r) => rotas(st).includes(r))
@@ -110,19 +110,19 @@ window.LIVRO = {
           : T('Ele se curva para a frente, a mão no peito, e aproveita o gesto para já se virar, ainda curvado, na direção da porta, onde minha mãe acaba de entrar.', 'He bows forward, a hand to his chest, and uses the motion to turn, still bent, toward the door, where my mother has just walked in.')),
       ] },
 
-    { id: 'a05', zona: 'alfaiataria', fundo: { img: 'assets/images/codex-mae-rainha.webp', kb: 'in', foco: '30% 30%', dim: .45, lado: 'dir' }, pulso: 1.6,
+    { id: 'a05', zona: 'alfaiataria', fundo: { img: 'assets/images/dolores-maos.jpg', kb: 'in', foco: '72% 40%', dim: 0.4 }, pulso: 1.6,
       texto: [
         T('— Laura! — ela grita, atravessando o aposento apressada, quase chutando a mesa de centro no caminho. — Deixe-me ver suas mãos. Agora.', '— Laura! — she calls, crossing the room in a hurry, nearly kicking the low table on her way. — Let me see your hands. Now.'),
         T('Não espera minha resposta.', 'She doesn’t wait for my answer.'),
       ],
       escolha: { id: 'maos', opcoes: [
-        { id: 'esconder', eixo: 'esconde', txt: T('Levar as mãos para trás das costas', 'Pull my hands behind my back'),
+        { id: 'esconder', eixo: 'esconde', peso: 1, txt: T('Levar as mãos para trás das costas', 'Pull my hands behind my back'),
           resultado: [T('Levo as mãos para trás das costas por puro instinto. Não adianta. Ela pega a direita, ríspida, e vira minha palma para cima.', 'I pull my hands behind my back on pure instinct. It does no good. She takes the right one, sharp, and turns my palm up.')] }, // canon, reescrito
         { id: 'mostrar', eixo: 'mostra', txt: T('Estender as mãos, palmas para cima', 'Hold out my hands, palms up'),
           resultado: [T('Estendo as duas, palmas para cima, antes que ela peça de novo. Ela para no meio do passo, a boca entreaberta. Depois pega a direita, ríspida, e a traz para perto do rosto.', 'I hold out both, palms up, before she can ask again. She stops mid-step, mouth half open. Then she takes the right one, sharp, and brings it close to her face.')] }, // NOVO
       ] } },
 
-    { id: 'a06', zona: 'alfaiataria', fundo: { img: 'assets/images/codex-mae-rainha.webp', kb: 'out', foco: '30% 30%', dim: .5, lado: 'dir' }, pulso: 1.6,
+    { id: 'a06', zona: 'alfaiataria', fundo: { img: 'assets/images/dolores-maos.jpg', kb: 'out', foco: '72% 40%', dim: 0.45 }, pulso: 1.6,
       texto: [
         T('— Você andou treinando esgrima com seu irmão outra vez? Olhe só, cheia de calos. Laura!', '— Have you been fencing with your brother again? Look at this, covered in calluses. Laura!'),
         T('— Foi só ontem à noite, mãe. Você sabe que a esgrima me acalma, e estou muito nervosa para o Torneio Real.', '— It was only last night, mother. You know fencing calms me, and I’m very nervous about the Royal Tournament.'),
@@ -132,13 +132,13 @@ window.LIVRO = {
         T('— Seu irmão está crescendo. Como homem bem alimentado, fica mais forte a cada dia.', '— Your brother is growing. A well-fed man gets stronger every day.'),
       ] },
 
-    { id: 'a07', zona: 'alfaiataria', fundo: { img: 'assets/images/codex-mae-rainha.webp', kb: 'in', foco: '30% 25%', dim: .55, lado: 'dir' }, pulso: 2,
+    { id: 'a07', zona: 'alfaiataria', fundo: { img: 'assets/images/dolores-maos.jpg', kb: 'in', foco: '72% 40%', dim: 0.5 }, pulso: 2,
       texto: [
         T('Olho por trás de Dolores. O caminho até a janela parece mais curto agora do que quando Gideon ainda estava aqui.', 'I look past Dolores. The way to the window seems shorter now than it did while Gideon was still here.'),
         T('— Você já tem dezesseis anos, Laura, minha querida. Prometa que essa foi a última vez.', '— You’re sixteen already, Laura, my darling. Promise me that was the last time.'),
       ],
       escolha: { id: 'promessa', pergunta: T('A promessa', 'The promise'), opcoes: [
-        { id: 'prometer', peso: 2, txt: T('Prometer', 'Promise'),
+        { id: 'prometer', peso: 2, voz: 'prometo', vozAtraso: 500, txt: T('Prometer', 'Promise'),
           resultado: [
             T('Prometo. Odeio mentir. Me faz mal, um peso físico atrás do peito, e desta vez as lágrimas finalmente escorrem pelo rosto.', 'I promise. I hate lying. It costs something physical, a weight behind my ribs, and this time the tears finally spill down my face.'),
             T('— Você vai ser muito feliz, minha filha. Markus vai vencer o Torneio, com certeza. É um homem honrado. Vocês vão governar melhor do que eu e seu falecido pai.', '— You’ll be very happy, my daughter. Markus will win the Tournament, without question. He’s an honorable man. The two of you will govern better than your late father and I ever did.'),
@@ -173,19 +173,21 @@ window.LIVRO = {
         seCalar: [(st) => (st.f.viuPorta ? T('A dobradiça de baixo range quando ela sai, como eu sabia que ia ranger.', 'The lower hinge creaks as she leaves, the way I knew it would.') : T('A porta fecha atrás dela.', 'The door closes behind her.'))] } }, // NOVO
 
     // ===================================================== II · O ORATÓRIO
-    { id: 'parte-II', parte: 'II', zona: 'oratorio', fundo: { img: 'assets/images/codex-juiza.webp', kb: 'in', dim: .66, foco: '50% 25%', retrato: true, clima: 'velas' },
+    { id: 'parte-II', parte: 'II', zona: 'oratorio', fundo: { img: 'assets/images/oratorio-estatuas.jpg', kb: 'in', dim: .6, foco: '50% 20%', retrato: true, clima: 'velas' },
       cartao: { num: 'II', nome: T('O Oratório', 'The Shrine'), epigrafe: T('A Juíza pesa. O Cavaleiro carrega.', 'The Judge weighs. The Knight carries.'), fonte: T('inscrição sobre a porta do oratório da Casa D’Orrose', 'inscription above the shrine door of House D’Orrose') } }, // NOVO (epígrafe)
 
-    { id: 'b01', zona: 'castelo', fundo: { img: 'assets/images/codex-guerra-eterna.webp', kb: 'out', dim: .66, foco: '50% 40%' },
+    { id: 'b01', zona: 'castelo', fundo: { img: 'assets/images/aula.jpg', kb: 'in', dim: .5, foco: '58% 40%' },
       narracao: 'assets/audio/narration/line2.mp3', narracaoLang: 'en', capitular: true,
       texto: [
         T('Depois da pausa para o alfaiate, tenho uma longa tarde de aulas de história. Não consigo prestar muita atenção. No fim, todas as aulas se parecem. Histórias sobre a Guerra Eterna, que segundo dizem está perto do fim, já que os Grakh não são mais considerados uma ameaça séria; e mais rumores do que fatos sobre o Apagar das Luzes, que serve, todo dia, como novo lembrete dos perigos da magia.',
           'After the pause for the tailor, I have a long afternoon of history lessons. I can’t hold my attention. In the end, every lesson looks the same. Stories of the Eternal War, which they say is nearing its end, now that the Grakh are no longer considered a serious threat; and more rumor than fact about the Dimming of the Lights, which serves, every single day, as a fresh reminder of the dangers of magic.'),
         // eco do Capítulo I: só para quem jogou o Aheryn neste navegador e deixou a Luz subir
-        () => { const c1 = antes().cap1; return c1 && c1.luz >= 60 ? T('Hoje a professora fecha o livro mais cedo e conta, rindo, que caçadores voltaram do norte jurando ter visto uma luz acesa na Borda do Mundo, onde não mora ninguém. A sala ri com ela. Eu desenho uma janela na margem do caderno.', 'Today the tutor closes the book early and tells us, laughing, that hunters came back from the north swearing they saw a light burning at the Edge of the World, where no one lives. The room laughs with her. I draw a window in the margin of my notebook.') : null; }, // NOVO (eco do Cap. I)
+        () => { const c1 = antes().cap1; return c1 && c1.luz >= 60
+          ? T('A professora conta, meio rindo, que algumas décadas atrás correram rumores de luz de Lúmae na Borda do Mundo, no fim do norte. Boato de taverna, ela diz. Ninguém nunca foi conferir. Eu desenho uma janela na margem do caderno.', 'The tutor tells us, half laughing, that a few decades ago there were rumors of Lúmae light at the Edge of the World, at the far end of the north. Tavern talk, she says. No one ever went to check. I draw a window in the margin of my notebook.')
+          : T('— Os Lúmae estão extintos — a professora repete, batendo o dedo no livro. — Todos eles. A magia cobrou o preço inteiro.', '— The Lúmae are extinct — the tutor repeats, tapping the book. — Every one of them. Magic took the whole price.'); }, // NOVO (eco do Cap. I: Luz alta = boato antigo; senão, extintos)
       ] },
 
-    { id: 'b02', zona: 'oratorio', fundo: { img: 'assets/images/oratorio-maos.jpg', kb: 'in', foco: '50% 55%', dim: .45, lado: 'dir', clima: 'velas' }, pulso: .6,
+    { id: 'b02', zona: 'oratorio', fundo: { video: 'assets/video/maos-prece.mp4', img: 'assets/images/oratorio-maos.jpg', kb: 'none', foco: '50% 55%', dim: .45, lado: 'dir', clima: 'velas' }, pulso: .6,
       texto: [
         T('Não sinto fome, e por isso desvio o caminho do refeitório para o oratório: um espaço pequeno, ocupado por duas grandes estátuas. O Cavaleiro e a Juíza. Nossos deuses.', 'I’m not hungry, so instead of the dining hall I take the turn toward the shrine: a small space, home to two great statues. The Knight and the Judge. Our gods.'),
         T('Ajoelho aos pés do Cavaleiro e peço coragem, porque vou precisar de muita.', 'I kneel at the Knight’s feet and ask for courage, because I’m going to need a great deal of it.'),
@@ -225,24 +227,27 @@ window.LIVRO = {
       dialogo: { interlocutor: T('Justine', 'Justine'), rodadas: [
         { id: 'j1', opcoes: [
           { id: 'naoquero', txt: T('Você sabe que eu não quero isso. Se eu pudesse, convenceria Dolores a escolher você, não a mim.', 'You know I don’t want this. If I could, I’d convince Dolores to choose you, not me.'),
+            txtNervoso: T('Eu não... Você sabe que eu não quero isso. Se eu pudesse, eu... convenceria Dolores a escolher você.', 'I don’t... You know I don’t want this. If I could, I’d... I’d convince Dolores to choose you.'), // NOVO (versão com o peito apertado)
             resposta: [T('— Infelizmente o General-Rei se foi antes dela — ela diz, com sinceridade, com pesar. — É como as coisas costumam ser. Depois de tantos anos estudando juntas, sabemos disso melhor do que ninguém.', '— Unfortunately the General-King died before she did — she says, sincerely, with real regret. — It’s how things tend to go. After all these years studying together, we know that better than anyone.')] }, // canon
-          { id: 'coragem', eixo: 'mostra', flag: 'justineDesconfia', pulso: 3, txt: T('Vim pedir coragem.', 'I came to ask for courage.'),
+          { id: 'coragem', eixo: 'mostra', flag: 'justineDesconfia', pulso: 3, voz: 'coragem', txt: T('Vim pedir coragem.', 'I came to ask for courage.'),
             resposta: [T('Ela inclina a cabeça.', 'She tilts her head.'), T('— Para casar não precisa de coragem, Laura. Precisa de paciência. Coragem é para quem vai fazer alguma coisa.', '— Marriage doesn’t take courage, Laura. It takes patience. Courage is for someone who’s about to do something.')] }, // NOVO
           { id: 'cala1', silencio: true, resposta: [T('— Não precisa responder. Eu também não responderia.', '— You don’t have to answer. I wouldn’t either.')] }, // NOVO
         ] },
         { id: 'j2', antes: [T('— Eu não me canso de vir aqui clamar à Juíza. Me preparei, mesmo com chances tão pequenas, para ser a melhor Mãe-Rainha que Redom já teve. Se a justiça é tão importante quanto nos ensinaram, por que ela não é aplicada dentro do nosso próprio castelo?', '— I never tire of coming here to plead with the Judge. I prepared myself, even with chances so slim, to be the best Mother-Queen Redom has ever had. If justice is as important as we were taught, why isn’t it applied inside our own castle walls?')], // canon
           opcoes: [
             { id: 'melhor', pulso: 3, txt: T('Você seria a melhor. Sempre foi a melhor aluna, em conhecimento, em oratória, e a mais bela também.', 'You would have been the best. You were always the best student, in knowledge, in speech, and the most beautiful too.'),
+              txtNervoso: T('Você seria a melhor. Você é... a mais bela também. E a melhor aluna.', 'You’d be the best. You are... the most beautiful, too. And the best student.'), // NOVO (versão com o peito apertado)
               resposta: [T('O canto da boca dela sobe.', 'The corner of her mouth lifts.'), T('— Cuidado, Laura. Uma Mãe-Rainha não elogia a rival em voz alta.', '— Careful, Laura. A Mother-Queen doesn’t praise her rival out loud.')] }, // canon (fala de Laura) + NOVO (resposta)
-            { id: 'pesar', flag: 'justineDesconfia', txt: T('Talvez a Juíza ainda não tenha terminado de pesar.', 'Maybe the Judge hasn’t finished weighing yet.'),
+            { id: 'pesar', flag: 'justineDesconfia', txt: T('O Torneio ainda nem começou.', 'The Tournament hasn’t even started.'),
               resposta: [T('Ela me olha por tempo demais.', 'She looks at me for too long.'), T('— Você fala como quem sabe de alguma coisa.', '— You talk like someone who knows something.')] }, // NOVO
+            { id: 'casar', se: (st) => st.peso >= 2, tremida: true, flag: 'justineDesconfia', peso: -1, pulso: 4, txt: T('Eu não vou me casar com ele.', 'I’m not going to marry him.'),
+              resposta: [T('Ela para de respirar um instante.', 'She stops breathing for a moment.'), T('— Não diga isso aqui, Laura. A Juíza escuta.', '— Don’t say that here, Laura. The Judge is listening.')] }, // NOVO (só aparece com o peito apertado: a verdade escapa)
             { id: 'cala2', silencio: true, resposta: [T('Ela assente devagar e não pergunta mais nada.', 'She nods slowly and asks nothing more.')] }, // NOVO
           ] },
       ] },
       depois: [T('Ela se levanta e vem na minha direção.', 'She stands and comes toward me.')] },
 
     { id: 'b04', zona: 'oratorio', fundo: { img: 'assets/images/oratorio-de-pe.jpg', kb: 'in', foco: '55% 40%', dim: .45, lado: 'dir', clima: 'velas' }, pulso: 3,
-      cena: 'assets/video/oratorio-justine.mp4',
       texto: [T('Meu coração acelera ainda mais.', 'My heart races faster still.')],
       escolha: { id: 'perto', pergunta: T('Justine se aproxima.', 'Justine comes closer.'), opcoes: [
         { id: 'ajoelhada', txt: T('Continuar ajoelhada', 'Stay on my knees'),
@@ -267,6 +272,7 @@ window.LIVRO = {
       ] } },
 
     { id: 'b05', zona: 'oratorio', fundo: { img: 'assets/images/oratorio-lenco.jpg', kb: 'in', foco: '55% 50%', dim: .45, lado: 'dir', clima: 'velas' }, pulso: 1.6,
+      cena: (st) => (st.escolhas.perto === 'esconder' ? null : 'assets/video/oratorio-justine.mp4'), // a cena mostra o lenço passando de mão em mão: só quando isso acontece
       texto: [(st) => (st.escolhas.perto === 'esconder'
         ? T('O lenço está no chão, dobrado.', 'The handkerchief lies on the floor, folded.')
         : T('Justine já está na porta. O lenço está na minha mão.', 'Justine is already at the door. The handkerchief is in my hand.'))], // NOVO
@@ -291,30 +297,30 @@ window.LIVRO = {
           : T('Como faço todas as noites, finjo que durmo até bem antes da alvorada, quando desço até o Pátio das Armas. Lá encontro Simon, na penumbra de sempre, com as espadas longas de sempre. Juntos caminhamos até o laranjal. Nessa época do ano as árvores ficam todas do lado de fora, então o prédio inteiro fica vazio, esquecido, só nosso.', 'Like every night, I pretend to sleep until well before dawn, when I slip down to the Weapons Yard. There I meet Simon, in the usual half-dark, with the usual longswords. Together we walk to the orangery. This time of year the trees are all moved outdoors, so the whole building sits empty, forgotten, ours.')),
       ] },
 
-    { id: 'c02', zona: 'noite', fundo: { img: 'assets/images/codex-juiza.webp', kb: 'in', foco: '50% 30%', dim: .72, retrato: true }, pulso: 1.4,
+    { id: 'c02', zona: 'noite', fundo: { img: 'assets/images/jardim-ronda.jpg', kb: 'in', foco: '50% 40%', dim: .55, retrato: true, clima: 'poeira-azul' }, pulso: 1.4,
       texto: [
         T('Cortamos caminho pelo jardim. O cão velho dos estábulos levanta a cabeça quando passamos. Não late. Nunca late para mim.', 'We cut through the garden. The old dog from the stables lifts its head as we pass. It doesn’t bark. It never barks at me.'), // NOVO (eco do Cap. III)
-        T('Perto da estátua da Juíza, uma lanterna aparece no fim da aleia. Passos de bota no cascalho. O guarda da ronda vem na nossa direção, e Simon agarra meu braço.', 'Near the statue of the Judge, a lantern appears at the end of the path. Boots on gravel. The night guard is coming our way, and Simon grabs my arm.'), // NOVO
+        T('Perto da estátua da Juíza, a luz de uma tocha aparece no fim da aleia. Passos de bota no cascalho. O guarda da ronda vem na nossa direção, e Simon agarra meu braço.', 'Near the statue of the Judge, torchlight appears at the end of the path. Boots on gravel. The night guard is coming our way, and Simon grabs my arm.'), // NOVO
       ],
-      escolha: { id: 'ronda', urgente: true, revelar: true, janela: 5, padrao: 'parada',
+      escolha: { id: 'ronda', urgente: true, revelar: true, janela: (st) => (st.peso >= 2 ? 3.5 : 5), padrao: 'parada',
         revelarDica: T('Os passos se aproximam. Decida quando estiver pronto.', 'The steps are coming closer. Decide when you’re ready.'),
         opcoes: [
           { id: 'correr', flag: 'visto', pulso: 3, txt: T('Correr com Simon até o laranjal', 'Run with Simon to the orangery'),
             resultado: [
               T('Corremos. O cascalho estala debaixo dos nossos pés, alto demais.', 'We run. The gravel cracks under our feet, far too loud.'),
-              T('— Quem está aí? — a voz do guarda vem atrás de nós, e a luz da lanterna varre o muro um instante depois de passarmos.', '— Who’s there? — the guard’s voice comes behind us, and the lantern light sweeps the wall a moment after we pass.'),
+              T('— Quem está aí? — a voz do guarda vem atrás de nós, e a luz da tocha varre o muro um instante depois de passarmos.', '— Who’s there? — the guard’s voice comes behind us, and the torchlight sweeps the wall a moment after we pass.'),
               T('Entramos no laranjal sem ar. Simon ri baixinho, nervoso.', 'We reach the orangery out of breath. Simon laughs under his breath, nervous.'),
               T('— Ele viu alguma coisa. Ele vai contar pra mamãe.', '— He saw something. He’s going to tell mother.'),
             ] }, // NOVO
           { id: 'estatua', flag: 'estatua', txt: T('Puxar Simon para trás da estátua', 'Pull Simon behind the statue'),
             resultado: [
-              T('Puxo Simon para trás da estátua da Juíza. A pedra da base está fria nas minhas costas. A luz da lanterna passa pela balança dela, pelo rosto dela, e segue.', 'I pull Simon behind the statue of the Judge. The stone of the base is cold against my back. The lantern light passes over her scales, over her face, and moves on.'),
+              T('Puxo Simon para trás da estátua da Juíza. A pedra da base está fria nas minhas costas. A luz da tocha passa pela balança dela, pelo rosto dela, e segue.', 'I pull Simon behind the statue of the Judge. The stone of the base is cold against my back. The torchlight passes over her scales, over her face, and moves on.'),
               T('Os passos se afastam. Simon solta o ar devagar.', 'The steps fade. Simon lets out his breath slowly.'),
             ] }, // NOVO
           { id: 'parada', se: () => false, txt: T('Ficar imóvel', 'Stay still'),
             resultado: [
               T('Não me mexo. Aperto o pulso de Simon, e ele entende e também não se mexe. Ficamos no escuro do arco, encostados na parede.', 'I don’t move. I squeeze Simon’s wrist, and he understands and doesn’t move either. We stay in the dark of the archway, pressed to the wall.'),
-              T('O guarda passa a três passos de nós. Sinto o cheiro do óleo da lanterna. Ele não vira a cabeça.', 'The guard passes three steps from us. I can smell the lantern oil. He doesn’t turn his head.'),
+              T('O guarda passa a três passos de nós. Sinto o cheiro de resina queimada da tocha. Ele não vira a cabeça.', 'The guard passes three steps from us. I can smell the burning pitch of the torch. He doesn’t turn his head.'),
               T('Quando os passos somem, Simon me olha com a boca aberta. Eu conto até vinte e sigo.', 'When the steps are gone, Simon stares at me with his mouth open. I count to twenty and keep going.'),
             ] }, // NOVO (o silêncio como escolha)
         ] } },
@@ -334,9 +340,10 @@ window.LIVRO = {
         T('— É o que você quer? — Rio no meio da frase, sem conseguir evitar. — Ela disse que você, como homem bem alimentado, vai ficar mais forte a cada dia.', '— Is that what you want? — I laugh in the middle of the sentence, unable to help it. — She said that you, being a well-fed man, will get stronger every day.'),
         T('— Está me provocando? — Ele acelera o ritmo dos golpes.', '— Are you provoking me? — He speeds up his strikes.'),
         T('— Me mostra o que um homem de catorze anos consegue fazer.', '— Show me what a fourteen-year-old man can do.'),
-      ] },
+      ],
+      vozAuto: 'mostra' },
 
-    { id: 'c04', zona: 'laranjal', fundo: { img: 'assets/images/laranjal-cruzado.jpg', kb: 'in', foco: '50% 45%', dim: .55, clima: 'poeira-azul' }, pulso: .5,
+    { id: 'c04', zona: 'laranjal', fundo: { video: 'assets/video/laranjal-duelo.mp4', img: 'assets/images/laranjal-cruzado.jpg', kb: 'none', foco: '50% 45%', dim: .5, clima: 'poeira-azul' }, pulso: .5,
       cena: 'assets/video/laranjal-duelo.mp4',
       texto: [
         T('Simon gosta de se vangloriar dizendo que Anthony, o Mestre das Armas, sempre o elogia. Chama até de prodígio. Acho estranho, porque para mim é fácil demais. Só lutei com ele a vida inteira, mas prevejo cada movimento seu sem esforço. Ele tem força de verdade. Nunca me acerta. E eu nunca deixo.', 'Simon likes to brag that Anthony, the Master of Arms, always praises him, even calls him a prodigy. I find that strange, because for me it’s far too easy. I’ve only ever fought him, my whole life, and yet I predict his every move without effort. He truly has strength. He never manages to hit me. And I never let him.'),
@@ -347,6 +354,7 @@ window.LIVRO = {
     { id: 'c05', zona: 'laranjal', fundo: { img: 'assets/images/laranjal-cruzado.jpg', kb: 'out', foco: '50% 45%', dim: .6, clima: 'poeira-azul' }, pulso: 1,
       texto: [T('Simon ergue a espada. Eu espero.', 'Simon raises his sword. I wait.')], // NOVO
       minijogo: 'duelo', duelo: { fundo: 'assets/images/laranjal-lua.jpg' },
+      vozDepois: (st) => (st.duelo && st.duelo.resultado !== 'deixou' ? 'vou-precisar' : null),
       depois: (st) => {
         const r = st.duelo && st.duelo.resultado;
         if (r === 'deixou') return [
@@ -355,11 +363,6 @@ window.LIVRO = {
           T('— Escorreguei.', '— I slipped.'),
           T('— Não escorregou. Eu vi. Se um dia eu ganhar de você, quero ganhar de verdade.', '— You didn’t slip. I saw. If I ever beat you, I want to beat you for real.'),
           T('Fico olhando para o chão até ele pegar a espada de volta.', 'I keep my eyes on the floor until he picks the sword back up.'),
-        ]; // NOVO
-        if (r === 'perdeu') return [
-          T('Ele me acerta. No ombro, depois na costela, e o terceiro golpe eu nem vejo de onde vem.', 'He lands it. On the shoulder, then the ribs, and the third one I don’t even see coming.'),
-          T('— Mamãe tem razão! — Simon ri, sem fôlego. — Homem bem alimentado!', '— Mother was right! — Simon laughs, out of breath. — A well-fed man!'),
-          T('Rio junto, mas as mãos tremem no cabo. Falta um mês.', 'I laugh with him, but my hands are shaking on the grip. A month left.'),
         ]; // NOVO
         const fim = [
           T('— Eu sei que você nunca acredita — ele fala, exausto. — Mas você é melhor que qualquer aluno, irmã. Até os mais velhos.', '— I know you never believe it — he says, exhausted. — But you’re better than any student, sister. Even the older ones.'),
@@ -378,7 +381,7 @@ window.LIVRO = {
         T('— Por que você treina tanto, Laura? Rainha não luta.', '— Why do you train so much, Laura? Queens don’t fight.'),
       ], // NOVO
       escolha: { id: 'simon', pergunta: T('A pergunta de Simon', 'Simon’s question'), opcoes: [
-        { id: 'verdade', eixo: 'mostra', flag: 'contou', peso: -1, txt: T('Contar a verdade', 'Tell him the truth'),
+        { id: 'verdade', eixo: 'mostra', flag: 'contou', peso: -1, voz: 'torneio', vozAtraso: 500, txt: T('Contar a verdade', 'Tell him the truth'),
           resultado: [
             T('— Porque daqui a um mês eu vou lutar no Torneio Real.', '— Because in a month I’m going to fight in the Royal Tournament.'),
             T('Ele me olha um tempo. Depois cai na gargalhada, tão alto que eu preciso tapar a boca dele com a mão.', 'He looks at me for a while. Then he bursts out laughing, so loud I have to cover his mouth with my hand.'),
@@ -386,6 +389,11 @@ window.LIVRO = {
             T('Rio também. O peito, por dentro, fica leve pela primeira vez no dia.', 'I laugh too. Inside my chest, it goes light for the first time all day.'),
           ] }, // NOVO
         { id: 'mentira', peso: 1, txt: T('Dizer que a esgrima acalma', 'Say that fencing calms me'),
+          txtNervoso: T('Dizer que a esgrima acalma, rápido demais', 'Say that fencing calms me, too fast'),
+          resultadoNervoso: [
+            T('— Me acalma. Já disse. Me acalma.', '— It calms me. I told you. It calms me.'),
+            T('Falo rápido demais. Simon franze a testa e fica me olhando, esperando o resto. Viro de costas para guardar as espadas antes que ele pergunte de novo.', 'I say it too fast. Simon frowns and keeps looking at me, waiting for the rest. I turn my back to put the swords away before he can ask again.'),
+          ], // NOVO (versão com o peito apertado)
           resultado: [
             T('— Já disse. Me acalma.', '— I told you. It calms me.'),
             T('Ele dá de ombros e acredita, como sempre acredita. Viro de costas para guardar as espadas e fico ali mais tempo do que precisa.', 'He shrugs and believes it, the way he always does. I turn my back to put the swords away and stay there longer than I need to.'),
@@ -397,7 +405,7 @@ window.LIVRO = {
           ] }, // NOVO
       ] } },
 
-    { id: 'c07', zona: 'laranjal', fundo: { img: 'assets/images/laranjal-largo.jpg', kb: 'out', foco: '50% 45%', dim: .6, clima: 'poeira-azul' }, pulso: (st) => (st.f.visto ? 2 : .4),
+    { id: 'c07', zona: 'laranjal', fundo: (st) => (st.f.brancarda ? { video: 'assets/video/brancarda.mp4', img: 'assets/images/brancarda.jpg', kb: 'none', foco: '75% 60%', dim: .45 } : { img: 'assets/images/laranjal-largo.jpg', kb: 'out', foco: '50% 45%', dim: .6, clima: 'poeira-azul' }), pulso: (st) => (st.f.visto ? 2 : .4),
       texto: [
         T('Simon vai na frente, para não chegarmos juntos. Fico para trás guardando as espadas no esconderijo, atrás das prateleiras vazias dos vasos.', 'Simon goes ahead, so we don’t arrive together. I stay behind to hide the swords, behind the empty shelves where the pots go.'), // NOVO
         se((st) => st.f.visto, T('Na porta do laranjal, na poeira, há marcas de bota maiores que as de Simon. Não estavam lá quando chegamos.', 'At the orangery door, in the dust, there are boot prints bigger than Simon’s. They weren’t there when we arrived.')), // NOVO (gancho)
@@ -408,7 +416,7 @@ window.LIVRO = {
           T('Arranco e guardo no bolso.', 'I pick it and put it in my pocket.'),
         ] } }, // NOVO (Brancarda plantada; nome em inglês a decidir)
 
-    { id: 'c08', zona: 'quarto', fundo: { img: 'assets/images/laura-rosto.jpg', kb: 'out', foco: '50% 30%', dim: .66, lado: 'dir' }, pulso: (st) => (st.peso >= 3 ? 1.5 : .3), fim: true,
+    { id: 'c08', zona: 'quarto', fundo: { img: 'assets/images/quarto-cadeira.jpg', kb: 'in', foco: '40% 55%', dim: .5, lado: 'dir' }, pulso: (st) => (st.peso >= 3 ? 1.5 : .3), fim: true,
       texto: [
         T('Volto para o quarto antes do primeiro sino. A cadeira está virada para a janela, do jeito que sempre fica.', 'I’m back in my room before the first bell. The chair is turned toward the window, the way it always is.'), // NOVO (eco do Cap. III)
         se((st) => st.f.brancarda, T('Ponho a brancarda dentro do livro de etiqueta, entre duas páginas que nunca vou reler.', 'I press the whitebloom inside the etiquette book, between two pages I’ll never read again.')),
@@ -425,7 +433,7 @@ window.LIVRO = {
   estadoFinal: (st) => ({
     peso: st.peso, perfil: st.perfil || {},
     maos: st.escolhas.maos || null, promessa: st.escolhas.promessa || null, perguntouOutro: !!st.f.perguntouOutro,
-    rotas: st.f.rotas || [], gibao: !!st.f.gibao,
+    rotas: st.f.rotas || [], registro: !!st.f.registro, tentativasDuelo: st.tentativas || 0, nervosas: st.nervosas || {},
     prece: st.f.preceN || 0, sangue: !!st.f.sangue,
     justine: { perto: st.escolhas.perto || null, desconfia: !!st.f.justineDesconfia, lenco: st.escolhas.lenco || null },
     ronda: st.escolhas.ronda || null, visto: !!st.f.visto,
@@ -449,7 +457,7 @@ window.LIVRO = {
     const linhas = [
       { id: 'promessa', opcao: pr, q: L('A promessa à mãe', 'The promise to her mother'), a: { prometer: L('Prometeu', 'Promised'), calar: L('Ficou calada', 'Kept silent'), recusar: L('Recusou', 'Refused') }[pr] || '—' },
       { id: 'lenco', opcao: st.escolhas.lenco, q: L('O lenço de Justine', 'Justine’s handkerchief'), a: st.escolhas.lenco === 'guardar' ? L('Guardou na manga', 'Kept it in her sleeve') : st.escolhas.perto === 'esconder' ? L('Deixou no chão', 'Left it on the floor') : L('Devolveu', 'Gave it back') },
-      { id: 'duelo', opcao: d, q: L('O duelo com Simon', 'The duel with Simon'), a: { limpo: L('Venceu sem ser tocada', 'Won without being touched'), marcas: L('Venceu, com uma marca no braço', 'Won, with a mark on her arm'), deixou: L('Baixou a espada', 'Lowered the sword'), perdeu: L('Perdeu', 'Lost') }[d] || '—' },
+      { id: 'duelo', opcao: d, q: L('O duelo com Simon', 'The duel with Simon'), a: { limpo: L('Venceu sem ser tocada', 'Won without being touched'), marcas: L('Venceu, com uma marca no braço', 'Won, with a mark on her arm'), deixou: L('Deixou Simon ganhar', 'Let Simon win'), perdeu: L('Perdeu', 'Lost') }[d] || '—' },
       { id: 'simon', opcao: st.escolhas.simon, q: L('A pergunta de Simon', 'Simon’s question'), a: { verdade: L('Contou a verdade, e ele riu', 'Told the truth, and he laughed'), mentira: L('Mentiu', 'Lied'), ataque: L('Atacou em vez de responder', 'Attacked instead of answering') }[st.escolhas.simon] || '—' },
     ];
     return { frase, notas, linhas };

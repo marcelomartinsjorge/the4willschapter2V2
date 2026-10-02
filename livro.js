@@ -251,7 +251,15 @@ function pHTML(p, extra = '') { const dlg = p.startsWith('—'); return `<p clas
 let timers = [];
 const clearTimers = () => { timers.forEach(clearTimeout); timers = []; };
 const later = (fn, ms) => timers.push(setTimeout(fn, ms));
-const rotulo = (o) => (o.silencio ? U('silencioR') : tr(typeof o.txt === 'function' ? o.txt(st) : o.txt));
+// o coração na jogabilidade: com o peito apertado (peso >= NERV), algumas falas de Laura saem tremidas
+const NERV = 2;
+const nervosa = (o, cid) => { if (!o.txtNervoso) return false; const k = cid + ':' + o.id, m = st.nervosas || {}; return k in m ? m[k] : st.peso >= NERV; };
+const rotulo = (o, cid) => (o.silencio ? U('silencioR') : tr(nervosa(o, cid) ? o.txtNervoso : (typeof o.txt === 'function' ? o.txt(st) : o.txt)));
+const resultadoDe = (o, cid) => (nervosa(o, cid) && o.resultadoNervoso ? o.resultadoNervoso : o.resultado);
+const marcaNervosa = (o, cid) => { (st.nervosas = st.nervosas || {})[cid + ':' + o.id] = nervosa(o, cid); };
+// as falas dubladas de Laura tocam sozinhas
+const vozUrl = (n) => 'assets/audio/voz/' + n + '.mp3';
+const fala = (nome, ms = 0) => { if (!nome) return; later(() => { if (A.ctx && A.on) A.narrate(vozUrl(nome)); }, ms); };
 
 function render(dir = 1) {
   clearTimers(); A.stopNarr(); linkUsados.clear();
@@ -276,9 +284,13 @@ function render(dir = 1) {
   const narr = narrOf(p);
   const narrTag = p.narracaoLang && p.narracaoLang !== LANG ? ` (${p.narracaoLang.toUpperCase()})` : '';
   if (narr) extras.insertAdjacentHTML('beforeend', `<button class="chip" id="narr"><i class="eq"></i>${U('ouvir')}${narrTag}</button>`);
-  if (p.cena) extras.insertAdjacentHTML('beforeend', `<button class="chip" id="cena">${U('cena')}</button>`);
-  if (narr) ligaNarr(p, narr);
-  if (p.cena) $('#cena').onclick = () => verCena(p.cena);
+  const cena = typeof p.cena === 'function' ? p.cena(st) : p.cena;
+  if (cena) extras.insertAdjacentHTML('beforeend', `<button class="chip" id="cena">${U('cena')}</button>`);
+  if (narr) {
+    ligaNarr(p, narr);
+    if (A.ctx && A.on && dir >= 0) later(() => { const b = $('#narr'); if (b && P[st.i] === p && !A.narr) b.click(); }, 700);
+  } else if (p.vozAuto && dir >= 0) { const v = typeof p.vozAuto === 'function' ? p.vozAuto(st) : p.vozAuto; fala(v, (txt.children.length * .35 + 1.2) * 1000); }
+  if (cena) $('#cena').onclick = () => verCena(cena);
   if (p.efeito && !st.feitos['ef:' + p.id]) { st.feitos['ef:' + p.id] = 1; const ef = p.efeito; if (ef.flag) st.f[ef.flag] = true; if (ef.peso) later(() => mudaPeso(ef.peso), 1200); }
   if (p.quieto) renderQuieto(p);
   let livre = true;
@@ -300,7 +312,7 @@ function ligaNarr(p, url) {
 }
 function setNext(on) { btnNext.disabled = !on; btnNext.classList.toggle('pulse', on); }
 function appendParas(list, cls = '') { paras(list).forEach((t, k) => { txt.insertAdjacentHTML('beforeend', pHTML(t, 'novo ' + cls)); txt.lastElementChild.style.animationDelay = (k * .35) + 's'; }); }
-const optHTML = (o, k) => `<button class="opt ${o.silencio ? 'sil' : ''}" data-id="${o.id}"><span class="k">${k + 1}</span>${o.silencio ? `<em>${U('silencio')}</em>` : esc(rotulo(o))}</button>`;
+const optHTML = (cid) => (o, k) => `<button class="opt ${o.silencio ? 'sil' : ''} ${nervosa(o, cid) || o.tremida ? 'nervosa' : ''}" data-id="${o.id}"><span class="k">${k + 1}</span>${o.silencio ? `<em>${U('silencio')}</em>` : esc(rotulo(o, cid))}</button>`;
 const opcoesVis = (lista) => lista.filter((o) => !o.se || o.se(st));
 
 // ----- quieto: nenhum botão; se o leitor esperar, surge um "…". Pode ser uma fala com resposta ou um gesto.
@@ -321,7 +333,7 @@ function renderQuieto(p) {
     if (P[st.i] !== p || st.escolhas[q.id]) return;
     txt.insertAdjacentHTML('beforeend', '<button class="quieto" aria-label="…">…</button>');
     txt.querySelector('.quieto').onclick = (e) => {
-      e.currentTarget.remove(); st.escolhas[q.id] = 'fala'; aplicar({ eixo: q.eixo, flag: q.flag }); registrar(q.id, 'fala'); salvar(); mostra(true);
+      e.currentTarget.remove(); st.escolhas[q.id] = 'fala'; aplicar({ eixo: q.eixo, flag: q.flag }); registrar(q.id, 'fala'); salvar(); mostra(true); setFundo(resolveFundo(p));
     };
   }, q.espera * 1000);
 }
@@ -329,7 +341,7 @@ function renderQuieto(p) {
 // ----- escolhas (sem relógio sobre a leitura; o "Decidir" abre uma janela curta, só quando o leitor quer)
 function renderEscolha(p) {
   const e = p.escolha, feita = st.escolhas[e.id];
-  if (feita) { const o = e.opcoes.find((x) => x.id === feita); if (o) { box.innerHTML = `<p class="feita">${U('escolheu')} ${esc(rotulo(o))}</p>`; appendParas(o.resultado); } return true; }
+  if (feita) { const o = e.opcoes.find((x) => x.id === feita); if (o) { box.innerHTML = `<p class="feita">${U('escolheu')} ${esc(rotulo(o, e.id))}</p>`; appendParas(resultadoDe(o, e.id)); } return true; }
   if (e.revelar && !p._revelado) {
     box.innerHTML = (e.revelarDica ? `<p class="dica">${esc(tr(e.revelarDica))}</p>` : '') + `<button class="opt decidir" id="revBtn">${U('decidir')}</button>`;
     $('#revBtn').onclick = () => { p._revelado = true; abreEscolha(p); };
@@ -338,15 +350,16 @@ function renderEscolha(p) {
   abreEscolha(p);
   return false;
 }
+const janelaDe = (e) => (typeof e.janela === 'function' ? e.janela(st) : e.janela);
 function abreEscolha(p) {
   const e = p.escolha;
-  box.innerHTML = `<p class="eyebrow">${e.urgente ? U('decida') : (e.pergunta ? esc(tr(e.pergunta)) : U('oque'))}</p>` + opcoesVis(e.opcoes).map(optHTML).join('') + (e.janela ? `<div class="tenso" style="--j:${e.janela}s"></div>` : '');
+  box.innerHTML = `<p class="eyebrow">${e.urgente ? U('decida') : (e.pergunta ? esc(tr(e.pergunta)) : U('oque'))}</p>` + opcoesVis(e.opcoes).map(optHTML(e.id)).join('') + (e.janela ? `<div class="tenso" style="--j:${janelaDe(e)}s"></div>` : '');
   box.classList.toggle('urgente', !!e.urgente);
   box.querySelectorAll('.opt').forEach((b) => b.onclick = () => escolher(p, b.dataset.id));
   if (e.janela) {
     box.classList.add('sobPressao'); Coracao.extra(1.5);
     if (e.somJanela) A.once(e.somJanela, .7); else A.sfx('passos-guarda', .8, () => { for (let k = 0; k < 5; k++) A.hiss(.25, 300, 1.2, .12, k * .8, 'lowpass'); });
-    later(() => { if (!st.escolhas[e.id]) escolher(p, e.padrao); }, e.janela * 1000);
+    later(() => { if (!st.escolhas[e.id]) escolher(p, e.padrao); }, janelaDe(e) * 1000);
   }
 }
 function aplicar(o) {
@@ -358,16 +371,17 @@ function aplicar(o) {
 }
 function escolher(p, id) {
   const e = p.escolha; if (st.escolhas[e.id]) return;
-  const o = e.opcoes.find((x) => x.id === id); st.escolhas[e.id] = id;
+  const o = e.opcoes.find((x) => x.id === id); marcaNervosa(o, e.id); st.escolhas[e.id] = id;
   if (o.fundo) { (st.fundoPag = st.fundoPag || {})[p.id] = o.fundo; setFundo(o.fundo); }
   box.classList.remove('sobPressao'); Coracao.extra(0);
   const sel = box.querySelector(`.opt[data-id="${id}"]`);
   box.querySelectorAll('.opt').forEach((b) => { b.disabled = true; b.classList.toggle('sel', b.dataset.id === id); });
-  if (!sel) box.innerHTML = `<p class="feita">${U('escolheu')} ${esc(rotulo(o))}</p>`;
+  if (!sel) box.innerHTML = `<p class="feita">${U('escolheu')} ${esc(rotulo(o, e.id))}</p>`;
   if (o.som) A.sfx(o.som, .7);
   if (o.pulso != null) Coracao.extra(o.pulso);
   aplicar(o); A.escolha(); registrar(e.id, id); salvar();
-  later(() => { appendParas(o.resultado); setNext(true); }, 450);
+  later(() => { appendParas(resultadoDe(o, e.id)); setNext(true); }, 450);
+  if (o.voz) fala(typeof o.voz === 'function' ? o.voz(st) : o.voz, o.vozAtraso || 900);
 }
 
 // ----- diálogo em rodadas: cada opção pode ter a própria resposta; a rodada pode abrir com uma fala do outro
@@ -381,7 +395,7 @@ function renderDialogo(p) {
   feito.forEach(([rid, oid]) => {
     const r = d.rodadas.find((x) => x.id === rid), o = r.opcoes.find((x) => x.id === oid);
     if (r.antes) emite([].concat(r.antes));
-    o.silencio ? log.insertAdjacentHTML('beforeend', '<p class="dlg sil">…</p>') : linha('eu', rotulo(o));
+    o.silencio ? log.insertAdjacentHTML('beforeend', '<p class="dlg sil">…</p>') : linha('eu', rotulo(o, rid));
     emite(resp(r, o));
   });
   const next = () => {
@@ -389,12 +403,12 @@ function renderDialogo(p) {
     if (k >= d.rodadas.length) { box.innerHTML = ''; appendParas(p.depois); setNext(true); return; }
     const r = d.rodadas[k];
     if (r.antes && !r._dito) { r._dito = true; emite([].concat(r.antes), true); later(next, 1300); return; }
-    box.innerHTML = `<p class="eyebrow">${r.pergunta ? esc(tr(r.pergunta)) : U('resp') + ' ' + esc(tr(d.interlocutor))}</p>` + opcoesVis(r.opcoes).map(optHTML).join('');
+    box.innerHTML = `<p class="eyebrow">${r.pergunta ? esc(tr(r.pergunta)) : U('resp') + ' ' + esc(tr(d.interlocutor))}</p>` + opcoesVis(r.opcoes).map(optHTML(r.id)).join('');
     box.querySelectorAll('.opt').forEach((b) => b.onclick = () => {
       const o = r.opcoes.find((x) => x.id === b.dataset.id);
-      (st.dialogo[p.id] = st.dialogo[p.id] || []).push([r.id, o.id]); st.escolhas[r.id] = o.id;
+      marcaNervosa(o, r.id); (st.dialogo[p.id] = st.dialogo[p.id] || []).push([r.id, o.id]); st.escolhas[r.id] = o.id; if (o.voz) fala(o.voz, 150);
       aplicar(o); if (o.pulso != null) Coracao.extra(o.pulso); registrar(r.id, o.id); salvar(); A.escolha(); box.innerHTML = '';
-      o.silencio ? log.insertAdjacentHTML('beforeend', '<p class="dlg sil novo">…</p>') : linha('eu', rotulo(o), true);
+      o.silencio ? log.insertAdjacentHTML('beforeend', '<p class="dlg sil novo">…</p>') : linha('eu', rotulo(o, r.id), true);
       later(() => { A.tone(196, .4, 'sine', .03); emite(resp(r, o), true); }, 900);
       later(next, 2300);
     });
@@ -421,7 +435,12 @@ function renderMinijogo(p) {
   if (done) { appendParas(typeof p.depois === 'function' ? p.depois(st) : p.depois); return true; }
   const dica = typeof U('dica')[tipo] === 'function' ? U('dica')[tipo](st) : U('dica')[tipo];
   box.innerHTML = `<p class="eyebrow">${U('momento')}</p><button class="opt jogar" id="mgGo"><span class="k">▶</span>${U('mg')[tipo]}</button><p class="dica">${dica}</p>`;
-  $('#mgGo').onclick = () => { box.innerHTML = ''; MG[tipo](p).then(() => { st.feitos['mg:' + p.id] = 1; salvar(); appendParas(typeof p.depois === 'function' ? p.depois(st) : p.depois); setNext(true); }); };
+  $('#mgGo').onclick = () => { box.innerHTML = ''; MG[tipo](p).then(() => {
+    st.feitos['mg:' + p.id] = 1; salvar();
+    if (p.avancaDepois) return irProxima();
+    const dep = paras(typeof p.depois === 'function' ? p.depois(st) : p.depois); appendParas(dep); setNext(true);
+    if (p.vozDepois) fala(p.vozDepois(st), (dep.length * .35 + 1.5) * 1000);
+  }); };
   return false;
 }
 
@@ -539,12 +558,13 @@ const MG = {
   duelo(p) {
     const o = abreOverlay('duelo');
     return window.DUELO.start(o, {
-      lang: LANG, A, st, tr,
+      lang: LANG, A, st, tr, peso: st.peso,
       madeira: !!st.f.arsenalTrancado,
       lenco: st.escolhas.lenco === 'guardar',
       fundo: p.duelo.fundo,
     }).then((res) => {
-      st.duelo = res; registrar('duelo', res.resultado); if (res.resultado === 'deixou') mudaPeso(1);
+      if (res.resultado === 'perdeu') { registrar('duelo_tentativa', 'perdeu'); st.tentativas = (st.tentativas || 0) + 1; salvar(); return MG.duelo(p); } // vencer é canon: perdeu, tenta de novo
+      st.duelo = res; st.duelo.tentativas = st.tentativas || 0; registrar('duelo', res.resultado); if (res.resultado === 'deixou') mudaPeso(1);
       salvar(); fechaOverlay();
     });
   },

@@ -124,3 +124,10 @@ body.na-capa #pulsoDot { display: none; }
 #resumo { background: radial-gradient(ellipse at 30% 20%, rgba(184,56,47,.16), transparent 60%), #0c0807; }
 .dl-congela { background: rgba(6,6,10,.82); border: 1px solid rgba(239,230,216,.16); padding: 18px 16px 20px; backdrop-filter: blur(6px); }
 .dl-congela .cta, .dl-congela button { opacity: 1; }
+
+/* v2: o coração na jogabilidade — falas tremidas quando o peito aperta */
+.opt.nervosa { animation: tremor 2.6s ease-in-out infinite; border-color: rgba(207,79,73,.45); }
+.opt.nervosa:hover:not(:disabled) { animation-play-state: paused; }
+@keyframes tremor { 0%, 86%, 100% { transform: translateX(0); } 88% { transform: translateX(-1.5px); } 90% { transform: translateX(1.5px); } 92% { transform: translateX(-1px); } 94% { transform: translateX(1px); } }
+.dl-nervo { font-style: italic; font-size: 17px; color: #e3907f; margin: -8px 0 20px; }
+@media (prefers-reduced-motion: reduce) { .opt.nervosa { animation: none; } }
