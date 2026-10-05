@@ -1,5 +1,10 @@
 # Capítulo 2 (Laura) · Notas
 
+## Versão 10
+
+- O botão da tela final agora leva ao Cap. III novo: `https://marcelomartinsjorge.github.io/the4willschapter3V2/`.
+
+
 ## Versão 9
 
 - **A prece está toda dublada, nos três caminhos.** A linha de perdão da manhã agora tem voz para quem prometeu (`prece-promessa`), para quem ficou calada (`prece-silencio`) e para quem recusou (`prece-chave-arsenal`). O resto é igual em todos: `prece-1` no começo e `prece-resto` no fim.

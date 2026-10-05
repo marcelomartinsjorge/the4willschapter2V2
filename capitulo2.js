@@ -46,7 +46,7 @@ window.LIVRO = {
   tituloPag: 'Laura, Sob a Seda · As Quatro Vontades',
   tituloPagEn: 'Laura, Beneath the Silk · The Four Wills',
   capa: 'assets/images/capa.jpg',
-  proximo: { titulo: 'Capítulo III · O Cavaleiro', tituloEn: 'Chapter III · The Knight', url: 'https://marcelomartinsjorge.github.io/the4willschapter3/' },
+  proximo: { titulo: 'Capítulo III · O Cavaleiro', tituloEn: 'Chapter III · The Knight', url: 'https://marcelomartinsjorge.github.io/the4willschapter3V2/' },
 
   paginas: [
 
