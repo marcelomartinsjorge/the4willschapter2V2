@@ -27,10 +27,10 @@ const TX = {
     finta: 'Finta',
     botoes: ['Recuar', 'Inclinar', 'Aparar', 'Tocar'],
     fole: 'Fôlego', guarda: 'Guarda',
-    congela: 'A costela dele, aberta.', tocar: 'Tocar a costela', baixar: 'Deixar Simon ganhar',
+    congela: 'A costela dele, aberta.', tocar: 'Tocar a costela', baixar: 'Baixar a espada',
     venceu: 'Você venceu Simon.', marcas: 'Você venceu Simon, mas ele te acertou.', deixou: 'Você deixou Simon ganhar.', perdeu: 'Simon venceu.',
     seguir: 'Continuar', comecar: 'Em guarda', denovo: 'Tentar de novo', perdeuSub: 'Não pode ser assim. Falta um mês.',
-    nervo: 'O coração não para quieto hoje. Cada abertura vai durar menos.',
+    nervo: 'O coração não para quieto hoje. As mãos chegam um instante atrasadas.',
     teclado: 'Teclado: setas ou 1 a 4.',
   },
   en: {
@@ -50,10 +50,10 @@ const TX = {
     finta: 'Feint',
     botoes: ['Step back', 'Lean', 'Parry', 'Touch'],
     fole: 'Breath', guarda: 'Guard',
-    congela: 'His ribs, wide open.', tocar: 'Touch his ribs', baixar: 'Let Simon win',
+    congela: 'His ribs, wide open.', tocar: 'Touch his ribs', baixar: 'Lower the sword',
     venceu: 'You beat Simon.', marcas: 'You beat Simon, but he landed a hit.', deixou: 'You let Simon win.', perdeu: 'Simon won.',
     seguir: 'Continue', comecar: 'En garde', denovo: 'Try again', perdeuSub: 'It can’t go like this. A month left.',
-    nervo: 'My heart won’t settle today. Every opening will last less.',
+    nervo: 'My heart won’t settle today. My hands arrive a moment late.',
     teclado: 'Keyboard: arrows or 1 to 4.',
   },
 };
@@ -176,7 +176,7 @@ function desenhaFigura(cx, p, o) {
 // ------------------------------------------------------------------ Laura e Simon em imagem (assets/images/duelo)
 // Cada pose do jogo aponta para uma imagem recortada. meta: largura, altura, linha dos pés (base) e centro dos pés (ax).
 // Se uma imagem não carregar, aquele lutador volta a ser desenhado como antes.
-const SPR_META = {"laura":{"guarda":{"w":346,"h":381,"base":376,"ax":116.0,"alt":372},"recuar":{"w":308,"h":376,"base":371,"ax":141.2,"alt":367},"inclinar":{"w":283,"h":357,"base":352,"ax":141.5,"alt":348},"aparar":{"w":271,"h":436,"base":431,"ax":128.5,"alt":431},"apara-baixo":{"w":249,"h":358,"base":353,"ax":135.2,"alt":349},"tocar":{"w":531,"h":374,"base":369,"ax":138.0,"alt":365},"atingida":{"w":293,"h":363,"base":358,"ax":129.0,"alt":354},"cansada":{"w":157,"h":395,"base":390,"ax":81.9,"alt":386},"baixa":{"w":145,"h":389,"base":384,"ax":75.7,"alt":380}},"simon":{"guarda":{"w":295,"h":338,"base":333,"ax":180.5,"alt":329},"aviso-alto":{"w":266,"h":399,"base":394,"ax":142.1,"alt":390},"aviso-estocada":{"w":287,"h":324,"base":319,"ax":121.8,"alt":315},"aviso-baixo":{"w":286,"h":259,"base":254,"ax":149.2,"alt":250},"golpe-alto":{"w":233,"h":409,"base":404,"ax":85.7,"alt":400},"golpe-estocada":{"w":381,"h":295,"base":290,"ax":187.0,"alt":286},"golpe-baixo":{"w":292,"h":237,"base":232,"ax":104.0,"alt":228},"desequilibrado":{"w":314,"h":279,"base":274,"ax":121.7,"alt":270},"atingido":{"w":165,"h":312,"base":307,"ax":95.5,"alt":303},"cansado":{"w":155,"h":366,"base":361,"ax":74.1,"alt":357}}};
+const SPR_META = {"laura":{"guarda":{"w":352,"h":397,"base":392,"ax":120.5,"alt":388},"recuar":{"w":332,"h":395,"base":390,"ax":149.5,"alt":385},"inclinar":{"w":296,"h":375,"base":370,"ax":147.5,"alt":366},"aparar":{"w":289,"h":473,"base":468,"ax":144.0,"alt":462},"apara-baixo":{"w":298,"h":383,"base":377,"ax":132.0,"alt":373},"tocar":{"w":441,"h":386,"base":380,"ax":141.5,"alt":375},"atingida":{"w":299,"h":384,"base":378,"ax":149.5,"alt":373},"baixa":{"w":181,"h":406,"base":400,"ax":89.5,"alt":395},"cansada":{"w":181,"h":406,"base":400,"ax":89.5,"alt":395}},"simon":{"guarda":{"w":295,"h":338,"base":333,"ax":180.5,"alt":329},"aviso-alto":{"w":266,"h":399,"base":394,"ax":142.1,"alt":390},"aviso-estocada":{"w":287,"h":324,"base":319,"ax":121.8,"alt":315},"aviso-baixo":{"w":286,"h":259,"base":254,"ax":149.2,"alt":250},"golpe-alto":{"w":233,"h":409,"base":404,"ax":85.7,"alt":400},"golpe-estocada":{"w":381,"h":295,"base":290,"ax":187.0,"alt":286},"golpe-baixo":{"w":292,"h":237,"base":232,"ax":104.0,"alt":228},"desequilibrado":{"w":314,"h":279,"base":274,"ax":121.7,"alt":270},"atingido":{"w":165,"h":312,"base":307,"ax":95.5,"alt":303},"cansado":{"w":155,"h":366,"base":361,"ax":74.1,"alt":357}}};
 const SPR_MAPA = {
   laura: { guarda: 'guarda', respira: 'guarda', recuar: 'recuar', inclinar: 'inclinar', aparar: 'aparar', aparaBaixo: 'apara-baixo', tocar: 'tocar', atingido: 'atingida', cansado: 'cansada', baixa: 'baixa' },
   simon: { guarda: 'guarda', respira: 'guarda', tellAlto: 'aviso-alto', tellEstocada: 'aviso-estocada', tellBaixo: 'aviso-baixo', golpeAlto: 'golpe-alto', golpeEstocada: 'golpe-estocada', golpeBaixo: 'golpe-baixo', desequilibrio: 'desequilibrado', atingido: 'atingido', cansado: 'cansado' },

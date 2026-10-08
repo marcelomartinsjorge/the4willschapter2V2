@@ -187,3 +187,17 @@ Recomendo **não misturar**. O Cap. 3 é outro ponto de vista (o Cavaleiro) e fu
 - Os únicos arquivos que dão 404 são os da lista `MIDIAS_PENDENTES.md`. É esperado.
 - Estatísticas ("X% fizeram o mesmo") usam o mesmo Supabase do Cap. 1, com `capitulo = 'cap02'`. O sandbox não acessa o Supabase; esse teste é seu.
 - Quando o Cap. 2 novo estiver no ar, atualize o link de "próximo capítulo" no Cap. 1 (hoje aponta para `the4willschapter2`).
+
+## v11 (polimento pós-auditoria, 08/10)
+- Sprites novos de Laura no duelo (8 poses; "cansada" usa a pose de cabeça baixa).
+- Peso: mentir = batida fora do compasso; aliviar = fôlego solto (sem "plim" nem escurecer a tela). Frase final fala do corpo, não conta mentiras.
+- a02: "E de novo estou aqui" (sai a terceira "milésima vez"; texto sem dublagem).
+- a08: "E se outro vencer?" agora é escolha visível (perguntar / deixar que ela vá).
+- Olhar: pontos quase invisíveis; aparecem quando o cursor passa perto. No celular: 1º toque mira, 2º olha.
+- Mesa de Gideon: Laura já sabe quem é o oficial do Registro; a carta dá o dia (nove dias) e o lugar (a alfaiataria). c08 conta os nove dias.
+- b04: Justine responde ao estado das mãos (sangue / marcas das unhas / mãos abertas); todos recebem o lenço.
+- Esconderijo: cartão curto, regra na voz de Laura; uma passada só do vídeo em câmera lenta (22 s), a luz chega quando a tocha aparece; quem não aguenta é Laura.
+- c03: o lenço com o J vem antes do aquecimento ("Ela disse" volta a ser Dolores).
+- c08: lenço manchado (se guardou) ou bolha aberta (se aparou sem lenço).
+- Duelo: "Baixar a espada"; frase do peito sem enunciar regra; baixar a espada pontua como o toque.
+- Tela final: pontos depois das escolhas; botão "Fechar os olhos · Capítulo III" escurece a tela antes de trocar.

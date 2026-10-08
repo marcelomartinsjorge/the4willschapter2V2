@@ -190,3 +190,13 @@ body.na-capa #pulsoDot { display: none; }
 .rs-jornada b { font-family: var(--serif-d); font-size: 24px; color: #fff; font-weight: 500; }
 .rs-jornada em { color: rgba(239,230,216,.65); font-size: 15px; }
 .rs-sem { font-style: italic; color: rgba(239,230,216,.6); font-size: 15px; }
+
+/* v11 · o olhar: os pontos quase não aparecem; o olho os acha passando por perto */
+#mg.olhar .ex-pt i { opacity: .16; animation: exBrilho 4.8s ease-in-out infinite; transition: opacity .3s; }
+#mg.olhar .ex-pt:hover i, #mg.olhar .ex-pt:focus-visible i, #mg.olhar .ex-pt.mira i { opacity: 1; animation: none; }
+#mg.olhar .ex-pt.mira span { opacity: 1; }
+#mg.olhar .ex-pt.visto i { opacity: .4; }
+@keyframes exBrilho { 0%, 100% { opacity: .1; } 50% { opacity: .3; } }
+/* v11 · fechar os olhos antes do Capítulo III */
+body.dorme::after { content: ''; position: fixed; inset: 0; z-index: 9999; background: #000; animation: dorme 1.5s ease-in forwards; pointer-events: none; }
+@keyframes dorme { from { opacity: 0; } to { opacity: 1; } }

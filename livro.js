@@ -131,8 +131,10 @@ const Coracao = (() => {
 })();
 function mudaPeso(d) {
   if (!d) return; st.peso = Math.max(0, st.peso + d);
-  if (d < 0) { A.tone(392, 1.2, 'sine', .03); A.tone(523, 1.4, 'sine', .02, .1); return; }
-  A.peso(); document.body.classList.remove('pesa'); void document.body.offsetWidth; document.body.classList.add('pesa');
+  // o peso não tem som de jogo: mentir é uma batida fora do compasso; aliviar é um fôlego solto
+  if (d < 0) { if (A.ctx && A.on) { A.hiss(1.1, 520, .6, .05, 0, 'lowpass'); A.hiss(.9, 300, .5, .03, .35, 'lowpass'); } return; }
+  if (A.ctx && A.on) { A.batida(1); setTimeout(() => A.batida(.85), 170); }
+  document.body.classList.remove('bate'); void document.body.offsetWidth; document.body.classList.add('bate');
 }
 
 // ---------------------------------------------------------------- fundos
@@ -482,6 +484,7 @@ const MG = {
         b.innerHTML = `<i></i><span>${esc(tr(pt.rotulo))}</span>`;
         b.onclick = (e) => {
           e.stopPropagation(); if (acabou || reg.vistos.includes(pt.id)) { if (reg.vistos.includes(pt.id)) mostra(pt.texto); return; }
+          if (IS_TOUCH && !b.classList.contains('mira')) { caixa.querySelectorAll('.ex-pt.mira').forEach((x) => x.classList.remove('mira')); b.classList.add('mira'); return; }
           reg.vistos.push(pt.id); if (pt.flag) st.f[pt.flag] = true; if (pt.rota) (st.f.rotas = st.f.rotas || []).push(pt.rota);
           b.classList.add('visto'); salvar();
           foco.style.setProperty('--fx', pt.x + '%'); foco.style.setProperty('--fy', pt.y + '%'); foco.classList.add('on');
@@ -650,7 +653,8 @@ function guardaEstado() {
 function pontosDuelo(d) {
   if (!d) return 0;
   const p = 2500 * (d.leituras || 0) + 3000 * (d.toques || 0) + 2000 * (d.fintasLidas || 0) + 1500 * (d.maxCombo || 0)
-    - 2500 * (d.sofridos || 0) - 800 * (d.aparos || 0) - 6000 * (d.tentativas || 0) + (d.resultado === 'limpo' ? 10000 : 0);
+    - 2500 * (d.sofridos || 0) - 800 * (d.aparos || 0) - 6000 * (d.tentativas || 0) + (d.resultado === 'limpo' ? 10000 : 0)
+    + (d.resultado === 'deixou' ? 3000 + (d.sofridos ? 0 : 10000) : 0); // baixar a espada: ela leu a abertura e escolheu não usar
   return Math.max(2000, Math.round(p));
 }
 function pontosEsconderijo(e) {
@@ -746,6 +750,9 @@ document.querySelectorAll('.lang').forEach((b) => b.addEventListener('click', ()
 // ---------------------------------------------------------------- capa / início
 $('#cvTitle').textContent = L.titulo; $('#cover').style.setProperty('--capa', `url("${L.capa}")`);
 $('#rsProx').href = L.proximo.url;
+$('#rsProx').addEventListener('click', (e) => { // fechar os olhos: a tela escurece antes do sonho
+  e.preventDefault(); const url = $('#rsProx').href; document.body.classList.add('dorme'); setTimeout(() => { location.href = url; }, 1600);
+});
 const salvo = carregar();
 if (salvo && salvo.i > 0) $('#cvCont').hidden = false;
 aplicaIdioma();

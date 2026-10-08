@@ -1,5 +1,5 @@
 /* As Quatro Vontades · Capítulo II · minijogo "Prender o coração" (o esconderijo atrás da estátua)
-   O vídeo roda em loop, com o som dele. O coração de Laura bate alto: o leitor toca no compasso de cada batida
+   O vídeo roda uma vez só, em câmera lenta e mudo (o jogo dura o vídeo). O coração de Laura bate alto: o leitor toca no compasso de cada batida
    para acalmá-lo. Quando a luz da tocha chega à estátua, segura o fôlego (segura o mesmo botão) até ela passar.
    Se o coração passar de 150, Simon não aguenta e eles correm. Se a tocha passar, eles passam impunes.
    Teclado: barra de espaço (tocar e segurar). Toque: o coração. */
@@ -7,36 +7,33 @@
   const TX = {
     pt: {
       titulo: 'Prender o coração', sub: 'Atrás da estátua da Juíza',
-      r1: ['O anel se fecha sobre o coração', 'toque no instante da batida'],
-      r2: ['Batida certa', 'o coração desacelera'],
-      r3: ['Batida perdida ou fora de hora', 'o coração acelera'],
-      r4: ['A luz chega à estátua', 'segure até ela passar'],
-      regra: 'Se o coração passar de 150, Simon não aguenta.', comecar: 'Encostar na pedra', teclas: 'Barra de espaço ou toque no coração. Para segurar, mantenha pressionado.',
-      dica: 'Toque quando o anel encontrar o coração.', luz: 'A luz chega à estátua. Segure!', solta: 'Pode soltar.',
-      soltouCedo: 'Simon solta o ar alto demais.', naoSegurou: 'A luz passa por nós e eu esqueço de respirar.',
+      r1: ['Toque quando o anel encontrar o coração', 'cada batida no tempo acalma'],
+      r4: ['Quando a luz da tocha chegar', 'segure até ela passar'],
+      regra: 'Tenho que ficar calma. Meu coração não pode disparar.', comecar: 'Encostar na pedra', teclas: 'Barra de espaço ou toque no coração. Para segurar, mantenha pressionado.',
+      dica: 'Toque quando o anel encontrar o coração.', luz: 'A luz chega. Segure!', solta: 'Pode soltar.',
+      soltouCedo: 'Solto o ar alto demais.', naoSegurou: 'A luz passa por nós e eu esqueço de respirar.',
       firme: 'firme', quase: 'quase', fora: 'fora de hora', perdeu: 'perdida',
-      tocha: 'a tocha', bpm: 'batidas por minuto', venceu: 'A tocha passou.', descobertos: 'Simon não aguenta.',
+      tocha: 'a tocha', bpm: 'batidas por minuto', venceu: 'A tocha passou.', descobertos: 'Não aguento.',
     },
     en: {
       titulo: 'Hold your heart', sub: 'Behind the statue of the Judge',
-      r1: ['The ring closes over the heart', 'tap at the moment of the beat'],
-      r2: ['A beat on time', 'the heart slows down'],
-      r3: ['A missed or mistimed beat', 'the heart speeds up'],
-      r4: ['The light reaches the statue', 'hold until it passes'],
-      regra: 'If the heart goes past 150, Simon can’t take it.', comecar: 'Press against the stone', teclas: 'Space bar or tap the heart. To hold, keep it pressed.',
-      dica: 'Tap when the ring meets the heart.', luz: 'The light reaches the statue. Hold!', solta: 'You can let go.',
-      soltouCedo: 'Simon lets his breath out too loud.', naoSegurou: 'The light passes over us and I forget to breathe.',
+      r1: ['Tap when the ring meets the heart', 'every beat on time calms it'],
+      r4: ['When the torchlight comes', 'hold until it passes'],
+      regra: 'I have to stay calm. My heart can’t start racing.', comecar: 'Press against the stone', teclas: 'Space bar or tap the heart. To hold, keep it pressed.',
+      dica: 'Tap when the ring meets the heart.', luz: 'The light is here. Hold!', solta: 'You can let go.',
+      soltouCedo: 'I let my breath out too loud.', naoSegurou: 'The light passes over us and I forget to breathe.',
       firme: 'steady', quase: 'almost', fora: 'off beat', perdeu: 'missed',
-      tocha: 'the torch', bpm: 'beats per minute', venceu: 'The torch has passed.', descobertos: 'Simon can’t take it.',
+      tocha: 'the torch', bpm: 'beats per minute', venceu: 'The torch has passed.', descobertos: 'I can’t hold it.',
     },
   };
-  const DUR = 34, LEAD = 1.0, LIMITE = 150, EVENTOS = [9.5, 19, 27.5], SEGURA = 2.4, JANELA = 1.2;
+  // uma passada só do vídeo, em câmera lenta: o jogo dura o vídeo inteiro, e a luz chega quando a tocha aparece na tela
+const DUR = 22, LEAD = 1.0, LIMITE = 150, VID_LUZ = [3.3, 6.45], SEGURA = 2.4, JANELA = 1.2;
 
   function start(o, opts) {
     return new Promise((resolve) => {
       const T = TX[opts.lang] || TX.pt, A = opts.A;
       o.innerHTML = `
-        <video class="ez-vid" loop playsinline preload="auto" poster="${opts.img || ''}"></video>
+        <video class="ez-vid" playsinline muted preload="auto" poster="${opts.img || ''}"></video>
         <div class="ez-veu"></div>
         <div class="ez-top"><span>${T.tocha}</span><div class="ez-trilha"><i class="ez-fogo"></i></div></div>
         <div class="ez-centro">
@@ -49,7 +46,7 @@
         </div>
         <div class="ez-tela ez-intro">
           <h2>${T.titulo}</h2><p class="ez-subt">${T.sub}</p>
-          <ul>${[T.r1, T.r2, T.r3, T.r4].map(([a, b]) => `<li><b>${a}</b><span>${b}</span></li>`).join('')}</ul>
+          <ul>${[T.r1, T.r4].map(([a, b]) => `<li><b>${a}</b><span>${b}</span></li>`).join('')}</ul>
           <p class="ez-regra">${T.regra}</p>
           <button class="cta ez-go">${T.comecar}</button>
           <p class="ez-teclas">${T.teclas}</p>
@@ -65,7 +62,9 @@
       const S = { firmes: 0, quase: 0, falhas: 0, fora: 0, holdsOk: 0, holdsFail: 0, bpmMax: 0, bpmFinal: 0, venceu: false };
       let bpm = 88 + Math.min(opts.peso || 0, 4) * 5, t0 = 0, rodando = false, acabou = false, apertado = false, raf = 0;
       let proxBatida = 0; const batidas = [];
-      const eventos = EVENTOS.map((t) => ({ t, estado: 'espera', ini: 0 }));
+      let vidDur = 8.9; const eventos = VID_LUZ.map((v) => ({ v, t: v / vidDur * DUR, estado: 'espera', ini: 0 }));
+      const ajustaVideo = () => { if (vid.duration && isFinite(vid.duration)) { vidDur = vid.duration; eventos.forEach((e) => { e.t = e.v / vidDur * DUR; }); } try { vid.playbackRate = Math.max(.25, vidDur / DUR); } catch (e) {} };
+      vid.addEventListener('loadedmetadata', ajustaVideo);
       const agora = () => performance.now() / 1000 - t0;
       const aviso = (t, ms = 1100, cls = '') => { msg.textContent = t; msg.className = 'ez-msg on ' + cls; clearTimeout(aviso.id); aviso.id = setTimeout(() => (msg.className = 'ez-msg'), ms); };
       const batidaSom = () => {
@@ -133,7 +132,7 @@
         // a luz na estátua: segurar
         for (const e of eventos) {
           if (e.estado === 'espera' && t >= e.t) {
-            if (!o.classList.contains('ez-luz')) { o.classList.add('ez-luz'); aviso(T.luz, 1800, 'luz'); }
+            if (!o.classList.contains('ez-luz')) { o.classList.add('ez-luz'); aviso(T.luz, 1800, 'luz'); if (A && A.sfx) A.sfx('passos-guarda', .9, () => {}); }
             if (apertado) { e.estado = 'segurando'; e.ini = t; }
             else if (t > e.t + JANELA) { e.estado = 'falhou'; S.holdsFail++; muda(14); o.classList.remove('ez-luz'); aviso(T.naoSegurou, 1600, 'mal'); }
           } else if (e.estado === 'segurando') {
@@ -155,8 +154,8 @@
       window.__ESC = { batidas, eventos, agora: () => agora(), bpm: () => bpm, rodando: () => rodando }; // para testes automáticos
       $('.ez-go').onclick = () => {
         $('.ez-intro').remove();
-        if (A && A.duck) A.duck(true);
-        vid.play().catch(() => {});
+        // o vídeo em câmera lenta fica mudo; o som é o do jardim, o coração e as botas do guarda
+        ajustaVideo(); vid.play().catch(() => {});
         t0 = performance.now() / 1000; proxBatida = 1.4; rodando = true; S.bpmMax = bpm;
         aviso(T.dica, 3200);
         raf = requestAnimationFrame(passo);
