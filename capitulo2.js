@@ -20,7 +20,7 @@ const rotas = (st) => (st.f.rotas || []);
 const antes = () => window.AQV_ANTES || {};
 
 window.LIVRO_UI = {
-  pt: { parte: 'Parte', prox: 'Próxima', fim: 'Encerrar o capítulo', voltar: '← Voltar', ouvir: 'Ouvir Laura', cena: '▶ Ver a cena', oque: 'O que Laura faz?', decida: 'Decida', decidir: 'Decidir', escolheu: 'Você escolheu:', resp: 'Responder a', silencio: 'ficar em silêncio', silencioR: 'Silêncio', momento: 'Momento de jogo',
+  pt: { coracaoTut: 'O coração de Laura', coracaoTut2: 'Quando dispara, as palavras dela começam a tremer.', parte: 'Parte', prox: 'Próxima', fim: 'Encerrar o capítulo', voltar: '← Voltar', ouvir: 'Ouvir Laura', cena: '▶ Ver a cena', oque: 'O que Laura faz?', decida: 'Decida', decidir: 'Decidir', escolheu: 'Você escolheu:', resp: 'Responder a', silencio: 'ficar em silêncio', silencioR: 'Silêncio', momento: 'Momento de jogo',
     mg: { olhar: 'Olhar sem se mexer', duelo: 'Ler Simon', esconderijo: 'Prender o coração' },
     dica: { olhar: 'Gideon está medindo e Laura não pode virar a cabeça. Passe os olhos pela sala: ela tem quatro olhares antes de ele terminar.', duelo: 'Simon avisa com o corpo antes de cada golpe. Leia, desvie, e só toque quando ele errar.', esconderijo: 'O guarda vem pela aleia. O coração de Laura bate alto demais. Acompanhe cada batida para acalmá-lo, e prenda o fôlego quando a luz chegar.', preceT: 'Toque e segure. Solte quando quiser parar de rezar.', preceK: 'Segure o botão ou a barra de espaço. Solte quando quiser parar de rezar.' },
     olhares: (n) => (n === 1 ? 'resta 1 olhar' : `restam ${n} olhares`), deslize: 'Deslize para ver a sala inteira',
@@ -28,7 +28,7 @@ window.LIVRO_UI = {
     confirm: 'Recomeçar o capítulo? Suas escolhas serão apagadas.', capN: 'Capítulo II', fimCap: 'Fim do Capítulo II', ficou: 'O que ficou atrás do peito', suas: 'O que você escolheu', reler: 'Reler e escolher diferente', mesmo: (p) => `${p}% dos leitores fizeram o mesmo`,
     pontos: 'Pontuação do capítulo', jornada: 'Jornada (Capítulos I e II)', posicao: (p, n) => `${p}º de ${n} leitores`, ptsDuelo: 'O duelo', ptsEsconde: 'O esconderijo', ptsCap1: 'Capítulo I (o hino do gelo)', semCap1: 'Jogue o Capítulo I neste navegador para somar a jornada.',
   },
-  en: { parte: 'Part', prox: 'Next', fim: 'Close the chapter', voltar: '← Back', ouvir: 'Listen to Laura', cena: '▶ Watch the scene', oque: 'What does Laura do?', decida: 'Decide', decidir: 'Decide', escolheu: 'You chose:', resp: 'Answer', silencio: 'stay silent', silencioR: 'Silence', momento: 'Moment of play',
+  en: { coracaoTut: 'Laura’s heart', coracaoTut2: 'When it races, her words begin to shake.', parte: 'Part', prox: 'Next', fim: 'Close the chapter', voltar: '← Back', ouvir: 'Listen to Laura', cena: '▶ Watch the scene', oque: 'What does Laura do?', decida: 'Decide', decidir: 'Decide', escolheu: 'You chose:', resp: 'Answer', silencio: 'stay silent', silencioR: 'Silence', momento: 'Moment of play',
     mg: { olhar: 'Look without moving', duelo: 'Read Simon', esconderijo: 'Hold your heart' },
     dica: { olhar: 'Gideon is measuring and Laura can’t turn her head. Let your eyes roam the room: she has four looks before he finishes.', duelo: 'Simon warns you with his body before every strike. Read it, dodge, and only touch him when he misses.', esconderijo: 'The guard is coming down the path. Laura’s heart is beating too loud. Keep time with every beat to calm it, and hold your breath when the light arrives.', preceT: 'Touch and hold. Let go when you want to stop praying.', preceK: 'Hold the button or the space bar. Let go when you want to stop praying.' },
     olhares: (n) => (n === 1 ? '1 look left' : `${n} looks left`), deslize: 'Swipe to see the whole room',
@@ -140,19 +140,19 @@ window.LIVRO = {
         T('— Você já tem dezesseis anos, Laura, minha querida. Prometa que essa foi a última vez.', '— You’re sixteen already, Laura, my darling. Promise me that was the last time.'),
       ],
       escolha: { id: 'promessa', pergunta: T('A promessa', 'The promise'), opcoes: [
-        { id: 'prometer', peso: 2, voz: 'prometo', vozAtraso: 500, txt: T('Prometer', 'Promise'),
+        { id: 'prometer', peso: 2, aviso: T('Dolores vai lembrar disso.', 'Dolores will remember that.'),  voz: 'prometo', vozAtraso: 500, txt: T('Prometer', 'Promise'),
           resultado: [
             T('Prometo. Odeio mentir. Me faz mal, um peso físico atrás do peito, e desta vez as lágrimas finalmente escorrem pelo rosto.', 'I promise. I hate lying. It costs something physical, a weight behind my ribs, and this time the tears finally spill down my face.'),
             T('— Você vai ser muito feliz, minha filha. Markus vai vencer o Torneio, com certeza. É um homem honrado. Vocês vão governar melhor do que eu e seu falecido pai.', '— You’ll be very happy, my daughter. Markus will win the Tournament, without question. He’s an honorable man. The two of you will govern better than your late father and I ever did.'),
           ] }, // canon
-        { id: 'calar', peso: 1, txt: T('Não dizer nada', 'Say nothing'),
+        { id: 'calar', peso: 1, aviso: T('Dolores vai lembrar disso.', 'Dolores will remember that.'), txt: T('Não dizer nada', 'Say nothing'),
           resultado: [
             T('Não digo nada. Ela segura meu queixo e espera, e o silêncio fica comprido demais para nós duas.', 'I say nothing. She holds my chin and waits, and the silence grows too long for both of us.'),
             T('— Uma Mãe-Rainha também promete calada, Laura. Vou tomar o seu silêncio como palavra.', '— A Mother-Queen can promise in silence too, Laura. I’ll take yours as your word.'),
             T('Engulo em seco. As lágrimas escorrem do mesmo jeito.', 'I swallow hard. The tears come anyway.'),
             T('— Você vai ser muito feliz, minha filha. Markus vai vencer o Torneio, com certeza. É um homem honrado. Vocês vão governar melhor do que eu e seu falecido pai.', '— You’ll be very happy, my daughter. Markus will win the Tournament, without question. He’s an honorable man. The two of you will govern better than your late father and I ever did.'),
           ] }, // NOVO
-        { id: 'recusar', eixo: 'mostra', flag: 'arsenalTrancado', pulso: 3, voz: 'nao-posso-prometer', vozAtraso: 500, txt: T('Recusar', 'Refuse'),
+        { id: 'recusar', aviso: T('Dolores vai lembrar disso.', 'Dolores will remember that.'), eixo: 'mostra', flag: 'arsenalTrancado', pulso: 3, voz: 'nao-posso-prometer', vozAtraso: 500, txt: T('Recusar', 'Refuse'),
           resultado: [
             T('— Não posso prometer isso, mãe.', '— I can’t promise that, mother.'),
             T('Ela solta minha mão de uma vez.', 'She lets go of my hand all at once.'),
@@ -246,7 +246,7 @@ window.LIVRO = {
           { id: 'naoquero', voz: 'naoquero', vozNervosa: 'naoquero-nervosa', txt: T('Você sabe que eu não quero isso. Se eu pudesse, convenceria Dolores a escolher você, não a mim.', 'You know I don’t want this. If I could, I’d convince Dolores to choose you, not me.'),
             txtNervoso: T('Eu não... Você sabe que eu não quero isso. Se eu pudesse, eu... convenceria Dolores a escolher você.', 'I don’t... You know I don’t want this. If I could, I’d... I’d convince Dolores to choose you.'), // NOVO (versão com o peito apertado)
             resposta: [T('— Infelizmente o General-Rei se foi antes dela — ela diz, com sinceridade, com pesar. — É como as coisas costumam ser. Depois de tantos anos estudando juntas, sabemos disso melhor do que ninguém.', '— Unfortunately the General-King died before she did — she says, sincerely, with real regret. — It’s how things tend to go. After all these years studying together, we know that better than anyone.')] }, // canon
-          { id: 'coragem', eixo: 'mostra', flag: 'justineDesconfia', pulso: 3, voz: 'coragem', txt: T('Vim pedir coragem.', 'I came to ask for courage.'),
+          { id: 'coragem', eixo: 'mostra', flag: 'justineDesconfia', aviso: T('Justine vai lembrar disso.', 'Justine will remember that.'),  pulso: 3, voz: 'coragem', txt: T('Vim pedir coragem.', 'I came to ask for courage.'),
             resposta: [T('Ela inclina a cabeça.', 'She tilts her head.'), T('— Para casar não precisa de coragem, Laura. Precisa de paciência. Coragem é para quem vai fazer alguma coisa.', '— Marriage doesn’t take courage, Laura. It takes patience. Courage is for someone who’s about to do something.')] }, // NOVO
           { id: 'cala1', silencio: true, resposta: [T('— Não precisa responder. Eu também não responderia.', '— You don’t have to answer. I wouldn’t either.')] }, // NOVO
         ] },
@@ -255,9 +255,9 @@ window.LIVRO = {
             { id: 'melhor', pulso: 3, voz: 'melhor', vozNervosa: 'melhor-nervosa', txt: T('Você seria a melhor. Sempre foi a melhor aluna, em conhecimento, em oratória, e a mais bela também.', 'You would have been the best. You were always the best student, in knowledge, in speech, and the most beautiful too.'),
               txtNervoso: T('Você seria a melhor. Você é... a mais bela também. E a melhor aluna.', 'You’d be the best. You are... the most beautiful, too. And the best student.'), // NOVO (versão com o peito apertado)
               resposta: [T('O canto da boca dela sobe.', 'The corner of her mouth lifts.'), T('— Cuidado, Laura. Uma Mãe-Rainha não elogia a rival em voz alta.', '— Careful, Laura. A Mother-Queen doesn’t praise her rival out loud.')] }, // canon (fala de Laura) + NOVO (resposta)
-            { id: 'pesar', flag: 'justineDesconfia', voz: 'torneio-nem-comecou', txt: T('O Torneio ainda nem começou.', 'The Tournament hasn’t even started.'),
+            { id: 'pesar', flag: 'justineDesconfia', aviso: T('Justine vai lembrar disso.', 'Justine will remember that.'),  voz: 'torneio-nem-comecou', txt: T('O Torneio ainda nem começou.', 'The Tournament hasn’t even started.'),
               resposta: [T('Ela me olha por tempo demais.', 'She looks at me for too long.'), T('— Você fala como quem sabe de alguma coisa.', '— You talk like someone who knows something.')] }, // NOVO
-            { id: 'casar', se: (st) => st.peso >= 2, tremida: true, flag: 'justineDesconfia', peso: -1, pulso: 4, voz: 'casar', txt: T('Eu não vou me casar com ele.', 'I’m not going to marry him.'),
+            { id: 'casar', se: (st) => st.peso >= 2, tremida: true, flag: 'justineDesconfia', aviso: T('Justine vai lembrar disso.', 'Justine will remember that.'),  peso: -1, pulso: 4, voz: 'casar', txt: T('Eu não vou me casar com ele.', 'I’m not going to marry him.'),
               resposta: [T('Ela para de respirar um instante.', 'She stops breathing for a moment.'), T('— Não diga isso aqui, Laura. A Juíza escuta.', '— Don’t say that here, Laura. The Judge is listening.')] }, // NOVO (só aparece com o peito apertado: a verdade escapa)
             { id: 'cala2', silencio: true, resposta: [T('Ela assente devagar e não pergunta mais nada.', 'She nods slowly and asks nothing more.')] }, // NOVO
           ] },
@@ -302,9 +302,9 @@ window.LIVRO = {
         ? T('O lenço está no chão, dobrado.', 'The handkerchief lies on the floor, folded.')
         : T('Justine já está na porta. O lenço está na minha mão.', 'Justine is already at the door. The handkerchief is in my hand.'))], // NOVO
       escolha: { id: 'lenco', pergunta: T('O lenço', 'The handkerchief'), opcoes: [
-        { id: 'guardar', txt: (st) => (st.escolhas.perto === 'esconder' ? T('Pegar o lenço e guardar na manga', 'Pick it up and tuck it in my sleeve') : T('Guardar o lenço na manga', 'Tuck it in my sleeve')),
+        { id: 'guardar', aviso: T('O lenço de Justine vai com Laura.', 'Justine’s handkerchief goes with Laura.'), txt: (st) => (st.escolhas.perto === 'esconder' ? T('Pegar o lenço e guardar na manga', 'Pick it up and tuck it in my sleeve') : T('Guardar o lenço na manga', 'Tuck it in my sleeve')),
           resultado: [T('Guardo o lenço na manga. Tem um J bordado no canto, em linha branca, e cheiro de cera de vela.', 'I tuck the handkerchief into my sleeve. There’s a J embroidered in one corner, in white thread, and it smells of candle wax.')] }, // NOVO (o J bordado é proposta)
-        { id: 'devolver', txt: (st) => (st.escolhas.perto === 'esconder' ? T('Deixar o lenço no chão', 'Leave it on the floor') : T('Chamar Justine e devolver', 'Call Justine back and return it')),
+        { id: 'devolver', aviso: T('Justine vai lembrar disso.', 'Justine will remember that.'), txt: (st) => (st.escolhas.perto === 'esconder' ? T('Deixar o lenço no chão', 'Leave it on the floor') : T('Chamar Justine e devolver', 'Call Justine back and return it')),
           resultado: [(st) => (st.escolhas.perto === 'esconder'
             ? T('Deixo o lenço onde ela pôs. Quando saio, ele ainda está lá, dobrado, ao lado das velas.', 'I leave the handkerchief where she put it. When I go, it’s still there, folded, beside the candles.')
             : [T('— Justine. O seu lenço.', '— Justine. Your handkerchief.'), T('Ela volta, pega o lenço sem encostar nos meus dedos e vai embora.', 'She comes back, takes it without touching my fingers, and leaves.')])] }, // NOVO
@@ -404,14 +404,14 @@ window.LIVRO = {
         T('— Por que você treina tanto, Laura? Rainha não luta.', '— Why do you train so much, Laura? Queens don’t fight.'),
       ], // NOVO
       escolha: { id: 'simon', pergunta: T('A pergunta de Simon', 'Simon’s question'), opcoes: [
-        { id: 'verdade', eixo: 'mostra', flag: 'contou', peso: -1, voz: 'torneio', vozAtraso: 500, txt: T('Contar a verdade', 'Tell him the truth'),
+        { id: 'verdade', aviso: T('Simon vai lembrar disso.', 'Simon will remember that.'), eixo: 'mostra', flag: 'contou', peso: -1, voz: 'torneio', vozAtraso: 500, txt: T('Contar a verdade', 'Tell him the truth'),
           resultado: [
             T('— Porque daqui a um mês eu vou lutar no Torneio Real.', '— Because in a month I’m going to fight in the Royal Tournament.'),
             T('Ele me olha um tempo. Depois cai na gargalhada, tão alto que eu preciso tapar a boca dele com a mão.', 'He looks at me for a while. Then he bursts out laughing, so loud I have to cover his mouth with my hand.'),
             T('— E eu vou ser a Mãe-Rainha! — ele diz por entre os meus dedos.', '— And I’ll be the Mother-Queen! — he says through my fingers.'),
             T('Rio também. O peito, por dentro, fica leve pela primeira vez no dia.', 'I laugh too. Inside my chest, it goes light for the first time all day.'),
           ] }, // NOVO
-        { id: 'mentira', peso: 1, txt: T('Dizer que a esgrima acalma', 'Say that fencing calms me'),
+        { id: 'mentira', aviso: T('Simon vai lembrar disso.', 'Simon will remember that.'), peso: 1, txt: T('Dizer que a esgrima acalma', 'Say that fencing calms me'),
           txtNervoso: T('Dizer que a esgrima acalma, rápido demais', 'Say that fencing calms me, too fast'),
           resultadoNervoso: [
             T('— Me acalma. Já disse. Me acalma.', '— It calms me. I told you. It calms me.'),
@@ -421,7 +421,7 @@ window.LIVRO = {
             T('— Já disse. Me acalma.', '— I told you. It calms me.'),
             T('Ele dá de ombros e acredita, como sempre acredita. Viro de costas para guardar as espadas e fico ali mais tempo do que precisa.', 'He shrugs and believes it, the way he always does. I turn my back to put the swords away and stay there longer than I need to.'),
           ] }, // NOVO
-        { id: 'ataque', txt: T('Atacar em vez de responder', 'Attack instead of answering'),
+        { id: 'ataque', aviso: T('Simon vai lembrar disso.', 'Simon will remember that.'), txt: T('Atacar em vez de responder', 'Attack instead of answering'),
           resultado: [
             T('Em vez de responder, ataco. Ele grita, rola para o lado, levanta rindo e se defende.', 'Instead of answering, I attack. He yelps, rolls aside, gets up laughing and defends himself.'),
             T('Não pergunta de novo.', 'He doesn’t ask again.'),

@@ -1,5 +1,12 @@
 # Capítulo 2 (Laura) · Notas
 
+## Versão 12 (plano de profissionalização)
+
+- **Avisos de consequência** nas escolhas que o Cap. IV lê: a promessa ("Dolores vai lembrar disso."), Justine desconfiar ("Justine vai lembrar disso.", só na primeira vez), o lenço e a pergunta de Simon. Cartão próprio, com ícone pulsando e som.
+- **O coração de Laura no HUD:** fica no topo, ao centro, bate junto com a batida, brilha mais com o pulso e o peso, e fica com borda vermelha quando as falas começam a tremer (peso 2+). Na primeira vez que pesa, aparece grande no centro com uma linha de explicação e vai para o lugar dele.
+- **Olhar em tela cheia:** a sala ocupa a tela inteira; no computador a cena desliza com o mouse (os olhos de Laura andam). Contador grande de olhos no topo, pontos que respiram de leve, e na primeira vez um tutorial desenhado (olho + mouse ou dedo), sem frase.
+
+
 ## Versão 10
 
 - O botão da tela final agora leva ao Cap. III novo: `https://marcelomartinsjorge.github.io/the4willschapter3V2/`.

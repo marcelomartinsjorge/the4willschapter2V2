@@ -119,18 +119,28 @@ const Coracao = (() => {
   const desenha = () => {
     nivel += (alvo - nivel) * .03;
     const pesoN = clamp(st.peso / 6, 0, 1);
+    document.body.classList.toggle('nervosa', st.peso >= NERV);
     root.style.setProperty('--pulso', clamp((nivel + extra) / 4, 0, 1).toFixed(3));
     root.style.setProperty('--peso', pesoN.toFixed(3));
     requestAnimationFrame(desenha);
   };
   return {
     start() { if (!t) { bater(); desenha(); } },
-    set(v) { alvo = v || 0; },
+    set(v) { alvo = v || 0; if (alvo >= 2) tutCoracao(); },
     extra(v) { extra = v; },
   };
 })();
+// primeira vez que o coração pesa: ele aparece grande no centro, com uma linha, e vai para o lugar dele no topo
+function tutCoracao() {
+  if (st.f.tutCoracao || document.body.classList.contains('na-capa')) return; st.f.tutCoracao = true; salvar();
+  const el = document.createElement('div'); el.id = 'coracaoTut';
+  el.innerHTML = `${$('#coracao svg').outerHTML}<p>${esc(U('coracaoTut'))}<small>${esc(U('coracaoTut2'))}</small></p>`;
+  document.body.appendChild(el); requestAnimationFrame(() => el.classList.add('on'));
+  setTimeout(() => el.classList.add('vai'), 3600); setTimeout(() => el.remove(), 5000);
+}
 function mudaPeso(d) {
   if (!d) return; st.peso = Math.max(0, st.peso + d);
+  if (d > 0) tutCoracao();
   // o peso não tem som de jogo: mentir é uma batida fora do compasso; aliviar é um fôlego solto
   if (d < 0) { if (A.ctx && A.on) { A.hiss(1.1, 520, .6, .05, 0, 'lowpass'); A.hiss(.9, 300, .5, .03, .35, 'lowpass'); } return; }
   if (A.ctx && A.on) { A.batida(1); setTimeout(() => A.batida(.85), 170); }
@@ -228,6 +238,13 @@ function abrirCodex(id) {
 document.addEventListener('click', (e) => { const g = e.target.closest('.gloss'); if (g) { e.preventDefault(); abrirCodex(g.dataset.codex); } });
 $('#cxClose').onclick = () => $('#codex').classList.remove('show');
 
+// aviso de consequência: a escolha vai ser lembrada mais adiante (estilo Telltale)
+function consequencia(t) {
+  const el = document.createElement('div'); el.className = 'toast consequencia';
+  el.innerHTML = `<span class="cq-ico" aria-hidden="true"></span><span>${esc(t)}</span>`;
+  $('#toasts').appendChild(el); A.tone(392, 1.2, 'sine', .035); A.tone(587, 1.4, 'sine', .022, .12);
+  setTimeout(() => el.classList.add('out'), 4600); setTimeout(() => el.remove(), 5400);
+}
 function toast(t) { const el = document.createElement('div'); el.className = 'toast'; el.textContent = t; $('#toasts').appendChild(el); A.aviso(); setTimeout(() => el.classList.add('out'), 3600); setTimeout(() => el.remove(), 4400); }
 
 // ---------------------------------------------------------------- estatísticas (Supabase)
@@ -369,8 +386,9 @@ function aplicar(o) {
   if (!o) return;
   if (o.eixo) { st.perfil = st.perfil || {}; st.perfil[o.eixo] = (st.perfil[o.eixo] || 0) + 1; }
   if (o.peso) mudaPeso(o.peso);
+  const jaSabia = o.flag && [].concat(o.flag).every((f) => st.f[f]);
   if (o.flag) [].concat(o.flag).forEach((f) => { st.f[f] = true; });
-  if (o.aviso) later(() => toast(tr(o.aviso)), 500);
+  if (o.aviso && !jaSabia) setTimeout(() => consequencia(tr(o.aviso)), $('#coracaoTut') ? 4800 : 700);
 }
 function escolher(p, id) {
   const e = p.escolha; if (st.escolhas[e.id]) return;
@@ -454,15 +472,41 @@ const MG = {
       const ol = p.olhar, o = abreOverlay('explorar olhar');
       const reg = st.olhar[p.id] = st.olhar[p.id] || { vistos: [] };
       const max = ol.olhares;
+      const OLHO = '<svg viewBox="0 0 32 20"><path d="M1.5 10C5.5 4 10.5 1.5 16 1.5S26.5 4 30.5 10C26.5 16 21.5 18.5 16 18.5S5.5 16 1.5 10z"/><circle cx="16" cy="10" r="4.6"/></svg>';
       o.innerHTML = `<div class="ex-rolo"><div class="ex-caixa" style="--r:${ol.proporcao};background-image:url('${ol.img}')"><div class="ol-foco"></div></div></div>
-        <p class="ex-instr"></p>
+        <div class="ol-cont"><div class="ol-olhos">${Array.from({ length: max }, () => `<i>${OLHO}</i>`).join('')}</div><p class="ex-instr"></p></div>
         <div class="ex-texto"><div class="ex-corpo"></div><div class="ex-acoes"></div></div>`;
       const caixa = o.querySelector('.ex-caixa'), corpo = o.querySelector('.ex-corpo'), acoes = o.querySelector('.ex-acoes'), instr = o.querySelector('.ex-instr'), rolo = o.querySelector('.ex-rolo'), foco = o.querySelector('.ol-foco');
+      const olhos = [...o.querySelectorAll('.ol-olhos i')];
+      // no computador a imagem cobre a tela inteira e os olhos de Laura seguem o mouse (a cena desliza devagar)
+      if (!IS_TOUCH && !matchMedia('(max-width: 820px), (orientation: portrait)').matches) {
+        let alvoX = .5, alvoY = .5, px = .5, py = .5, vivo = true;
+        o.addEventListener('mousemove', (ev) => { alvoX = clamp((ev.clientX / innerWidth - .1) / .8, 0, 1); alvoY = clamp((ev.clientY / innerHeight - .1) / .8, 0, 1); });
+        const anda = () => {
+          if (!vivo || !o.classList.contains('olhar')) return;
+          px += (alvoX - px) * .06; py += (alvoY - py) * .06;
+          const dx = Math.max(0, caixa.offsetWidth - innerWidth), dy = Math.max(0, caixa.offsetHeight - innerHeight);
+          caixa.style.transform = `translate(${(-dx * px).toFixed(1)}px, ${(-dy * py).toFixed(1)}px)`;
+          requestAnimationFrame(anda);
+        };
+        requestAnimationFrame(anda);
+      }
+      // primeira vez: o gesto desenhado no centro, sem frase
+      if (!st.f.tutOlhar) {
+        st.f.tutOlhar = true;
+        const t = document.createElement('div'); t.className = 'ol-tut';
+        t.innerHTML = OLHO + (IS_TOUCH
+          ? '<svg class="mao" viewBox="0 0 40 48"><path d="M15 26V7a3.5 3.5 0 0 1 7 0v13l9.5 2.2c2.6.6 4.2 3.1 3.7 5.7l-2.6 12.6A5 5 0 0 1 27.7 44H18a5 5 0 0 1-4-2l-7.4-9.6a3.3 3.3 0 0 1 4.9-4.4z"/></svg>'
+          : '<svg class="mao" viewBox="0 0 30 46"><rect x="2" y="2" width="26" height="42" rx="13"/><path d="M15 2v13M2 17h26"/></svg>');
+        o.appendChild(t); setTimeout(() => t.classList.add('some'), 2600); setTimeout(() => t.remove(), 3600);
+      }
       const mostra = (lista) => { corpo.innerHTML = paras(lista).map((t) => `<p>${linkify(t)}</p>`).join(''); corpo.classList.remove('novo'); void corpo.offsetWidth; corpo.classList.add('novo'); };
       const medida = () => tr(ol.medidas[Math.min(reg.vistos.length, ol.medidas.length - 1)]);
       const atualiza = () => {
         const restam = max - reg.vistos.length;
-        instr.textContent = restam > 0 ? `${medida()} · ${U('olhares')(restam)}` : tr(ol.medidas[ol.medidas.length - 1]);
+        instr.textContent = restam > 0 ? medida() : tr(ol.medidas[ol.medidas.length - 1]);
+        instr.setAttribute('aria-label', restam > 0 ? `${medida()} · ${U('olhares')(restam)}` : instr.textContent);
+        olhos.forEach((el, k) => el.classList.toggle('gasto', k >= restam));
         if (restam <= 0) fim();
       };
       let acabou = false;
@@ -498,7 +542,7 @@ const MG = {
       });
       requestAnimationFrame(() => {
         rolo.scrollLeft = (rolo.scrollWidth - rolo.clientWidth) / 2;
-        if (rolo.scrollWidth > rolo.clientWidth + 20) {
+        if (IS_TOUCH && rolo.scrollWidth > rolo.clientWidth + 20) {
           const d = document.createElement('p'); d.className = 'ex-deslize'; d.textContent = '‹  ' + U('deslize') + '  ›'; o.appendChild(d);
           rolo.addEventListener('scroll', () => d.classList.add('some'), { once: true });
         }

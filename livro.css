@@ -456,3 +456,9 @@ body .bgl.apagada .img { filter: saturate(.35) brightness(.72) !important; }
 
 .ex-deslize { position: absolute; left: 50%; top: calc(54px + 54vh - 34px + env(safe-area-inset-top,0px)); transform: translateX(-50%); margin: 0; padding: 6px 14px; background: rgba(14,10,9,.78); border: 1px solid rgba(190,72,60,.3); font-family: var(--sans); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold-hot); white-space: nowrap; pointer-events: none; transition: opacity .6s; animation: npulse 2.4s ease-in-out infinite; }
 .ex-deslize.some { opacity: 0; }
+
+/* ---------- aviso de consequência ---------- */
+.toast.consequencia { display: flex; align-items: center; gap: 12px; font-style: normal; font-size: 16px; letter-spacing: .02em; padding: 12px 18px 12px 14px; border-left: 0; border: 1px solid rgba(214,178,110,.45); border-radius: 3px; background: rgba(16,10,9,.9); box-shadow: 0 8px 30px rgba(0,0,0,.5); }
+.cq-ico { flex: none; width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--gold); position: relative; animation: cqPulso 1.6s ease-out 2; }
+.cq-ico::after { content: ''; position: absolute; inset: 5px; border-radius: 50%; background: var(--gold); }
+@keyframes cqPulso { 0% { box-shadow: 0 0 0 0 rgba(214,178,110,.6); } 100% { box-shadow: 0 0 0 14px rgba(214,178,110,0); } }
