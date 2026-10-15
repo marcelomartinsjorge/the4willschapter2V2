@@ -1,5 +1,5 @@
 /* As Quatro Vontades · Capítulo II · minijogo "Prender o coração" (o esconderijo atrás da estátua)
-   O vídeo roda uma vez só, em câmera lenta e mudo (o jogo dura o vídeo). O coração de Laura bate alto: o leitor toca no compasso de cada batida
+   O vídeo roda uma vez só, a 80% da velocidade e mudo (o jogo dura o vídeo). O coração de Laura bate alto: o leitor toca no compasso de cada batida
    para acalmá-lo. Quando a luz da tocha chega à estátua, segura o fôlego (segura o mesmo botão) até ela passar.
    Se o coração passar de 150, Simon não aguenta e eles correm. Se a tocha passar, eles passam impunes.
    Teclado: barra de espaço (tocar e segurar). Toque: o coração. */
@@ -26,8 +26,10 @@
       tocha: 'the torch', bpm: 'beats per minute', venceu: 'The torch has passed.', descobertos: 'I can’t hold it.',
     },
   };
-  // uma passada só do vídeo, em câmera lenta: o jogo dura o vídeo inteiro, e a luz chega quando a tocha aparece na tela
-const DUR = 22, LEAD = 1.0, LIMITE = 150, VID_LUZ = [3.3, 6.45], SEGURA = 2.4, JANELA = 1.2;
+  // uma passada só do vídeo, a 80% da velocidade normal: o jogo dura o vídeo inteiro, e a luz chega quando a tocha aparece na tela
+  const RATE = .8;
+  let DUR = 8.9 / RATE;
+  const LEAD = 1.0, LIMITE = 150, VID_LUZ = [3.3, 6.45], SEGURA = 2.4, JANELA = 1.2;
 
   function start(o, opts) {
     return new Promise((resolve) => {
@@ -63,7 +65,7 @@ const DUR = 22, LEAD = 1.0, LIMITE = 150, VID_LUZ = [3.3, 6.45], SEGURA = 2.4, J
       let bpm = 88 + Math.min(opts.peso || 0, 4) * 5, t0 = 0, rodando = false, acabou = false, apertado = false, raf = 0;
       let proxBatida = 0; const batidas = [];
       let vidDur = 8.9; const eventos = VID_LUZ.map((v) => ({ v, t: v / vidDur * DUR, estado: 'espera', ini: 0 }));
-      const ajustaVideo = () => { if (vid.duration && isFinite(vid.duration)) { vidDur = vid.duration; eventos.forEach((e) => { e.t = e.v / vidDur * DUR; }); } try { vid.playbackRate = Math.max(.25, vidDur / DUR); } catch (e) {} };
+      const ajustaVideo = () => { if (vid.duration && isFinite(vid.duration)) { vidDur = vid.duration; if (!rodando) DUR = vidDur / RATE; eventos.forEach((e) => { e.t = e.v / vidDur * DUR; }); } try { vid.playbackRate = RATE; } catch (e) {} };
       vid.addEventListener('loadedmetadata', ajustaVideo);
       const agora = () => performance.now() / 1000 - t0;
       const aviso = (t, ms = 1100, cls = '') => { msg.textContent = t; msg.className = 'ez-msg on ' + cls; clearTimeout(aviso.id); aviso.id = setTimeout(() => (msg.className = 'ez-msg'), ms); };
@@ -121,7 +123,7 @@ const DUR = 22, LEAD = 1.0, LIMITE = 150, VID_LUZ = [3.3, 6.45], SEGURA = 2.4, J
           }
           if (!b.julgada && t > b.t + .22) {
             if (ev || eventos.some((e) => b.t >= e.t && b.t <= e.t + SEGURA + JANELA)) b.julgada = 'ignorada';
-            else { b.julgada = 'falha'; S.falhas++; muda(4); fol.textContent = T.perdeu; fol.className = 'ez-fol on mal'; clearTimeout(toque.id); toque.id = setTimeout(() => (fol.className = 'ez-fol'), 380); }
+            else { b.julgada = 'falha'; S.falhas++; muda(5); fol.textContent = T.perdeu; fol.className = 'ez-fol on mal'; clearTimeout(toque.id); toque.id = setTimeout(() => (fol.className = 'ez-fol'), 380); }
           }
         }
         while (batidas.length && batidas[0].julgada && batidas[0].soou && t - batidas[0].t > 1) batidas.shift();
@@ -134,10 +136,10 @@ const DUR = 22, LEAD = 1.0, LIMITE = 150, VID_LUZ = [3.3, 6.45], SEGURA = 2.4, J
           if (e.estado === 'espera' && t >= e.t) {
             if (!o.classList.contains('ez-luz')) { o.classList.add('ez-luz'); aviso(T.luz, 1800, 'luz'); if (A && A.sfx) A.sfx('passos-guarda', .9, () => {}); }
             if (apertado) { e.estado = 'segurando'; e.ini = t; }
-            else if (t > e.t + JANELA) { e.estado = 'falhou'; S.holdsFail++; muda(14); o.classList.remove('ez-luz'); aviso(T.naoSegurou, 1600, 'mal'); }
+            else if (t > e.t + JANELA) { e.estado = 'falhou'; S.holdsFail++; muda(18); o.classList.remove('ez-luz'); aviso(T.naoSegurou, 1600, 'mal'); }
           } else if (e.estado === 'segurando') {
             const k = Math.min(1, (t - e.ini) / SEGURA); btn.style.setProperty('--seg', k.toFixed(3));
-            if (!apertado) { e.estado = 'falhou'; S.holdsFail++; muda(12); o.classList.remove('ez-luz'); btn.style.setProperty('--seg', 0); aviso(T.soltouCedo, 1600, 'mal'); }
+            if (!apertado) { e.estado = 'falhou'; S.holdsFail++; muda(16); o.classList.remove('ez-luz'); btn.style.setProperty('--seg', 0); aviso(T.soltouCedo, 1600, 'mal'); }
             else if (k >= 1) { e.estado = 'ok'; S.holdsOk++; muda(-6); o.classList.remove('ez-luz'); btn.style.setProperty('--seg', 0); aviso(T.solta, 900); }
           }
         }

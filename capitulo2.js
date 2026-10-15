@@ -30,7 +30,7 @@ const afeto = (st) => st.afeto || 0;
 const faixa = (st) => (afeto(st) >= 8 ? 'semnome' : afeto(st) >= 4 ? 'amiga' : 'rival');
 
 window.LIVRO_UI = {
-  pt: { pensaEy: 'Na ponta da língua', vaiFalar: '{n} vai falar', conversaSegue: 'A conversa segue', dizer: 'Dizer', engolir: 'Engolir', pensaDica: 'A conversa não espera. Se Laura não disser a tempo, alguém fala por cima e ela engole. O que ela engole não some: volta, mais tarde, na hora errada.', voceN: 'Laura', maoJustine: 'A mão de Justine', maoSobe1: 'Minha mão sobe antes de eu decidir.', maoSobe: 'Ergo a mão.', errou: 'Erro. A mão de Justine já está no ar.', justinePrimeiro: 'A mão de Justine sobe primeiro.', proxPergunta: 'Próxima pergunta', ptsAula: 'A aula', ptsTaca: 'A taça',
+  pt: { pensaEy: 'Na ponta da língua', seguirLeitura: 'Seguir', vaiFalar: '{n} vai falar', conversaSegue: 'A conversa segue', dizer: 'Dizer', engolir: 'Engolir', pensaDica: 'A conversa não espera. Se Laura não disser a tempo, alguém fala por cima e ela engole. O que ela engole não some: volta, mais tarde, na hora errada.', voceN: 'Laura', maoJustine: 'A mão de Justine', nome_justine: 'Justine', nome_cecily: 'Cecily', nome_maud: 'Maud', outraSobe: 'A mão de {n} sobe antes de todas.', naoN: 'Não, {n}.', maoSobe1: 'Minha mão sobe antes de eu decidir.', maoSobe: 'Ergo a mão.', errou: 'Erro. A mão de Justine já está no ar.', justinePrimeiro: 'A mão de Justine sobe primeiro.', proxPergunta: 'Próxima pergunta', ptsAula: 'A aula', ptsTaca: 'A taça',
     coracaoTut: 'O coração de Laura', coracaoTut2: 'Quando dispara, as palavras dela começam a tremer.', parte: 'Parte', prox: 'Próxima', fim: 'Encerrar o capítulo', voltar: '← Voltar', ouvir: 'Ouvir Laura', cena: '▶ Ver a cena', oque: 'O que Laura faz?', decida: 'Decida', decidir: 'Decidir', escolheu: 'Você escolheu:', resp: 'Responder a', silencio: 'ficar em silêncio', silencioR: 'Silêncio', momento: 'Momento de jogo',
     mg: { olhar: 'Olhar sem se mexer', duelo: 'Ler Simon', esconderijo: 'Prender o coração', estudo: 'Estudar antes do sino', perguntas: 'Responder antes de Justine', taca: 'Segurar a taça' },
     dica: { estudo: 'Leia o que puder antes de a vela acabar. Não dá tempo para tudo.', perguntas: 'A primeira mão erguida responde. A de Justine já está subindo.', taca: 'Mantenha o vinho na taça. Mova para o lado contrário de onde ele pende.', olhar: 'Gideon está medindo e Laura não pode virar a cabeça. Passe os olhos pela sala: ela tem quatro olhares antes de ele terminar.', duelo: 'Por turnos. No seu, escolha o golpe e acerte o tempo. No dele, leia o corpo de Simon e desvie ou apare na hora. Três toques vencem.', esconderijo: 'O guarda vem pela aleia. O coração de Laura bate alto demais. Acompanhe cada batida para acalmá-lo, e prenda o fôlego quando a luz chegar.', preceT: 'Toque e segure. Solte quando quiser parar de rezar.', preceK: 'Segure o botão ou a barra de espaço. Solte quando quiser parar de rezar.' },
@@ -39,7 +39,7 @@ window.LIVRO_UI = {
     confirm: 'Recomeçar o capítulo? Suas escolhas serão apagadas.', capN: 'Capítulo II', fimCap: 'Fim do Capítulo II', ficou: 'O que ficou atrás do peito', suas: 'O que você escolheu', reler: 'Reler e escolher diferente', mesmo: (p) => `${p}% dos leitores fizeram o mesmo`,
     pontos: 'Pontuação do capítulo', jornada: 'Jornada (Capítulos I e II)', posicao: (p, n) => `${p}º de ${n} leitores`, ptsDuelo: 'O duelo', ptsEsconde: 'O esconderijo', ptsCap1: 'Capítulo I (o hino do gelo)', semCap1: 'Jogue o Capítulo I neste navegador para somar a jornada.',
   },
-  en: { pensaEy: 'On the tip of her tongue', vaiFalar: '{n} is about to speak', conversaSegue: 'The conversation moves on', dizer: 'Say it', engolir: 'Swallow it', pensaDica: 'The conversation won’t wait. If Laura doesn’t say it in time, someone talks over her and she swallows it. What she swallows doesn’t go away: it comes back, later, at the wrong moment.', voceN: 'Laura', maoJustine: 'Justine’s hand', maoSobe1: 'My hand goes up before I decide.', maoSobe: 'I raise my hand.', errou: 'Wrong. Justine’s hand is already up.', justinePrimeiro: 'Justine’s hand goes up first.', proxPergunta: 'Next question', ptsAula: 'The lesson', ptsTaca: 'The cup',
+  en: { pensaEy: 'On the tip of her tongue', seguirLeitura: 'Continue', vaiFalar: '{n} is about to speak', conversaSegue: 'The conversation moves on', dizer: 'Say it', engolir: 'Swallow it', pensaDica: 'The conversation won’t wait. If Laura doesn’t say it in time, someone talks over her and she swallows it. What she swallows doesn’t go away: it comes back, later, at the wrong moment.', voceN: 'Laura', maoJustine: 'Justine’s hand', nome_justine: 'Justine', nome_cecily: 'Cecily', nome_maud: 'Maud', outraSobe: '{n}’s hand goes up before anyone’s.', naoN: 'No, {n}.', maoSobe1: 'My hand goes up before I decide.', maoSobe: 'I raise my hand.', errou: 'Wrong. Justine’s hand is already up.', justinePrimeiro: 'Justine’s hand goes up first.', proxPergunta: 'Next question', ptsAula: 'The lesson', ptsTaca: 'The cup',
     coracaoTut: 'Laura’s heart', coracaoTut2: 'When it races, her words begin to shake.', parte: 'Part', prox: 'Next', fim: 'Close the chapter', voltar: '← Back', ouvir: 'Listen to Laura', cena: '▶ Watch the scene', oque: 'What does Laura do?', decida: 'Decide', decidir: 'Decide', escolheu: 'You chose:', resp: 'Answer', silencio: 'stay silent', silencioR: 'Silence', momento: 'Moment of play',
     mg: { olhar: 'Look without moving', duelo: 'Read Simon', esconderijo: 'Hold your heart', estudo: 'Study before the bell', perguntas: 'Answer before Justine', taca: 'Hold the cup' },
     dica: { estudo: 'Read what you can before the candle burns down. There isn’t time for everything.', perguntas: 'The first hand raised answers. Justine’s is already rising.', taca: 'Keep the wine in the cup. Move against the way it tips.', olhar: 'Gideon is measuring and Laura can’t turn her head. Let your eyes roam the room: she has four looks before he finishes.', duelo: 'Turn by turn. On yours, pick a move and hit the timing. On his, read Simon’s body and dodge or parry in time. Three touches win.', esconderijo: 'The guard is coming down the path. Laura’s heart is beating too loud. Keep time with every beat to calm it, and hold your breath when the light arrives.', preceT: 'Touch and hold. Let go when you want to stop praying.', preceK: 'Hold the button or the space bar. Let go when you want to stop praying.' },
@@ -118,7 +118,7 @@ window.LIVRO = {
       texto: [
         T('— Ah — o alfaiate se afasta e me olha dos pés à cabeça. — Você vai ser a Mãe-Rainha mais bela da história. Sem dúvida, o vestido com os adornos de esmeralda é a melhor escolha. Combina com seus olhos esverdeados, e o dourado do seu cabelo fica ainda mais vivo ao lado dele.',
           '— Ah — the tailor steps back and looks me over, head to foot. — You’ll be the most beautiful Mother-Queen in history. No question, the gown with the emerald trim is the finest choice. It matches your green eyes, and the gold in your hair looks brighter still beside it.'),
-        T('Respondo com um bocejo. Talvez seja instinto, para justificar os olhos marejados. Mas complemento:', 'I answer with a yawn. Maybe it’s instinct, to explain away the wet eyes. But I add:'),
+        T('Respondo com um bocejo comprido e esfrego os olhos com as costas da mão. Mas complemento:', 'I answer with a long yawn and rub my eyes with the back of my hand. But I add:'),
         T('— Você é muito gentil, senhor Gideon.', '— You’re very kind, Master Gideon.'),
         (st) => (st.f.viuPorta
           ? T('Ele se curva para a frente, a mão no peito, e aproveita o gesto para já se virar, ainda curvado, na direção da porta. A dobradiça de baixo range. Minha mãe acaba de entrar.', 'He bows forward, a hand to his chest, and uses the motion to turn, still bent, toward the door. The lower hinge creaks. My mother has just walked in.')
@@ -197,7 +197,7 @@ window.LIVRO = {
     { id: 'parte-II', parte: 'II', zona: 'castelo', fundo: { video: 'assets/video/aula-sala.mp4', img: 'assets/images/aula-sala.jpg', alt: 'assets/images/aula.jpg', kb: 'in', dim: .62, foco: '50% 40%', clima: 'poeira' },
       cartao: { num: 'II', nome: T('A Aula', 'The Lesson'), epigrafe: T('Uma Mãe-Rainha não precisa vencer a discussão. Precisa encerrá-la.', 'A Mother-Queen need not win the argument. She must end it.'), fonte: T('Mestra Hadasa, a todas as alunas, todos os anos', 'Mistress Hadasa, to every pupil, every year') } }, // NOVO
 
-    { id: 'b01', zona: 'castelo', fundo: { img: 'assets/images/aula.jpg', kb: 'in', dim: .5, foco: '58% 40%' },
+    { id: 'b01', zona: 'castelo', fundo: { img: 'assets/images/aula.jpg', kb: 'in', dim: .5, foco: '58% 40%', lado: 'dir' },
       narracao: 'assets/audio/narration/line2.mp3', narracaoLang: 'en', capitular: true,
       texto: [
         T('Depois da pausa para o alfaiate, tenho uma longa tarde de aulas de história. Não consigo prestar muita atenção. No fim, todas as aulas se parecem. Histórias sobre a Guerra Eterna, que segundo dizem está perto do fim, já que os Grakh não são mais considerados uma ameaça séria; e mais rumores do que fatos sobre o Apagar das Luzes, que serve, todo dia, como novo lembrete dos perigos da magia.',
@@ -270,7 +270,7 @@ window.LIVRO = {
       },
       depois: [] }, // NOVO
 
-    { id: 'b01d', zona: 'castelo', fundo: { video: 'assets/video/aula-sala.mp4', img: 'assets/images/aula-sala.jpg', alt: 'assets/images/aula.jpg', kb: 'in', dim: .55, foco: '50% 40%' }, pulso: 1,
+    { id: 'b01d', zona: 'castelo', fundo: { video: 'assets/video/aula-sala.mp4', img: 'assets/images/aula-sala.jpg', alt: 'assets/images/aula.jpg', kb: 'in', dim: .55, foco: '50% 40%', lado: 'dir' }, pulso: 1,
       texto: [
         T('A Mestra fecha o livro com as duas mãos.', 'The Mistress closes the book with both hands.'),
         T('— E não esqueçam a rainha Aldis, que passou três dias em vigília no oratório velho antes do Torneio do marido.', '— And don’t forget Queen Aldis, who kept a three-day vigil in the old oratory before her husband’s Tournament.'),
@@ -280,14 +280,14 @@ window.LIVRO = {
         T('Cecily ri dentro da manga. Escrevo na margem do caderno: morto.', 'Cecily laughs into her sleeve. I write in the margin of my notebook: dead.'),
       ] }, // NOVO
 
-    { id: 'b01e', zona: 'castelo', fundo: { video: 'assets/video/aula-sala.mp4', img: 'assets/images/aula-sala.jpg', alt: 'assets/images/aula.jpg', kb: 'out', dim: .55, foco: '50% 40%' }, pulso: (st) => (aulaRes(st) === 'laura' ? 1.2 : 1.8), quente: true,
+    { id: 'b01e', zona: 'castelo', fundo: { video: 'assets/video/aula-sala.mp4', img: 'assets/images/aula-sala.jpg', alt: 'assets/images/aula.jpg', kb: 'out', dim: .55, foco: '50% 40%', lado: 'dir' }, pulso: (st) => (aulaRes(st) === 'laura' ? 1.2 : 1.8), quente: true,
       texto: [
         (st) => {
           const a = st.aula || {}, r = aulaRes(st);
           if (r === 'laura') return [
             a.laura >= 4 ? T('A Mestra marca o placar no canto da lousa. Quatro perguntas, quatro mãos minhas.', 'The Mistress marks the score in the corner of the slate. Four questions, four of my hands.') : T('A Mestra marca o placar no canto da lousa. Quatro perguntas, três mãos minhas.', 'The Mistress marks the score in the corner of the slate. Four questions, three of my hands.'),
             T('Conto as marcas duas vezes. Maud bate palmas sem som.', 'I count the marks twice. Maud claps without a sound.'),
-            T('Justine guarda a pena devagar e olha para mim como quem confere um rosto conhecido.', 'Justine puts her quill away slowly and looks at me like someone checking a familiar face.'),
+            T('Justine guarda a pena devagar e me olha de cima a baixo.', 'Justine puts her quill away slowly and looks me up and down.'),
             T('— Desde quando você lê?', '— Since when do you read?')];
           if (r === 'empate') return [
             T('— Empate — diz a Mestra. Justine franze a testa como se a palavra fosse de outra língua.', '— A tie — says the Mistress. Justine frowns as if the word were in another language.'),
@@ -306,7 +306,7 @@ window.LIVRO = {
           { id: 'gabar', se: (st) => aulaRes(st) === 'laura', afeto: -1, voz: 'aula-sempre', txt: T('— Desde sempre. Você é que nunca reparou.', '— Always. You just never noticed.'),
             resultado: [T('— Reparei agora.', '— I’ve noticed now.'), T('Ela vira para a janela.', 'She turns to the window.')] },
           { id: 'honesta', se: (st) => aulaRes(st) === 'justine', voz: 'aula-estava', txt: T('— Estava.', '— I was.'),
-            resultado: [T('Ela assente, como quem já sabia, e volta a arrumar as penas.', 'She nods, as if she already knew, and goes back to tidying her quills.')] },
+            resultado: [T('Ela assente uma vez e volta a arrumar as penas.', 'She nods once and goes back to tidying her quills.')] },
           { id: 'outra', se: (st) => aulaRes(st) === 'justine', afeto: (st) => (st.f.olhouJustine ? 2 : 1), quente: true, voz: 'aula-outra', txt: T('— Estava olhando outra coisa.', '— I was looking at something else.'),
             resultado: (st) => (st.f.olhouJustine ? [T('— Eu sei. Eu vi.', '— I know. I saw.'), T('Ela não olha para mim quando diz isso.', 'She doesn’t look at me when she says it.')] : [T('— Que outra coisa?', '— What something else?'), T('Eu não respondo, e ela não pergunta de novo.', 'I don’t answer, and she doesn’t ask again.')]) },
           { id: 'cala', se: (st) => aulaRes(st) === 'justine', silencio: true,
@@ -322,6 +322,13 @@ window.LIVRO = {
 
     { id: 'parte-III-oratorio', parte: 'III', zona: 'oratorio', fundo: { img: 'assets/images/oratorio-estatuas.jpg', kb: 'in', dim: .6, foco: '50% 20%', retrato: true, clima: 'velas' },
       cartao: { num: 'III', nome: T('O Oratório', 'The Shrine'), epigrafe: T('A Juíza pesa. O Cavaleiro carrega.', 'The Judge weighs. The Knight carries.'), fonte: T('inscrição sobre a porta do oratório da Casa D’Orrose', 'inscription above the shrine door of House D’Orrose') } }, // NOVO (epígrafe)
+
+    { id: 'b02a', zona: 'castelo', fundo: { img: 'assets/images/laura-escada.jpg', alt: 'assets/images/oratorio-estatuas.jpg', kb: 'in', dim: .5, foco: '40% 45%', lado: 'dir', clima: 'poeira' }, pulso: .6,
+      texto: [
+        T('A Mestra nos dispensa. Cecily e Maud descem a escada de braço dado, já discutindo se Markus é mais bonito de perto.', 'The Mistress dismisses us. Cecily and Maud go down the stairs arm in arm, already arguing over whether Markus is handsomer up close.'),
+        T('A mesa de Justine já está vazia, com as penas arrumadas em fila.', 'Justine’s desk is already empty, her quills lined up in a row.'),
+        T('Desço sozinha. São setenta e dois degraus da torre leste até o pátio. No meio deles, o cheiro do refeitório sobe pela escada: pão quente, cebola, carne.', 'I go down alone. Seventy-two steps from the east tower to the courtyard. Halfway down, the smell of the dining hall comes up the stairwell: warm bread, onion, meat.'),
+      ] }, // v17
 
     { id: 'b02', zona: 'oratorio', fundo: { video: 'assets/video/maos-prece.mp4', img: 'assets/images/oratorio-maos.jpg', kb: 'none', foco: '50% 55%', dim: .45, lado: 'dir', clima: 'velas' }, pulso: .6,
       narracao: 'assets/audio/voz/oratorio-fome.mp3', narracaoLang: 'en',
@@ -367,7 +374,7 @@ window.LIVRO = {
         T('— Laura — fala baixo, mas sem delicadeza nenhuma.', '— Laura — she says, quietly, but without a trace of softness.'),
         T('— Oi, Justine. — Olho para baixo. É difícil encará-la sabendo que o sonho dela é ser a Mãe-Rainha.', '— Hi, Justine. — I look down. It’s hard to face her knowing her dream is to be Mother-Queen.'),
         T('— Veio pedir lealdade para o seu futuro marido?', '— Come to pray for loyalty to your future husband?'),
-        T('O sorriso dela mistura deboche e tristeza a partes iguais. Reparo porque a luz do fim de tarde entra pela janela e ilumina os lábios dela, perfeitos.', 'Her smile mixes mockery and sadness in equal measure. I notice because the late-afternoon light comes through the window and catches her lips, which are perfect.'),
+        T('Ela sorri torto. A luz do fim de tarde entra pela janela e bate nos lábios dela, perfeitos.', 'She gives me a crooked smile. The late-afternoon light comes through the window and falls on her lips, which are perfect.'),
         (st) => { const a = st.aula || {}; return a.venceu === 'laura' ? (a.laura >= 4 ? T('— Quatro a nada, hoje. Não pense que eu esqueci.', '— Four to nothing, today. Don’t think I’ve forgotten.') : T('— Três a uma, hoje. Não pense que eu esqueci.', '— Three to one, today. Don’t think I’ve forgotten.')) : a.venceu === 'justine' ? T('— Você podia pelo menos fingir que estuda.', '— You could at least pretend to study.') : null; }, // NOVO (a aula volta no oratório)
       ],
       dialogo: { interlocutor: T('Justine', 'Justine'), rodadas: [
@@ -444,14 +451,37 @@ window.LIVRO = {
     { id: 'parte-IV', parte: 'IV', zona: 'salao', fundo: { img: 'assets/images/jantar-salao.jpg', alt: 'assets/images/dolores-maos.jpg', kb: 'in', dim: .66, foco: '50% 40%', clima: 'velas' },
       cartao: { num: 'IV', nome: T('A Mesa', 'The Table'), epigrafe: T('Quem serve o vinho escuta tudo. Quem bebe escuta o que quer.', 'Whoever pours the wine hears everything. Whoever drinks it hears what they like.'), fonte: T('dito dos copeiros da Capital Branca', 'a saying among the cupbearers of the White Capital') } }, // NOVO
 
-    { id: 'd01', zona: 'salao', fundo: { img: 'assets/images/jantar-salao.jpg', alt: 'assets/images/dolores-maos.jpg', kb: 'in', dim: .5, foco: '50% 45%', clima: 'velas' }, pulso: 1.4, frio: true, capitular: true,
+    { id: 'd01', zona: 'salao', fundo: { img: 'assets/images/jantar-salao.jpg', alt: 'assets/images/dolores-maos.jpg', kb: 'in', dim: .5, foco: '50% 45%', clima: 'velas', lado: 'dir' }, pulso: 1.4, frio: true, capitular: true,
       texto: [
+        T('Chego ao salão junto com Justine. Entramos pela mesma porta, uma atrás da outra, e as doze cadeiras já estão ocupadas, menos duas.', 'I reach the hall together with Justine. We come in through the same door, one behind the other, and all twelve chairs are taken except two.'),
+        T('Minha mãe pousa a colher.', 'My mother sets down her spoon.'),
+        T('— A sopa esfriou esperando as duas.', '— The soup has gone cold waiting for the two of you.'),
+      ],
+      seq: [
+        { escolha: { id: 'atraso', pergunta: T('Minha mãe', 'My mother'), opcoes: [
+          { id: 'oratorio', afeto: 1, txt: T('— Estávamos no oratório, mãe.', '— We were in the shrine, Mother.'),
+            resultado: [T('Minha mãe olha para Justine, depois para mim. A mão dela larga a colher.', 'My mother looks at Justine, then at me. Her hand lets go of the spoon.'),
+              T('— No oratório. — Ela demora um pouco. — Então está perdoado. Sentem.', '— In the shrine. — She takes a moment. — Then you’re forgiven. Sit.')] },
+          { id: 'culpa', afeto: 2, quente: true, txt: T('— A culpa é minha, mãe.', '— It’s my fault, Mother.'),
+            resultado: [T('— Eu sei que é.', '— I know it is.'),
+              T('Justine faz uma reverência curta ao meu lado.', 'Beside me, Justine gives a short curtsy.'),
+              T('— Estávamos rezando, Mãe-Rainha. Eu e Laura.', '— We were praying, Mother-Queen. Laura and I.'),
+              T('Minha mãe olha de uma para a outra e pega a colher de novo.', 'My mother looks from one of us to the other and picks up her spoon again.'),
+              T('— Rezando. Então sentem.', '— Praying. Then sit.')] },
+          { id: 'cala', silencio: true,
+            resultado: [T('Justine responde antes que o silêncio fique comprido.', 'Justine answers before the silence gets too long.'),
+              T('— Estávamos no oratório, Mãe-Rainha. Eu pedi que Laura rezasse comigo.', '— We were in the shrine, Mother-Queen. I asked Laura to pray with me.'),
+              T('Ela não pediu nada. Não olha para mim quando diz isso.', 'She didn’t ask me anything. She doesn’t look at me when she says it.'),
+              T('— Rezar não é atraso — minha mãe diz. — Sentem.', '— Praying is never late — my mother says. — Sit.')] },
+        ] } },
+        { texto: [
         T('O jantar é no salão pequeno, que minha mãe chama de pequeno: doze lugares, duas lareiras, as tapeçarias da Ponte de Andrey nas paredes.', 'Dinner is in the small hall, which my mother calls small: twelve places, two hearths, the tapestries of Andrey Bridge on the walls.'),
         T('Ela me sentou à direita de Markus. Do outro lado dela, Joseph. Ao lado de Joseph, Justine. O pai dela fica de pé atrás da cadeira, como se o jantar ainda não tivesse começado.', 'She has seated me on Markus’s right. On her other side, Joseph. Beside Joseph, Justine. Her father stands behind her chair, as if the dinner hadn’t started yet.'),
         T('Mesmo de pé, Lorde Avellan fala de lã com Lady Hollin desde a sopa. Sir Godric, que lutou contra os Grakh quando meu pai ainda era escudeiro, dorme de olhos abertos na ponta da mesa. A Madre Ysolde benze o pão em nome da Juíza e come antes de terminar a bênção.', 'Even standing, Lord Avellan has been talking wool with Lady Hollin since the soup. Sir Godric, who fought the Grakh when my father was still a squire, sleeps with his eyes open at the end of the table. Mother Ysolde blesses the bread in the Judge’s name and eats before she finishes the blessing.'),
         T('Simon ficou na outra ponta, ao lado da Madre Ysolde, tão reto na cadeira que parece pregado nela.', 'Simon was put at the other end, beside Mother Ysolde, so straight in his chair he looks nailed to it.'),
         T('Por baixo da mesa, minha mãe encontra a minha mão, vira a palma para cima e passa o polegar pelos calos, um por um. Depois solta, sem olhar para mim, e pede mais vinho.', 'Under the table, my mother finds my hand, turns the palm up and runs her thumb over the calluses, one by one. Then she lets go, without looking at me, and asks for more wine.'),
-      ] }, // NOVO
+        ] },
+      ] }, // NOVO · v17: chegam atrasadas
 
     { id: 'd02', zona: 'salao', fundo: { img: 'assets/images/jantar-joseph.jpg', alt: 'assets/images/dolores-maos.jpg', kb: 'in', dim: .5, foco: '62% 40%', clima: 'velas' }, pulso: 1.6, frio: true,
       texto: [
@@ -497,11 +527,12 @@ window.LIVRO = {
         { texto: [T('Passo o pão para ele. Os dedos dele param um instante sobre os meus, na altura dos calos. Ele pega o pão e não comenta, nem nessa hora nem no resto do jantar.', 'I pass him the bread. His fingers pause on mine for an instant, right over the calluses. He takes the bread and makes no remark, not then and not for the rest of the dinner.')] },
       ] }, // NOVO
 
-    { id: 'd04', zona: 'salao', fundo: { img: 'assets/images/jantar-brinde.jpg', alt: 'assets/images/oratorio-justine.jpg', kb: 'in', dim: .5, foco: '25% 40%', clima: 'velas' }, pulso: 2.6, frio: true, quente: true,
+    { id: 'd04', zona: 'salao', fundo: { img: 'assets/images/jantar-brinde.jpg', alt: 'assets/images/oratorio-justine.jpg', kb: 'in', dim: .5, foco: '25% 40%', clima: 'velas', lado: 'dir' }, pulso: 2.6, frio: true, quente: true,
       texto: [
         T('Lorde Avellan se levanta com a taça. Justine tem a testa dele e mais nada.', 'Lord Avellan stands with his cup. Justine has his forehead and nothing else of him.'),
         T('— Ao Torneio. E ao contrato que se assina depois dele. — Ergue a taça para Joseph. — A Casa Avellan dá a mão de Justine a Sir Joseph, depois do Torneio, com a bênção da Mãe-Rainha.', '— To the Tournament. And to the contract to be signed after it. — He raises his cup to Joseph. — House Avellan gives Justine’s hand to Sir Joseph, after the Tournament, with the Mother-Queen’s blessing.'),
         T('As taças sobem. Justine segura a dela junto do peito e não ergue. Olha para o prato como quem lê.', 'The cups rise. Justine holds hers against her chest and doesn’t lift it. She looks at her plate as if she were reading it.'),
+        T('Agora eu sei o que ela pedia à Juíza.', 'Now I know what she was asking the Judge for.'),
       ],
       taca: {
         img: 'assets/images/taca.jpg', alt: 'assets/images/dolores-maos.jpg',
@@ -519,7 +550,7 @@ window.LIVRO = {
           engolir: { resultado: [T('Bebo. O vinho desce frio.', 'I drink. The wine goes down cold.')] } } },
       ] }, // NOVO
 
-    { id: 'd05', zona: 'noite', fundo: { img: 'assets/images/corredor-noite.jpg', alt: 'assets/images/quarto-cadeira.jpg', kb: 'in', dim: .5, foco: '58% 45%' }, pulso: 2, frio: true,
+    { id: 'd05a', zona: 'noite', fundo: { img: 'assets/images/joseph-corredor.jpg', alt: 'assets/images/corredor-noite.jpg', kb: 'in', dim: .5, foco: '55% 40%' }, pulso: 2, frio: true,
       texto: [
         T('Depois do jantar, os convidados saem pelo corredor das tapeçarias. Joseph para para eu passar, e não se afasta o bastante. Os olhos dele descem e sobem devagar, sem pressa nenhuma.', 'After dinner, the guests leave through the tapestry corridor. Joseph stops to let me pass, and doesn’t step back far enough. His eyes go down and up again, slowly, in no hurry at all.'),
       ],
@@ -527,12 +558,16 @@ window.LIVRO = {
         { pensa: { id: 'joseph', quem: T('Joseph', 'Joseph'), t: T('Não me olhe.', 'Don’t look at me.'),
           dizer: { voz: 'corredor-caminho', pulso: 2.6, resultado: [T('— O senhor está no meu caminho.', '— You’re in my way, sir.'), T('Ele sorri e dá um passo para o lado.', 'He smiles and steps aside.'), T('— Por enquanto, alteza.', '— For now, Highness.')] },
           engolir: { resultado: [T('Baixo a cabeça e passo junto da parede. A tapeçaria raspa no meu ombro.', 'I lower my head and pass along the wall. The tapestry scrapes my shoulder.')] } } },
-        { texto: [
-          T('Justine está na janela do fim do corredor, de costas, com a palma encostada no vidro.', 'Justine is at the window at the end of the corridor, her back to me, her palm pressed to the glass.'),
-          (st) => ({ rival: T('— Não me olhe assim, Laura. Ninguém perguntou a você também.', '— Don’t look at me like that, Laura. No one asked you either.'),
-            amiga: T('— Não me olhe assim. Você também não escolheu nada. Nós duas sabemos.', '— Don’t look at me like that. You didn’t choose anything either. We both know it.'),
-            semnome: [T('Ela não se vira.', 'She doesn’t turn around.'), T('— Fica aqui um pouco. Não diz nada. Só fica.', '— Stay here a while. Don’t say anything. Just stay.')] }[faixa(st)]),
-        ] },
+      ] }, // v17: Joseph no corredor ganha página e imagem
+
+    { id: 'd05', zona: 'noite', fundo: { img: 'assets/images/corredor-noite.jpg', alt: 'assets/images/quarto-cadeira.jpg', kb: 'in', dim: .5, foco: '58% 45%' }, pulso: 2, frio: true,
+      texto: [
+        T('Justine está na janela do fim do corredor, de costas, com a palma encostada no vidro.', 'Justine is at the window at the end of the corridor, her back to me, her palm pressed to the glass.'),
+        (st) => ({ rival: T('— Não me olhe assim, Laura. Ninguém perguntou a você também.', '— Don’t look at me like that, Laura. No one asked you either.'),
+          amiga: T('— Não me olhe assim. Você também não escolheu nada. Nós duas sabemos.', '— Don’t look at me like that. You didn’t choose anything either. We both know it.'),
+          semnome: [T('Ela não se vira.', 'She doesn’t turn around.'), T('— Fica aqui um pouco. Não diz nada. Só fica.', '— Stay here a while. Don’t say anything. Just stay.')] }[faixa(st)]),
+      ],
+      seq: [
         { escolha: { id: 'corredor', pergunta: T('Justine', 'Justine'), opcoes: [
           { id: 'ficar', afeto: 2, quente: true, txt: T('Encostar a mão no vidro, ao lado da dela', 'Rest my hand on the glass, beside hers'),
             resultado: [T('Fico. O vidro está frio. Ficamos as duas com a mão nele até a vela do corredor apagar.', 'I stay. The glass is cold. We both keep our hands on it until the corridor candle goes out.')] },
@@ -599,7 +634,7 @@ window.LIVRO = {
     { id: 'c04', zona: 'laranjal', fundo: { video: 'assets/video/laranjal-duelo.mp4', img: 'assets/images/laranjal-cruzado.jpg', kb: 'none', foco: '50% 45%', dim: .5, clima: 'poeira-azul' }, pulso: .5,
       cena: 'assets/video/laranjal-duelo.mp4',
       texto: [
-        T('Simon gosta de se vangloriar dizendo que Anthony, o Mestre das Armas, sempre o elogia. Chama até de prodígio. Acho estranho, porque para mim é fácil demais. Só lutei com ele a vida inteira, mas prevejo cada movimento seu sem esforço. Ele tem força de verdade. Nunca me acerta. E eu nunca deixo.', 'Simon likes to brag that Anthony, the Master of Arms, always praises him, even calls him a prodigy. I find that strange, because for me it’s far too easy. I’ve only ever fought him, my whole life, and yet I predict his every move without effort. He truly has strength. He never manages to hit me. And I never let him.'),
+        T('Simon gosta de se vangloriar dizendo que Anthony, o Mestre das Armas, sempre o elogia. Chama até de prodígio. Acho estranho, porque para mim é fácil demais. Só lutei com ele a vida inteira, mas prevejo cada movimento seu sem esforço. Ele tem força de verdade, e mesmo assim nunca me acerta.', 'Simon likes to brag that Anthony, the Master of Arms, always praises him, even calls him a prodigy. I find that strange, because for me it’s far too easy. I’ve only ever fought him, my whole life, and yet I predict his every move without effort. He truly has strength, and he still never lands a hit on me.'),
         T('Os pés dele batem no chão de pedra empoeirado do laranjal vazio em passos largos e previsíveis: primeiro o esquerdo, arrastando de leve, depois o direito, que gira o quadril para ganhar impulso. É um movimento que aprendeu com Anthony. O Mestre das Armas já me ensinou muita coisa através de Simon, sem nunca saber disso.', 'His feet strike the dusty stone floor of the empty orangery in wide, predictable steps: left foot first, dragging slightly, then the right, which turns the hip for momentum. It’s a movement he learned from Anthony. The Master of Arms has taught me a great deal, through Simon, without ever knowing it.'),
         T('Quando o pé esquerdo arrasta, ele vai descer de cima. Quando o ombro direito cai, vem uma estocada reta. Quando os joelhos dobram de repente, ele quer as minhas pernas.', 'When the left foot drags, he’s coming down from above. When the right shoulder drops, a straight thrust is coming. When his knees suddenly bend, he wants my legs.'), // NOVO (ensina o jogo)
       ] },

@@ -475,6 +475,18 @@ function pensaEtapa(pz, next) {
   st.pensas = st.pensas || {};
   const ja = st.pensas[pz.id];
   if (ja) { appendParas(ja === 'disse' ? pz.dizer.resultado : pz.engolir.resultado); return next(); }
+  // decisão com tempo: só abre quando o leitor diz que terminou de ler. O texto lido sai da frente, e a frase fica sozinha.
+  if (!pz._liberada) {
+    box.innerHTML = `<button class="opt pz-seguir" id="pzSeguir">${U('seguirLeitura')}</button>`;
+    $('#pzSeguir').onclick = () => {
+      pz._liberada = true;
+      [...txt.children].forEach((el) => el.classList.add('lido'));
+      panel.scrollTop = 0;
+      pensaEtapa(pz, next);
+    };
+    return;
+  }
+  pz._liberada = false;
   const tut = !st.f.tutPensa; st.f.tutPensa = true;
   const reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const dur = (tut ? 8.5 : 4.6) * (reduz ? 1.6 : 1);
@@ -827,18 +839,26 @@ const MG = {
       o.innerHTML = `<div class="es-fundo" style="background-image:url('${Q.img}'), url('${Q.alt}')"></div>
         <div class="pq-placar"><span class="pq-l">${U('voceN')}</span><b class="pq-nl">0</b><i>·</i><b class="pq-nj">0</b><span class="pq-j">Justine</span></div>
         <div class="pq-caixa"><p class="pq-num"></p><h3 class="pq-q"></h3><div class="pq-ops"></div>
-        <div class="pq-mao"><span>${U('maoJustine')}</span><i><b></b></i></div><div class="pq-resp"></div></div>`;
-      const qEl = o.querySelector('.pq-q'), ops = o.querySelector('.pq-ops'), bar = o.querySelector('.pq-mao b'), resp = o.querySelector('.pq-resp');
+        <div class="pq-maos">${['justine', 'cecily', 'maud'].map((g) => `<div class="pq-mao" data-g="${g}"><span>${U('nome_' + g)}</span><i><b></b></i></div>`).join('')}</div>
+        <p class="pq-outra"></p><div class="pq-resp"></div></div>`;
+      const qEl = o.querySelector('.pq-q'), ops = o.querySelector('.pq-ops'), resp = o.querySelector('.pq-resp'), outra = o.querySelector('.pq-outra');
+      const maoEl = (g) => o.querySelector(`.pq-mao[data-g="${g}"]`), barEl = (g) => maoEl(g).querySelector('b');
+      // Cecily e Maud: sempre mais lentas que Justine, menos numa pergunta sorteada, em que uma delas sobe primeiro e erra
+      const surpresa = { k: Math.floor(Math.random() * Q.lista.length), g: Math.random() < .5 ? 'cecily' : 'maud' };
       const mostra = () => {
-        const q = Q.lista[k]; resp.innerHTML = ''; resp.classList.remove('on'); o.querySelector('.pq-mao').classList.remove('subiu');
+        const q = Q.lista[k]; resp.innerHTML = ''; resp.classList.remove('on'); outra.innerHTML = ''; outra.classList.remove('on');
+        o.querySelectorAll('.pq-mao').forEach((m) => { m.classList.remove('subiu', 'errou'); m.querySelector('b').style.transform = 'scaleX(0)'; });
         o.querySelector('.pq-num').textContent = `${k + 1} / ${Q.lista.length}`; qEl.textContent = tr(q.q);
         const embaralha = q.ops.map((t, i) => ({ t, i })).sort(() => Math.random() - .5);
         ops.innerHTML = embaralha.map((x) => `<button class="opt" data-i="${x.i}">${esc(tr(x.t))}</button>`).join('');
         const t0 = performance.now(), dur = q.justine * 1000; let fechado = false;
+        const durs = { justine: dur, cecily: dur * (1.35 + Math.random() * .45), maud: dur * (1.35 + Math.random() * .45) };
+        if (k === surpresa.k) durs[surpresa.g] = dur * (.5 + Math.random() * .15);
+        const fora = new Set(); // quem já levantou a mão e errou nesta pergunta
         const fecha = (quem, certoLaura) => {
           if (fechado) return; fechado = true; cancelAnimationFrame(raf);
           ops.querySelectorAll('.opt').forEach((b) => { b.disabled = true; if (+b.dataset.i === 0) b.classList.add('certa'); });
-          if (quem === 'laura') { laura++; A.escolha(); } else { jus++; o.querySelector('.pq-mao').classList.add('subiu'); A.tone(330, .4, 'triangle', .03); }
+          if (quem === 'laura') { laura++; A.escolha(); } else { jus++; maoEl('justine').classList.add('subiu'); A.tone(330, .4, 'triangle', .03); }
           o.querySelector('.pq-nl').textContent = laura; o.querySelector('.pq-nj').textContent = jus;
           const linha = quem === 'laura' ? (laura === 1 ? U('maoSobe1') : U('maoSobe')) : certoLaura === false ? U('errou') : U('justinePrimeiro');
           resp.innerHTML = `<p class="pq-gesto">${esc(linha)}</p><p class="pq-mestra">— ${esc(tr(q.resposta))}</p><button class="cta">${k + 1 < Q.lista.length ? U('proxPergunta') : U('prox')}</button>`;
@@ -846,7 +866,24 @@ const MG = {
           resp.querySelector('.cta').onclick = () => { k++; if (k < Q.lista.length) mostra(); else acaba(); };
         };
         ops.querySelectorAll('.opt').forEach((b) => b.onclick = () => { if (+b.dataset.i === 0) fecha('laura', true); else { b.classList.add('errada'); fecha('justine', false); } });
-        const anda = () => { const f = clamp((performance.now() - t0) / dur, 0, 1); bar.style.transform = `scaleX(${f.toFixed(4)})`; if (f >= 1) return fecha('justine'); raf = requestAnimationFrame(anda); };
+        const erraOutra = (g) => {
+          fora.add(g); maoEl(g).classList.add('errou'); A.tone(262, .35, 'triangle', .025);
+          const errada = 1 + Math.floor(Math.random() * (q.ops.length - 1));
+          const b = ops.querySelector(`.opt[data-i="${errada}"]`); if (b) { b.disabled = true; b.classList.add('errada'); }
+          outra.innerHTML = `<span class="pq-gesto">${esc(U('outraSobe').replace('{n}', U('nome_' + g)))}</span> — ${esc(tr(q.ops[errada]))}<br><span class="pq-mestra-n">— ${esc(U('naoN').replace('{n}', U('nome_' + g)))}</span>`;
+          outra.classList.add('on');
+        };
+        const anda = () => {
+          const t = performance.now() - t0;
+          for (const g of ['cecily', 'maud']) {
+            if (fora.has(g)) continue;
+            const f = clamp(t / durs[g], 0, 1); barEl(g).style.transform = `scaleX(${f.toFixed(4)})`;
+            if (f >= 1 && k === surpresa.k && g === surpresa.g) erraOutra(g);
+          }
+          const f = clamp(t / dur, 0, 1); barEl('justine').style.transform = `scaleX(${f.toFixed(4)})`;
+          if (f >= 1) return fecha('justine');
+          raf = requestAnimationFrame(anda);
+        };
         raf = requestAnimationFrame(anda);
       };
       const acaba = () => {

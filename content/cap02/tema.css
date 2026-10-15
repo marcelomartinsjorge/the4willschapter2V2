@@ -517,3 +517,20 @@ body.engolindo #no { animation: noAperta .9s ease; }
   .dt-regras li { grid-template-columns: 1fr; gap: 2px; font-size: 14px; }
 }
 @media (prefers-reduced-motion: reduce) { .dt-fig { transition: none; } .dt-pop.on, .dt-msg p.nova { animation-duration: .01s; } }
+
+/* v17 · decisão com tempo só depois de ler: o texto lido sai da frente */
+#ptext > .lido { display: none; }
+#choices .pz-seguir { justify-content: center; text-align: center; letter-spacing: .14em; text-transform: uppercase; font-size: 14px; }
+/* v17 · as outras duas alunas também levantam a mão */
+#mg.perguntas .pq-maos { margin-top: 18px; display: grid; gap: 7px; }
+#mg.perguntas .pq-maos .pq-mao { margin-top: 0; }
+#mg.perguntas .pq-mao span { width: 64px; flex: none; }
+#mg.perguntas .pq-mao:not([data-g="justine"]) { color: #a99c8c; }
+#mg.perguntas .pq-mao:not([data-g="justine"]) b { background: linear-gradient(90deg, #6d6152, #a3927b); }
+#mg.perguntas .pq-mao.errou b { background: #7a3a32; }
+#mg.perguntas .pq-mao.errou span { text-decoration: line-through; }
+#mg.perguntas .pq-outra { margin: 0; max-height: 0; overflow: hidden; transition: max-height .4s, margin .4s; font-family: var(--serif); font-size: 17px; color: #e8d6bb; }
+#mg.perguntas .pq-outra.on { max-height: 140px; margin: 14px 0 0; }
+#mg.perguntas .pq-outra .pq-gesto { margin: 0; font-size: 17px; }
+#mg.perguntas .pq-mestra-n { color: #fff3df; }
+@media (max-width: 640px) { #mg.perguntas .pq-caixa { max-height: 88vh; overflow-y: auto; } #mg.perguntas .pq-q { margin-bottom: 14px; } }

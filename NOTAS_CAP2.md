@@ -227,6 +227,16 @@ Recomendo **não misturar**. O Cap. 3 é outro ponto de vista (o Cavaleiro) e fu
 - Engolir redesenhado para não repetir o "afogar" do Aheryn: a frase aparece pela metade na caixa ("Na ponta da língua"), uma barra mostra quem vai falar; se o tempo acaba (4,6 s; 8,5 s na primeira vez; ×1,6 com movimento reduzido), alguém fala por cima e ela engole. Cada coisa engolida aperta o "nó" na tela (sombra que fecha nas bordas) e abafa o som do capítulo (filtro 9000/5200/3400/2500 Hz). Campo novo `quem` em cada pensa.
 - Vídeos opcionais em fundo: assets/video/aula-sala.mp4, jantar-joseph.mp4, corredor-noite.mp4. Sem o arquivo, aparece a imagem (poster).
 
+## v17 (15/10/2026) · ajustes de leitura e jogo
+- **Coluna de texto alterna de lado** na aula (b01, b01d, b01e à direita; b01a, b01c à esquerda) e no jantar (d01, d04 à direita; d02, d03, d05a, d05 à esquerda).
+- **Decisões com tempo (Na ponta da língua) só depois de "Seguir":** o leitor termina de ler, clica Seguir, o texto lido sai da frente e só então a frase e o relógio aparecem.
+- **Perguntas da aula:** barras de Cecily e Maud além da de Justine. Sempre mais lentas que Justine, menos numa pergunta sorteada, em que uma das duas (sorteada) levanta a mão primeiro e erra; a opção dela fica riscada e o jogo segue.
+- **Jogo da tocha:** o vídeo roda uma vez só a 80% da velocidade (antes ~40%). O jogo dura ~11 s. Penalidades subiram um pouco para quem não faz nada ainda perder (testado: robô perfeito vence com 98 bpm de pico; parado, perde).
+- **Páginas novas:** b02a (Laura desce da torre para o oratório; imagem `laura-escada.jpg`) e d05a (Joseph no corredor; imagem `joseph-corredor.jpg`). Até as imagens chegarem, aparecem `oratorio-estatuas.jpg` e `corredor-noite.jpg`.
+- **Atraso no jantar (d01):** Laura e Justine chegam juntas, atrasadas. Dolores cobra. Escolha `atraso`: "Estávamos no oratório" (afeto +1) / "A culpa é minha" (afeto +2, quente) / silêncio (Justine responde e mente que pediu a Laura para rezar com ela). Dolores aceita a reza nos três casos.
+- **d04:** depois do brinde, "Agora eu sei o que ela pedia à Juíza." Responde por que Justine estava no oratório.
+- **Voz da Laura (revisão):** tiradas a glosa do bocejo (a04), o estado interno de Justine no sorriso (b03), o fecho curto "Nunca me acerta. E eu nunca deixo." (c04) e dois "como quem" seguidos na aula (b01e, aulaJustine/honesta). Falas com voz gravada e linhas marcadas como canon não foram mexidas.
+
 ## v16 (15/10/2026) · continuidade com o Cap. IV
 - d03: Markus diz que o pai "perdeu a final para o seu, alteza. Faz vinte e dois anos." (antes: vinte anos; a última final foi a do pai de Laura, 22 anos atrás, segundo Osmund no Cap. IV).
 - Retrato de Corwin: governou trinta e um anos (antes 22, o mesmo tempo do pai de Laura; parecia que Corwin era o pai).
