@@ -227,6 +227,12 @@ Recomendo **não misturar**. O Cap. 3 é outro ponto de vista (o Cavaleiro) e fu
 - Engolir redesenhado para não repetir o "afogar" do Aheryn: a frase aparece pela metade na caixa ("Na ponta da língua"), uma barra mostra quem vai falar; se o tempo acaba (4,6 s; 8,5 s na primeira vez; ×1,6 com movimento reduzido), alguém fala por cima e ela engole. Cada coisa engolida aperta o "nó" na tela (sombra que fecha nas bordas) e abafa o som do capítulo (filtro 9000/5200/3400/2500 Hz). Campo novo `quem` em cada pensa.
 - Vídeos opcionais em fundo: assets/video/aula-sala.mp4, jantar-joseph.mp4, corredor-noite.mp4. Sem o arquivo, aparece a imagem (poster).
 
+## v16 (15/10/2026) · continuidade com o Cap. IV
+- d03: Markus diz que o pai "perdeu a final para o seu, alteza. Faz vinte e dois anos." (antes: vinte anos; a última final foi a do pai de Laura, 22 anos atrás, segundo Osmund no Cap. IV).
+- Retrato de Corwin: governou trinta e um anos (antes 22, o mesmo tempo do pai de Laura; parecia que Corwin era o pai).
+- a03: "um nobre desconhecido" virou "o homem que vencer um Torneio que eu nunca vou poder disputar" (voz da Laura devota).
+- Só texto. Nenhuma voz gravada muda.
+
 ## v15 (15/10/2026)
 - 15 vozes novas da Laura e 5 sons instalados (normalizados: vozes −22 LUFS, salão −27,5, efeitos −16; sino cortado em 7 s).
 - Vídeo da aula (ida e volta, 20 s). Joseph e corredor ficam em imagem.
