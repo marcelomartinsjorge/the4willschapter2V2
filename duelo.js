@@ -565,5 +565,5 @@ function start(root, opts) {
     window.__DUELO = { S, get estado() { return estado; }, age, get ataque() { return ataque; } };
   });
 }
-window.DUELO = { start };
+window.DUELO = { start, trilha: trilhaDuelo };
 })();

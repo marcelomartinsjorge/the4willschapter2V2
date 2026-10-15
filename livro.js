@@ -39,7 +39,7 @@ const A = {
   ctx: null, bufs: {}, zone: null, narr: null, on: true,
   init() {
     if (this.ctx) return; this.ctx = new AC();
-    this.master = this.ctx.createGain(); this.master.connect(this.ctx.destination);
+    this.master = this.ctx.createGain(); this.lp = this.ctx.createBiquadFilter(); this.lp.type = 'lowpass'; this.lp.frequency.value = 20000; this.master.connect(this.lp); this.lp.connect(this.ctx.destination);
     this.bed = this.ctx.createGain(); this.bed.connect(this.master);
     this.fx = this.ctx.createGain(); this.fx.gain.value = .8; this.fx.connect(this.master);
     const n = this.ctx.createBuffer(1, this.ctx.sampleRate, this.ctx.sampleRate), d = n.getChannelData(0);
@@ -78,6 +78,10 @@ const A = {
     return true;
   },
   stopNarr() { if (this.narr) { const s = this.narr; this.narr = null; try { s.stop(); } catch (e) {} this.duck(false); } },
+  _base: 20000, _abaf: false,
+  abafa(on) { this._abaf = !!on; if (!this.ctx) return; this.lp.frequency.setTargetAtTime(on ? 1900 : this._base, this.ctx.currentTime, .5); },
+  no(n) { this._base = [20000, 9000, 5200, 3400, 2500][Math.min(4, n | 0)]; if (this.ctx && !this._abaf) this.lp.frequency.setTargetAtTime(this._base, this.ctx.currentTime, 1.2); },
+  engole() { if (!this.ctx) return; this.tone(150, .32, 'sine', .14, 0, -.5); this.hiss(.22, 260, .8, .05, .05, 'lowpass'); },
   duck(on) { if (!this.ctx) return; const t = this.ctx.currentTime; this.bed.gain.cancelScheduledValues(t); this.bed.gain.setTargetAtTime(on ? .25 : 1, t, .25); },
   setOn(on) { this.on = on; if (this.master) this.master.gain.setTargetAtTime(on ? 1 : 0, this.ctx.currentTime, .1); },
   tone(f, d, type = 'sine', v = .08, when = 0, bend = 0) {
@@ -147,6 +151,17 @@ function mudaPeso(d) {
   document.body.classList.remove('bate'); void document.body.offsetWidth; document.body.classList.add('bate');
 }
 
+// ---------------------------------------------------------------- a língua de sensação de Laura
+// coração = medo (vermelho, rápido) · rosto quente = desejo, só perto de Justine (dourado, lento, som abafado)
+// mãos frias = ser observada (tremor, contorno azul no coração) · lágrimas = mentir (a tela embaça)
+const Sensa = {
+  quente(on) { on = !!on; if (document.body.classList.contains('quente') === on) return; document.body.classList.toggle('quente', on); A.abafa(on); },
+  frio(on) { document.body.classList.toggle('frio', !!on); },
+  pulsoQuente() { document.body.classList.remove('quente-pulso'); void document.body.offsetWidth; document.body.classList.add('quente-pulso'); setTimeout(() => document.body.classList.remove('quente-pulso'), 2600); },
+  lagrimas() { document.body.classList.remove('lagrimas'); void document.body.offsetWidth; document.body.classList.add('lagrimas'); setTimeout(() => document.body.classList.remove('lagrimas'), 4600); },
+};
+const val = (v) => (typeof v === 'function' ? v(st) : v);
+
 // ---------------------------------------------------------------- fundos
 const bgWrap = $('#bg');
 let bgKey = '';
@@ -158,12 +173,13 @@ function setFundo(f) {
   layer.style.setProperty('--dim', f.dim != null ? f.dim : .5);
   layer.style.setProperty('--foco', f.foco || '50% 40%');
   const src = f.img;
-  if (f.retrato) { const b = document.createElement('div'); b.className = 'blur'; b.style.backgroundImage = `url("${src}")`; layer.appendChild(b); }
+  const bgs = `url("${src}")` + (f.alt ? `, url("${f.alt}")` : '');
+  if (f.retrato) { const b = document.createElement('div'); b.className = 'blur'; b.style.backgroundImage = bgs; layer.appendChild(b); }
   if (f.video || f.clip) {
     const v = document.createElement('video'); v.src = vsrc(f.video || f.clip); v.muted = true; v.loop = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.autoplay = true;
     v.style.objectPosition = f.foco || '50% 40%'; v.className = 'img';
     if (f.img) v.poster = f.img; layer.appendChild(v); v.play().catch(() => {});
-  } else { const im = document.createElement('div'); im.className = 'img'; im.style.backgroundImage = `url("${src}")`; layer.appendChild(im); }
+  } else { const im = document.createElement('div'); im.className = 'img'; im.style.backgroundImage = bgs; layer.appendChild(im); }
   bgWrap.appendChild(layer);
   document.body.classList.toggle('lado-dir', f.lado === 'dir');
   Clima.set(f.clima || null);
@@ -282,7 +298,7 @@ const vozDeOpcao = (o, cid) => { const v = nervosa(o, cid) ? o.vozNervosa : o.vo
 const fala = (nome, ms = 0) => { if (!nome) return; later(() => { if (A.ctx && A.on) A.narrate(vozUrl(nome)); }, ms); };
 
 function render(dir = 1) {
-  clearTimers(); A.stopNarr(); linkUsados.clear();
+  clearTimers(); A.stopNarr(); linkUsados.clear(); pensaEl.className = ''; aplicaNo();
   const p = P[st.i]; if (!p) return;
   setFundo(resolveFundo(p));
   if (A.ctx) { A.setZone(p.zona); if (p.som && dir > 0) A.once(p.som, .55); }
@@ -299,7 +315,10 @@ function render(dir = 1) {
       <blockquote class="ct-epi"><p>${esc(tr(c.epigrafe))}</p><cite>${esc(tr(c.fonte))}</cite></blockquote></div>`;
   } else txt.innerHTML = paras(p.texto).map((t, k) => pHTML(t, k === 0 && p.capitular ? 'cap' : '')).join('');
   box.innerHTML = ''; box.classList.remove('urgente', 'sobPressao');
-  [...txt.children].forEach((el, k) => { el.style.animationDelay = (k * .35) + 's'; });
+  Sensa.quente(val(p.quente)); Sensa.frio(val(p.frio));
+  const passoTxt = document.body.classList.contains('quente') ? .6 : .35;
+  [...txt.children].forEach((el, k) => { el.style.animationDelay = (k * passoTxt) + 's'; });
+  if (p.quentePulso && dir >= 0) later(() => Sensa.pulsoQuente(), (txt.children.length * passoTxt + .4) * 1000);
   const extras = $('#extras'); extras.innerHTML = '';
   const narr = narrOf(p);
   const narrTag = p.narracaoLang && p.narracaoLang !== LANG ? ` (${p.narracaoLang.toUpperCase()})` : '';
@@ -317,6 +336,7 @@ function render(dir = 1) {
   if (p.escolha) livre = renderEscolha(p);
   if (p.dialogo) livre = renderDialogo(p);
   if (p.minijogo) livre = renderMinijogo(p);
+  if (p.seq) livre = renderSeq(p);
   setNext(livre);
   btnPrev.disabled = idxVis(st.i, -1) < 0; btnPrev.textContent = U('voltar');
   btnNext.textContent = p.fim ? U('fim') : U('prox');
@@ -332,7 +352,8 @@ function ligaNarr(p, url) {
 }
 function setNext(on) { btnNext.disabled = !on; btnNext.classList.toggle('pulse', on); }
 function appendParas(list, cls = '') { paras(list).forEach((t, k) => { txt.insertAdjacentHTML('beforeend', pHTML(t, 'novo ' + cls)); txt.lastElementChild.style.animationDelay = (k * .35) + 's'; }); }
-const optHTML = (cid) => (o, k) => `<button class="opt ${o.silencio ? 'sil' : ''} ${nervosa(o, cid) || o.tremida ? 'nervosa' : ''}" data-id="${o.id}"><span class="k">${k + 1}</span>${o.silencio ? `<em>${U('silencio')}</em>` : esc(rotulo(o, cid))}</button>`;
+const travada = (o) => !!(o.travaSe && o.travaSe(st));
+const optHTML = (cid) => (o, k) => `<button class="opt ${o.silencio ? 'sil' : ''} ${nervosa(o, cid) || o.tremida ? 'nervosa' : ''} ${travada(o) ? 'travada' : ''}" data-id="${o.id}" ${travada(o) ? 'disabled' : ''}><span class="k">${k + 1}</span>${o.silencio ? `<em>${U('silencio')}</em>` : esc(rotulo(o, cid))}${travada(o) ? `<em class="trava">${esc(tr(o.travaTxt))}</em>` : ''}</button>`;
 const opcoesVis = (lista) => lista.filter((o) => !o.se || o.se(st));
 
 // ----- quieto: nenhum botão; se o leitor esperar, surge um "…". Pode ser uma fala com resposta ou um gesto.
@@ -388,6 +409,9 @@ function aplicar(o) {
   if (o.peso) mudaPeso(o.peso);
   const jaSabia = o.flag && [].concat(o.flag).every((f) => st.f[f]);
   if (o.flag) [].concat(o.flag).forEach((f) => { st.f[f] = true; });
+  if (o.afeto) st.afeto = (st.afeto || 0) + val(o.afeto);
+  if (o.lagrimas) setTimeout(() => Sensa.lagrimas(), 900);
+  if (o.quente) Sensa.pulsoQuente();
   if (o.aviso && !jaSabia) setTimeout(() => consequencia(tr(o.aviso)), $('#coracaoTut') ? 4800 : 700);
 }
 function escolher(p, id) {
@@ -403,6 +427,100 @@ function escolher(p, id) {
   aplicar(o); A.escolha(); registrar(e.id, id); salvar();
   later(() => { appendParas(resultadoDe(o, e.id)); setNext(true); }, 450);
   fala(vozDeOpcao(o, e.id), o.vozAtraso || 900);
+}
+
+// ----- etapas em sequência numa página (p.seq): pensamento, escolha, minijogo ou texto, uma depois da outra
+// Cada etapa feita fica gravada; voltando à página, as feitas reaparecem prontas e a sequência segue de onde parou.
+function renderSeq(p) {
+  const run = (k) => {
+    if (P[st.i] !== p) return;
+    if (k >= p.seq.length) { box.innerHTML = box.querySelector('.feita') ? box.innerHTML : ''; setNext(true); return; }
+    const it = p.seq[k], next = () => run(k + 1);
+    if (it.se && !it.se(st)) return next();
+    if (it.texto) { appendParas(it.texto); return later(next, Math.min(2400, paras(it.texto).length * 450 + 300)); }
+    if (it.pensa) return pensaEtapa(it.pensa, next);
+    if (it.escolha) return escolhaEtapa(it.escolha, next);
+    if (it.mg) return mgEtapa(it.mg, p, next);
+    next();
+  };
+  // a primeira etapa só abre depois que o texto da página terminou de entrar (o leitor lê, e então decide)
+  const jaFeita = p.seq.some((it, k) => k === 0 && ((it.pensa && (st.pensas || {})[it.pensa.id]) || (it.escolha && st.escolhas[it.escolha.id]) || (it.mg && st.feitos['mg:' + p.id + ':' + it.mg])));
+  const passoTxt = document.body.classList.contains('quente') ? .6 : .35;
+  later(() => run(0), jaFeita ? 0 : Math.round((txt.children.length * passoTxt + .9) * 1000));
+  return false;
+}
+function escolhaEtapa(e, next) {
+  const feita = st.escolhas[e.id];
+  if (feita) { const o = e.opcoes.find((x) => x.id === feita); if (o) appendParas(resultadoDe(o, e.id)); return next(); }
+  box.innerHTML = `<p class="eyebrow">${e.pergunta ? esc(tr(val(e.pergunta))) : U('oque')}</p>` + opcoesVis(e.opcoes).map(optHTML(e.id)).join('');
+  box.querySelectorAll('.opt').forEach((b) => b.onclick = () => {
+    const o = e.opcoes.find((x) => x.id === b.dataset.id); if (!o || st.escolhas[e.id]) return;
+    marcaNervosa(o, e.id); st.escolhas[e.id] = o.id;
+    box.querySelectorAll('.opt').forEach((x) => { x.disabled = true; x.classList.toggle('sel', x === b); });
+    if (o.pulso != null) Coracao.extra(o.pulso);
+    aplicar(o); A.escolha(); registrar(e.id, o.id); salvar();
+    fala(vozDeOpcao(o, e.id), o.vozAtraso || 600);
+    later(() => { box.innerHTML = `<p class="feita">${U('escolheu')} ${esc(rotulo(o, e.id))}</p>`; const r = paras(resultadoDe(o, e.id)); appendParas(resultadoDe(o, e.id)); later(next, r.length * 450 + 700); }, 450);
+  });
+}
+// a frase na ponta da língua: a conversa não espera. Dizer é interromper; se o tempo acaba, alguém fala por cima e ela engole.
+// O que ela engole fica na garganta (o nó cresce na tela e abafa o som) e escapa no Capítulo IV.
+const pensaEl = $('#pensa');
+function aplicaNo() {
+  const n = Math.min(4, (st.engoliu || []).length);
+  document.body.classList.remove('no-1', 'no-2', 'no-3', 'no-4'); if (n) document.body.classList.add('no-' + n);
+  A.no(n);
+}
+function pensaEtapa(pz, next) {
+  st.pensas = st.pensas || {};
+  const ja = st.pensas[pz.id];
+  if (ja) { appendParas(ja === 'disse' ? pz.dizer.resultado : pz.engolir.resultado); return next(); }
+  const tut = !st.f.tutPensa; st.f.tutPensa = true;
+  const reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const dur = (tut ? 8.5 : 4.6) * (reduz ? 1.6 : 1);
+  const frase = tr(val(pz.t)), quem = pz.quem ? tr(val(pz.quem)) : '';
+  const corte = Math.max(3, Math.round(frase.length * .62));
+  box.innerHTML = `<p class="eyebrow">${U('pensaEy')}</p>
+    <p class="pz-frase"><span class="pz-dash">—</span> <span class="pz-dito">${esc(frase.slice(0, corte))}</span><span class="pz-resto">${esc(frase.slice(corte))}</span><span class="pz-cur" aria-hidden="true"></span></p>
+    <div class="pz-vez" aria-hidden="true"><span class="pz-quem">${esc(quem ? U('vaiFalar').replace('{n}', quem) : U('conversaSegue'))}</span><span class="pz-barra"><i style="animation-duration:${dur}s"></i></span></div>
+    <div class="pensa-bts"><button class="opt pz-dizer" data-id="dizer"><span class="pz-ico" aria-hidden="true">${ICO_BOCA}</span>${U('dizer')}</button>
+    <button class="opt pz-engolir" data-id="engolir"><span class="pz-ico" aria-hidden="true">${ICO_ENGOLIR}</span>${U('engolir')}</button></div>
+    ${tut ? `<p class="dica">${U('pensaDica')}</p>` : ''}`;
+  A.tone(220, 1.2, 'sine', .016);
+  let acabou = false;
+  later(() => fim('engoliu', true), dur * 1000);
+  const fim = (qual, porTempo) => {
+    if (acabou || st.pensas[pz.id]) return; acabou = true;
+    st.pensas[pz.id] = qual;
+    box.querySelectorAll('.opt').forEach((x) => { x.disabled = true; x.classList.toggle('sel', (x.dataset.id === 'dizer') === (qual === 'disse')); });
+    const fr = box.querySelector('.pz-frase'); const vez = box.querySelector('.pz-vez');
+    registrar('pensa_' + pz.id, qual);
+    if (qual === 'disse') {
+      fr.classList.add('dita'); if (vez) vez.classList.add('parou');
+      aplicar(pz.dizer); fala(pz.dizer.voz, 300);
+      if (pz.dizer.pulso != null) Coracao.extra(pz.dizer.pulso);
+    } else {
+      fr.classList.add('engolida'); if (vez) vez.classList.add(porTempo ? 'falou' : 'parou');
+      (st.engoliu = st.engoliu || []).push(pz.id); A.engole(); aplicar(pz.engolir || {}); aplicaNo();
+      document.body.classList.add('engolindo'); later(() => document.body.classList.remove('engolindo'), 900);
+    }
+    salvar();
+    later(() => { box.innerHTML = ''; const r = paras(qual === 'disse' ? pz.dizer.resultado : pz.engolir.resultado); appendParas(qual === 'disse' ? pz.dizer.resultado : pz.engolir.resultado); later(next, r.length * 450 + 700); }, 1200);
+  };
+  box.querySelector('.pz-dizer').onclick = () => fim('disse');
+  box.querySelector('.pz-engolir').onclick = () => fim('engoliu');
+}
+const ICO_BOCA = '<svg viewBox="0 0 32 20"><path d="M2 9c5-5 9-6 14-3 5-3 9-2 14 3-4 6-9 9-14 9S6 15 2 9z"/><path d="M4 9.5c4 2 8 2.6 12 2.6s8-.6 12-2.6"/></svg>';
+const ICO_ENGOLIR = '<svg viewBox="0 0 24 28"><path d="M12 2v18M5 13l7 8 7-8"/><path d="M4 26h16"/></svg>';
+function mgEtapa(tipo, p, next) {
+  const key = 'mg:' + p.id + ':' + tipo;
+  if (st.feitos[key]) { const dep = p[tipo] && p[tipo].depois; if (dep) appendParas(val(dep)); return next(); }
+  box.innerHTML = `<p class="eyebrow">${U('momento')}</p><button class="opt jogar" id="mgGo"><span class="k">▶</span>${U('mg')[tipo]}</button><p class="dica">${val(U('dica')[tipo])}</p>`;
+  $('#mgGo').onclick = () => { box.innerHTML = ''; MG[tipo](p).then(() => {
+    st.feitos[key] = 1; salvar();
+    const dep = p[tipo] && p[tipo].depois; if (dep) appendParas(val(dep));
+    later(next, dep ? paras(val(dep)).length * 450 + 700 : 200);
+  }); };
 }
 
 // ----- diálogo em rodadas: cada opção pode ter a própria resposta; a rodada pode abrir com uma fala do outro
@@ -643,10 +761,144 @@ const MG = {
       madeira: !!st.f.arsenalTrancado,
       lenco: st.escolhas.lenco === 'guardar',
       fundo: p.duelo.fundo,
+      janela: ((st.aula && st.aula.leu) || []).includes('janela'),
     }).then((res) => {
       if (res.resultado === 'perdeu') { registrar('duelo_tentativa', 'perdeu'); st.tentativas = (st.tentativas || 0) + 1; salvar(); return MG.duelo(p); } // vencer é canon: perdeu, tenta de novo
       st.duelo = res; st.duelo.tentativas = st.tentativas || 0; registrar('duelo', res.resultado); if (res.resultado === 'deixou') mudaPeso(1);
       salvar(); fechaOverlay();
+    });
+  },
+
+  // ---------- o estudo: tempo de verdade (uma vela), itens para ler. Quem lê rápido e escolhe bem chega às perguntas sabendo mais.
+  estudo(p) {
+    return new Promise((resolve) => {
+      const E = p.estudo, o = abreOverlay('estudo');
+      const aula = st.aula = st.aula || {}; const leu = new Set(aula.leu || []);
+      o.innerHTML = `<div class="es-fundo" style="background-image:url('${E.img}'), url('${E.alt}')"></div>
+        <div class="es-vela" aria-hidden="true"><i></i><span class="es-chama"></span></div>
+        <div class="es-mesa">${E.itens.map((it) => `<button class="es-it ${it.lado ? 'lado' : ''}" data-id="${it.id}"><span class="es-ico" aria-hidden="true">${it.ico || '✦'}</span><b>${esc(tr(it.nome))}</b></button>`).join('')}</div>
+        <div class="es-leitura"><article class="es-card"><div class="es-img"></div><h3></h3><div class="es-txt"></div><button class="es-fecha" aria-label="Fechar">✕</button></article></div>
+        <div class="es-tut" aria-hidden="true"><svg class="mao" viewBox="0 0 40 48"><path d="M15 26V7a3.5 3.5 0 0 1 7 0v13l9.5 2.2c2.6.6 4.2 3.1 3.7 5.7l-2.6 12.6A5 5 0 0 1 27.7 44H18a5 5 0 0 1-4-2l-7.4-9.6a3.3 3.3 0 0 1 4.9-4.4z"/></svg><svg class="vela" viewBox="0 0 20 48"><path d="M10 2c3 4 4 7 0 11-4-4-3-7 0-11z"/><rect x="5" y="16" width="10" height="30" rx="2"/></svg></div>
+        <div class="es-fim"><p></p><button class="cta">${U('prox')}</button></div>`;
+      const vela = o.querySelector('.es-vela i'), chama = o.querySelector('.es-chama'), leitura = o.querySelector('.es-leitura'), card = o.querySelector('.es-card');
+      let aberto = null, t0 = 0, raf = 0, acabou = false, revela = [];
+      const fecha = () => { leitura.classList.remove('on'); aberto = null; Sensa.quente(false); revela.forEach(clearTimeout); revela = []; o.querySelectorAll('.es-it').forEach((b) => b.classList.remove('aberto')); };
+      const abre = (it, b) => {
+        if (acabou) return; fecha(); aberto = it.id; b.classList.add('aberto', 'lido'); leu.add(it.id);
+        if (it.flag) st.f[it.flag] = true;
+        A.sfx('pagina', .25, () => A.hiss(.25, 2600, .7, .04));
+        const img = it.img ? val(it.img) : null; const im = card.querySelector('.es-img');
+        im.style.backgroundImage = img ? `url('${img}')${it.imgAlt ? `, url('${it.imgAlt}')` : ''}` : ''; im.hidden = !img;
+        card.querySelector('h3').textContent = tr(it.nome);
+        const palavras = paras(val(it.texto)).join(' ').split(/(\s+)/);
+        const tx = card.querySelector('.es-txt'); tx.innerHTML = '';
+        const ms = it.lento ? 120 : 22; // olhar Justine: o texto entra devagar, e o tempo corre igual
+        if (it.quente) Sensa.quente(true);
+        palavras.forEach((w, k) => { const sp = document.createElement('span'); sp.textContent = w; sp.style.opacity = 0; tx.appendChild(sp); revela.push(setTimeout(() => { sp.style.opacity = 1; }, k * ms)); });
+        leitura.classList.add('on');
+      };
+      o.querySelectorAll('.es-it').forEach((b) => b.onclick = () => { const it = E.itens.find((x) => x.id === b.dataset.id); aberto === it.id ? fecha() : abre(it, b); });
+      leitura.addEventListener('click', (e) => { if (e.target === leitura) fecha(); });
+      o.querySelector('.es-fecha').onclick = fecha;
+      const DUR = (E.dur || 55) * 1000;
+      const anda = () => {
+        const k = clamp((performance.now() - t0) / DUR, 0, 1);
+        vela.style.transform = `scaleX(${(1 - k).toFixed(4)})`; chama.style.left = ((1 - k) * 100).toFixed(2) + '%';
+        if (k >= 1) return termina();
+        raf = requestAnimationFrame(anda);
+      };
+      const termina = () => {
+        if (acabou) return; acabou = true; cancelAnimationFrame(raf); fecha();
+        aula.leu = [...leu]; salvar();
+        A.sfx('sino-tarde', .7, () => [196, 392, 588].forEach((f, k) => A.tone(f, 3 - k * .6, 'sine', [.09, .04, .02][k])));
+        const fim = o.querySelector('.es-fim'); fim.querySelector('p').textContent = tr(E.sino); fim.classList.add('on');
+        fim.querySelector('.cta').onclick = () => { fechaOverlay(); resolve(); };
+      };
+      const comeca = () => { o.querySelector('.es-tut').classList.add('some'); t0 = performance.now(); raf = requestAnimationFrame(anda); A.sfx('pena-papel', .2); };
+      if (!st.f.tutEstudo) { st.f.tutEstudo = true; o.querySelector('.es-tut').classList.add('on'); setTimeout(comeca, 2600); } else setTimeout(comeca, 500);
+    });
+  },
+
+  // ---------- as perguntas: a mão de Justine sobe sozinha; quem acertar antes leva. A Mestra sempre diz a resposta certa depois.
+  perguntas(p) {
+    return new Promise((resolve) => {
+      const Q = p.perguntas, o = abreOverlay('perguntas');
+      const aula = st.aula = st.aula || {}; let k = 0, laura = 0, jus = 0, raf = 0;
+      o.innerHTML = `<div class="es-fundo" style="background-image:url('${Q.img}'), url('${Q.alt}')"></div>
+        <div class="pq-placar"><span class="pq-l">${U('voceN')}</span><b class="pq-nl">0</b><i>·</i><b class="pq-nj">0</b><span class="pq-j">Justine</span></div>
+        <div class="pq-caixa"><p class="pq-num"></p><h3 class="pq-q"></h3><div class="pq-ops"></div>
+        <div class="pq-mao"><span>${U('maoJustine')}</span><i><b></b></i></div><div class="pq-resp"></div></div>`;
+      const qEl = o.querySelector('.pq-q'), ops = o.querySelector('.pq-ops'), bar = o.querySelector('.pq-mao b'), resp = o.querySelector('.pq-resp');
+      const mostra = () => {
+        const q = Q.lista[k]; resp.innerHTML = ''; resp.classList.remove('on'); o.querySelector('.pq-mao').classList.remove('subiu');
+        o.querySelector('.pq-num').textContent = `${k + 1} / ${Q.lista.length}`; qEl.textContent = tr(q.q);
+        const embaralha = q.ops.map((t, i) => ({ t, i })).sort(() => Math.random() - .5);
+        ops.innerHTML = embaralha.map((x) => `<button class="opt" data-i="${x.i}">${esc(tr(x.t))}</button>`).join('');
+        const t0 = performance.now(), dur = q.justine * 1000; let fechado = false;
+        const fecha = (quem, certoLaura) => {
+          if (fechado) return; fechado = true; cancelAnimationFrame(raf);
+          ops.querySelectorAll('.opt').forEach((b) => { b.disabled = true; if (+b.dataset.i === 0) b.classList.add('certa'); });
+          if (quem === 'laura') { laura++; A.escolha(); } else { jus++; o.querySelector('.pq-mao').classList.add('subiu'); A.tone(330, .4, 'triangle', .03); }
+          o.querySelector('.pq-nl').textContent = laura; o.querySelector('.pq-nj').textContent = jus;
+          const linha = quem === 'laura' ? (laura === 1 ? U('maoSobe1') : U('maoSobe')) : certoLaura === false ? U('errou') : U('justinePrimeiro');
+          resp.innerHTML = `<p class="pq-gesto">${esc(linha)}</p><p class="pq-mestra">— ${esc(tr(q.resposta))}</p><button class="cta">${k + 1 < Q.lista.length ? U('proxPergunta') : U('prox')}</button>`;
+          resp.classList.add('on');
+          resp.querySelector('.cta').onclick = () => { k++; if (k < Q.lista.length) mostra(); else acaba(); };
+        };
+        ops.querySelectorAll('.opt').forEach((b) => b.onclick = () => { if (+b.dataset.i === 0) fecha('laura', true); else { b.classList.add('errada'); fecha('justine', false); } });
+        const anda = () => { const f = clamp((performance.now() - t0) / dur, 0, 1); bar.style.transform = `scaleX(${f.toFixed(4)})`; if (f >= 1) return fecha('justine'); raf = requestAnimationFrame(anda); };
+        raf = requestAnimationFrame(anda);
+      };
+      const acaba = () => {
+        aula.laura = laura; aula.justine = jus; aula.venceu = laura >= 3 ? 'laura' : laura === 2 ? 'empate' : 'justine';
+        if (aula.venceu === 'laura') st.afeto = (st.afeto || 0) + 2; else if (aula.venceu === 'empate') st.afeto = (st.afeto || 0) + 1;
+        registrar('aula', aula.venceu); salvar(); fechaOverlay(); resolve();
+      };
+      mostra();
+    });
+  },
+
+  // ---------- a taça: no brinde, segurar o vinho firme. As mãos frias e o coração fazem o vinho balançar; o mouse ou o dedo compensam.
+  taca(p) {
+    return new Promise((resolve) => {
+      const C = p.taca, o = abreOverlay('taca');
+      o.innerHTML = `<div class="es-fundo" style="background-image:url('${C.img}')${C.alt ? `, url('${C.alt}')` : ''}"></div>
+        <div class="tc-cena"><svg class="tc-taca" viewBox="-100 -120 200 240"><defs><clipPath id="tcBoca"><path d="M-62 -70 L62 -70 L48 20 Q0 48 -48 20 Z"/></clipPath></defs>
+        <g class="tc-g"><g clip-path="url(#tcBoca)"><rect class="tc-vinho" x="-160" y="-28" width="320" height="200"/></g>
+        <path class="tc-borda" d="M-62 -70 L62 -70 L48 20 Q0 48 -48 20 Z"/><path class="tc-haste" d="M-6 40 L-6 92 M6 40 L6 92 M-40 100 Q0 86 40 100"/></g>
+        <g class="tc-gotas"></g></svg></div>
+        <div class="tc-barra"><i></i></div>
+        <div class="tc-tut" aria-hidden="true"><svg viewBox="0 0 60 30"><path d="M8 15h44M8 15l7-6M8 15l7 6M52 15l-7-6M52 15l-7 6"/></svg></div>`;
+      const g = o.querySelector('.tc-g'), vinho = o.querySelector('.tc-vinho'), barra = o.querySelector('.tc-barra i'), gotas = o.querySelector('.tc-gotas');
+      const amp = .55 + Math.min(st.peso, 4) * .12 + (document.body.classList.contains('frio') ? .2 : 0);
+      let ruido = 0, vel = 0, ctrl = 0, x0 = null, t0 = 0, raf = 0, fora = 0, acabou = false, last = 0;
+      const DUR = 6500, LIM = 1;
+      const mv = (cx) => { if (x0 == null) x0 = cx; ctrl = clamp((cx - x0) / (innerWidth * .22), -1.6, 1.6); };
+      const pm = (e) => mv(e.clientX); const tm = (e) => { if (e.touches[0]) mv(e.touches[0].clientX); };
+      o.addEventListener('pointermove', pm); o.addEventListener('touchmove', tm, { passive: true });
+      const kd = (e) => { if (e.key === 'ArrowLeft') ctrl = clamp(ctrl - .15, -1.6, 1.6); if (e.key === 'ArrowRight') ctrl = clamp(ctrl + .15, -1.6, 1.6); };
+      addEventListener('keydown', kd);
+      const termina = (derramou) => {
+        if (acabou) return; acabou = true; cancelAnimationFrame(raf); removeEventListener('keydown', kd);
+        st.taca = { derramou }; if (derramou) { st.afeto = (st.afeto || 0) + 1; st.f.derramou = true; A.sfx('vinho-derrama', .6, () => A.hiss(.9, 900, .6, .06)); }
+        else A.sfx('brinde', .5, () => [1320, 1760].forEach((f, k) => A.tone(f, 1.2, 'sine', .03, k * .05)));
+        registrar('taca', derramou ? 'derramou' : 'firme'); salvar();
+        setTimeout(() => { fechaOverlay(); resolve(); }, derramou ? 1300 : 700);
+      };
+      const anda = (now) => {
+        const dt = Math.min(.05, (now - last) / 1000 || 0); last = now;
+        vel += (Math.random() - .5) * amp * 22 * dt - ruido * .9 * dt; ruido += vel * dt * 2.2; ruido = clamp(ruido, -2.2, 2.2);
+        const tilt = ruido - ctrl * .9, ang = tilt * 26;
+        vinho.setAttribute('transform', `rotate(${ang.toFixed(2)})`); g.setAttribute('transform', `rotate(${(-ctrl * 8).toFixed(2)})`);
+        fora = Math.abs(tilt) > LIM ? fora + dt : Math.max(0, fora - dt * 2);
+        o.classList.toggle('perigo', Math.abs(tilt) > LIM * .75);
+        if (fora > .35) { gotas.innerHTML = '<circle cx="66" cy="-60" r="5"/><circle cx="74" cy="-34" r="4"/><circle cx="70" cy="-8" r="6"/>'.replace(/66|74|70/g, (m) => (tilt > 0 ? m : '-' + m)); return termina(true); }
+        const k = clamp((now - t0) / DUR, 0, 1); barra.style.transform = `scaleX(${(1 - k).toFixed(4)})`;
+        if (k >= 1) return termina(false);
+        raf = requestAnimationFrame(anda);
+      };
+      const comeca = () => { o.querySelector('.tc-tut').classList.add('some'); t0 = performance.now(); last = t0; raf = requestAnimationFrame(anda); };
+      if (!st.f.tutTaca) { st.f.tutTaca = true; o.querySelector('.tc-tut').classList.add('on'); setTimeout(comeca, 2200); } else setTimeout(comeca, 600);
     });
   },
 };
@@ -696,6 +948,11 @@ function guardaEstado() {
 // Soma os dois minijogos do capítulo. A jornada soma com o Capítulo I (o hino do gelo), lido do mesmo navegador.
 function pontosDuelo(d) {
   if (!d) return 0;
+  if (d.modo === 'turnos') {
+    const q = 1500 * (d.leituras || 0) + 1200 * (d.perfeitos || 0) + 1000 * (d.aparos || 0) + 3000 * (d.toques || 0) + 1500 * (d.fintasLidas || 0) + 800 * (d.maxCombo || 0)
+      - 2500 * (d.sofridos || 0) - 6000 * (d.tentativas || 0) + (d.resultado === 'limpo' ? 10000 : 0) + (d.resultado === 'deixou' ? 3000 + (d.sofridos ? 0 : 10000) : 0);
+    return Math.max(2000, Math.round(q));
+  }
   const p = 2500 * (d.leituras || 0) + 3000 * (d.toques || 0) + 2000 * (d.fintasLidas || 0) + 1500 * (d.maxCombo || 0)
     - 2500 * (d.sofridos || 0) - 800 * (d.aparos || 0) - 6000 * (d.tentativas || 0) + (d.resultado === 'limpo' ? 10000 : 0)
     + (d.resultado === 'deixou' ? 3000 + (d.sofridos ? 0 : 10000) : 0); // baixar a espada: ela leu a abertura e escolheu não usar
@@ -728,9 +985,13 @@ function jogadorId() {
     return j;
   } catch (e) { return UUID.test(st.sessao) ? st.sessao : null; }
 }
+function pontosAula(a) {
+  if (!a || a.laura == null) return 0;
+  return Math.round(3000 * a.laura + 400 * (a.leu || []).filter((x) => !['janela', 'justine'].includes(x)).length + (a.venceu === 'laura' ? 6000 : a.venceu === 'empate' ? 2000 : 0));
+}
 function calculaPontos() {
-  const duelo = pontosDuelo(st.duelo), esconde = pontosEsconderijo(st.esconderijo);
-  st.pontos = { total: duelo + esconde, duelo, esconde, cap1: pontosCap1() };
+  const duelo = pontosDuelo(st.duelo), esconde = pontosEsconderijo(st.esconderijo), aula = pontosAula(st.aula), taca = st.taca ? (st.taca.derramou ? 500 : 3000) : 0;
+  st.pontos = { total: duelo + esconde + aula + taca, duelo, esconde, aula, taca, cap1: pontosCap1() };
   return st.pontos;
 }
 async function enviaPontos(pt) {
@@ -740,7 +1001,7 @@ async function enviaPontos(pt) {
     body: JSON.stringify({ p_jogador: j, p_capitulo: cap, p_pontos: pontos, p_detalhes: detalhes }),
   }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
   if (pt.cap1 != null) await rpc('cap01', Math.min(2000000, pt.cap1), { origem: 'cap02' });
-  const r = await rpc('cap02', pt.total, { duelo: pt.duelo, esconderijo: pt.esconde, duelo_res: st.duelo && st.duelo.resultado, ronda: st.escolhas.ronda || null });
+  const r = await rpc('cap02', pt.total, { duelo: pt.duelo, esconderijo: pt.esconde, aula: pt.aula, taca: pt.taca, duelo_res: st.duelo && st.duelo.resultado, ronda: st.escolhas.ronda || null });
   return r && r[0] ? r[0] : null;
 }
 function mostraPontos(pt, srv) {
@@ -749,7 +1010,7 @@ function mostraPontos(pt, srv) {
   $('#rsPontos').innerHTML = `
     <p class="eyebrow">${U('pontos')}</p>
     <p class="rs-num">${n(pt.total)}</p>
-    <ul class="rs-pts"><li><span>${U('ptsEsconde')}</span><b>${n(pt.esconde)}</b></li><li><span>${U('ptsDuelo')}</span><b>${n(pt.duelo)}</b></li>
+    <ul class="rs-pts"><li><span>${U('ptsAula')}</span><b>${n(pt.aula || 0)}</b></li><li><span>${U('ptsTaca')}</span><b>${n(pt.taca || 0)}</b></li><li><span>${U('ptsEsconde')}</span><b>${n(pt.esconde)}</b></li><li><span>${U('ptsDuelo')}</span><b>${n(pt.duelo)}</b></li>
     ${pt.cap1 != null ? `<li><span>${U('ptsCap1')}</span><b>${n(pt.cap1)}</b></li>` : ''}</ul>
     ${jornada != null ? `<p class="rs-jornada"><span>${U('jornada')}</span><b>${n(jornada)}</b>${srv && srv.posicao ? `<em>${U('posicao')(n(srv.posicao), n(srv.leitores))}</em>` : ''}</p>` : `<p class="rs-sem">${U('semCap1')}</p>`}`;
 }

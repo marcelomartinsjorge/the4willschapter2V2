@@ -1,5 +1,17 @@
 # Capítulo 2 (Laura) · Notas
 
+## Versão 13 (upgrade de personagens)
+
+- **Parte II · A Aula (nova):** sala com Justine, Cecily, Maud e Mestra Hadasa. **Minijogo do estudo** com 55 s de tempo real e 8 itens; **minijogo das perguntas** contra a mão de Justine. A Mestra sempre diz a resposta certa (Corwin, Ponte de Andrey, balança, garrote). Aldis corrigida por Justine. Os Lúmae em 4 níveis, pelo que Aheryn fez no Cap. I.
+- **Parte IV · A Mesa (nova):** jantar com 12 lugares, Joseph e a lei, Markus e Tobias, o brinde do noivado de Justine com Joseph (**minijogo da taça**), o corredor e Justine na janela.
+- **Sensações de Laura:** rosto quente (dourado, som abafado, texto mais lento) perto de Justine; mãos frias (opções tremem, contorno azul no coração); lágrimas (a tela embaça depois de mentir).
+- **Engolir:** 4 pensamentos que sobem na tela (aula, lei, noiva, joseph). Dizer ou engolir; o que ela engole vai em `cap2.engoliu` para o Cap. IV.
+- **Afeto de Justine** escondido, com faixas rival / amiga / sem nome.
+- **Para o Cap. IV:** `cap2.aula`, `cap2.lumae`, `cap2.viuMerrow`, `cap2.engoliu`, `cap2.jantar`, `cap2.justine.afeto/faixa/noiva`.
+- **Partes:** I Sob a Seda · II A Aula · III O Oratório · IV A Mesa · V Antes da Alvorada.
+- **Mídias pendentes:** 9 imagens, 15 vozes e 5 sons (ver `MIDIAS_CAP2_UPGRADE.md`). Enquanto não chegam, o capítulo usa imagens antigas no lugar e roda sem os sons.
+
+
 ## Versão 12 (plano de profissionalização)
 
 - **Avisos de consequência** nas escolhas que o Cap. IV lê: a promessa ("Dolores vai lembrar disso."), Justine desconfiar ("Justine vai lembrar disso.", só na primeira vez), o lenço e a pergunta de Simon. Cartão próprio, com ícone pulsando e som.
@@ -208,3 +220,22 @@ Recomendo **não misturar**. O Cap. 3 é outro ponto de vista (o Cavaleiro) e fu
 - c08: lenço manchado (se guardou) ou bolha aberta (se aparou sem lenço).
 - Duelo: "Baixar a espada"; frase do peito sem enunciar regra; baixar a espada pontua como o toque.
 - Tela final: pontos depois das escolhas; botão "Fechar os olhos · Capítulo III" escurece a tela antes de trocar.
+
+## v14 (15/10/2026)
+- 9 imagens novas incluídas (aula-sala, mesa-estudos, justine-pena, jantar-salao, jantar-joseph, jantar-markus, jantar-brinde, taca, corredor-noite).
+- Texto ajustado às imagens: lugares na mesa (d01), Simon troca de lugar para ficar perto de Joseph (d02), Tobias adulto (d03), Justine segura a taça junto do peito (d04). Focos de celular ajustados; corredor com o painel à esquerda para Justine aparecer.
+- Engolir redesenhado para não repetir o "afogar" do Aheryn: a frase aparece pela metade na caixa ("Na ponta da língua"), uma barra mostra quem vai falar; se o tempo acaba (4,6 s; 8,5 s na primeira vez; ×1,6 com movimento reduzido), alguém fala por cima e ela engole. Cada coisa engolida aperta o "nó" na tela (sombra que fecha nas bordas) e abafa o som do capítulo (filtro 9000/5200/3400/2500 Hz). Campo novo `quem` em cada pensa.
+- Vídeos opcionais em fundo: assets/video/aula-sala.mp4, jantar-joseph.mp4, corredor-noite.mp4. Sem o arquivo, aparece a imagem (poster).
+
+## v15 (15/10/2026)
+- 15 vozes novas da Laura e 5 sons instalados (normalizados: vozes −22 LUFS, salão −27,5, efeitos −16; sino cortado em 7 s).
+- Vídeo da aula (ida e volta, 20 s). Joseph e corredor ficam em imagem.
+- **Duelo por turnos** (`duelo-turnos.js`, substitui o "Ler Simon" em tempo real; o antigo fica no arquivo `duelo.js` e empresta a trilha):
+  - Turno de Laura: menu Estocada / Corte / Finta / Respirar. Estocada e Corte pedem acertar o tempo quando o anel fecha (perfeito / entrou / ele defende).
+  - Turno de Simon: ele avisa com o corpo (as mesmas poses), o anel fecha sobre Laura; Desviar (janela larga) ou Aparar (estreita, tira guarda dele; de cima vale o dobro). Golpe baixo não se apara.
+  - O coração é o recurso: sobe com golpes e com o que leva, estreita as janelas; Respirar baixa.
+  - Guarda de Simon a zero abre a costela: um tempo para tocar. Três toques vencem; o terceiro congela (tocar ou baixar a espada). Três marcas: perde e tenta de novo (como antes).
+  - Fase 2: às vezes dois ataques seguidos; fase 3: fúria, três seguidos.
+  - Quem leu "A janela" no estudo ganha a dica "O pé de trás." no primeiro golpe de cima.
+  - Teclado: 1–4 escolhem, Espaço golpeia, ↑ apara, ↓ desvia. No celular, botões grandes e tocar no palco golpeia.
+  - Pontuação própria (`modo: 'turnos'`).
