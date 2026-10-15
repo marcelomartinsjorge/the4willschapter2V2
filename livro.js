@@ -456,6 +456,7 @@ function escolhaEtapa(e, next) {
   box.querySelectorAll('.opt').forEach((b) => b.onclick = () => {
     const o = e.opcoes.find((x) => x.id === b.dataset.id); if (!o || st.escolhas[e.id]) return;
     marcaNervosa(o, e.id); st.escolhas[e.id] = o.id;
+    if (o.fundo) { const pg = P[st.i]; (st.fundoPag = st.fundoPag || {})[pg.id] = o.fundo; setFundo(o.fundo); }
     box.querySelectorAll('.opt').forEach((x) => { x.disabled = true; x.classList.toggle('sel', x === b); });
     if (o.pulso != null) Coracao.extra(o.pulso);
     aplicar(o); A.escolha(); registrar(e.id, o.id); salvar();

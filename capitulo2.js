@@ -569,7 +569,7 @@ window.LIVRO = {
       ],
       seq: [
         { escolha: { id: 'corredor', pergunta: T('Justine', 'Justine'), opcoes: [
-          { id: 'ficar', afeto: 2, quente: true, txt: T('Encostar a mão no vidro, ao lado da dela', 'Rest my hand on the glass, beside hers'),
+          { id: 'ficar', afeto: 2, quente: true, fundo: { img: 'assets/images/vidro-maos.jpg', alt: 'assets/images/corredor-noite.jpg', kb: 'in', dim: .45, foco: '62% 45%', lado: 'esq' }, txt: T('Encostar a mão no vidro, ao lado da dela', 'Rest my hand on the glass, beside hers'),
             resultado: [T('Fico. O vidro está frio. Ficamos as duas com a mão nele até a vela do corredor apagar.', 'I stay. The glass is cold. We both keep our hands on it until the corridor candle goes out.')] },
           { id: 'mes', afeto: 1, flag: 'justineDesconfia', aviso: T('Justine vai lembrar disso.', 'Justine will remember that.'), voz: 'corredor-mes', txt: T('— Ainda falta um mês. Muita coisa acontece em um mês.', '— There’s still a month. A lot can happen in a month.'),
             resultado: [T('Ela vira devagar.', 'She turns slowly.'), T('— O que você está fazendo, Laura?', '— What are you doing, Laura?'), T('Eu não respondo.', 'I don’t answer.')] },

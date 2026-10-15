@@ -34,6 +34,20 @@ Página nova (d05a): Joseph para para Laura passar e não se afasta o bastante. 
 
 ---
 
+### 3 `vidro-maos.jpg` · as mãos no vidro (opcional, aparece só se o leitor escolher "Encostar a mão no vidro")
+Troca o fundo da cena do corredor quando Laura fica ao lado de Justine. Enquanto não existir, fica `corredor-noite.jpg`.
+**O texto fica à esquerda, então as duas precisam estar no centro e no terço direito.** É a imagem mais íntima do capítulo: o gesto é só as mãos lado a lado, sem beijo e sem abraço (as duas têm 16 e 17 anos).
+
+**Positive:** cinematic photorealistic shot at the end of a dark medieval castle corridor at night, two teenage girls stand side by side at a tall arched stone window, seen from behind and slightly from the side, the taller one in a high-collared slate-blue dress with dark brown hair in a low bun, the other with long wavy golden-blonde hair in a cream linen dress, both have one palm resting flat on the cold glass, their hands a few centimeters apart, almost touching, their faces turned toward the window and the moonlit castle outside, neither looks at the other, cold blue moonlight on the glass and a single warm candle glow from the left, long tapestries in the dark, quiet tender sad mood, both figures in the center and right of the frame, the left third is dark wall, shallow depth of field, 35mm film look
+
+**Negative:** kissing, embrace, holding each other, faces close together, romantic pose, looking at camera, smiling, revealing clothes, men, other people, modern objects, electric light, painting, illustration, anime, text, watermark, deformed hands, extra fingers, fused hands
+
+**Se a IA errar:**
+- **Mãos grudadas ou deformadas:** gere de novo com "each hand clearly separate, five fingers, a visible gap between the two hands".
+- **Rostos viraram um para o outro:** reforce "both faces in profile looking out through the window".
+
+---
+
 ## Dublagens novas (opcional)
 
 A cena do atraso no jantar (d01) tem duas falas novas de Laura. Por enquanto entram sem voz. Se gravar, salve em `assets/audio/voz/` e me avise que eu ligo no código.
