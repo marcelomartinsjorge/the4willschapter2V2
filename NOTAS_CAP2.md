@@ -255,3 +255,8 @@ Recomendo **não misturar**. O Cap. 3 é outro ponto de vista (o Cavaleiro) e fu
   - Quem leu "A janela" no estudo ganha a dica "O pé de trás." no primeiro golpe de cima.
   - Teclado: 1–4 escolhem, Espaço golpeia, ↑ apara, ↓ desvia. No celular, botões grandes e tocar no palco golpeia.
   - Pontuação própria (`modo: 'turnos'`).
+
+## v18
+- Lenço de Justine: guardado em "bolso interno do vestido" (Laura usa manga curta). Flag `guardar` inalterada.
+- Jogo da taça reescrito: segurar ◀/▶ (setas, A/D, ou tocar nos lados) para inclinar a taça de volta; medidor com faixa verde; tela de regra antes de começar; 7 s. Derramar não encerra a história (só muda Justine/Dolores). Teste: robô atento vence, parado derrama (PC e celular, 0 erros).
+- aula.jpg trocada por versão com manga curta (backup: aula_manga_longa_backup.jpg).

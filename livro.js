@@ -905,19 +905,26 @@ const MG = {
         <g class="tc-g"><g clip-path="url(#tcBoca)"><rect class="tc-vinho" x="-160" y="-28" width="320" height="200"/></g>
         <path class="tc-borda" d="M-62 -70 L62 -70 L48 20 Q0 48 -48 20 Z"/><path class="tc-haste" d="M-6 40 L-6 92 M6 40 L6 92 M-40 100 Q0 86 40 100"/></g>
         <g class="tc-gotas"></g></svg></div>
+        <div class="tc-lado tc-esq" data-d="-1"><span>◀</span></div><div class="tc-lado tc-dir" data-d="1"><span>▶</span></div>
+        <div class="tc-medidor" aria-hidden="true"><i class="tc-seguro"></i><b class="tc-ponteiro"></b></div>
+        <p class="tc-ajuda">${U('tacaAjuda')}</p>
         <div class="tc-barra"><i></i></div>
-        <div class="tc-tut" aria-hidden="true"><svg viewBox="0 0 60 30"><path d="M8 15h44M8 15l7-6M8 15l7 6M52 15l-7-6M52 15l-7 6"/></svg></div>`;
-      const g = o.querySelector('.tc-g'), vinho = o.querySelector('.tc-vinho'), barra = o.querySelector('.tc-barra i'), gotas = o.querySelector('.tc-gotas');
-      const amp = .55 + Math.min(st.peso, 4) * .12 + (document.body.classList.contains('frio') ? .2 : 0);
-      let ruido = 0, vel = 0, ctrl = 0, x0 = null, t0 = 0, raf = 0, fora = 0, acabou = false, last = 0;
-      const DUR = 6500, LIM = 1;
-      const mv = (cx) => { if (x0 == null) x0 = cx; ctrl = clamp((cx - x0) / (innerWidth * .22), -1.6, 1.6); };
-      const pm = (e) => mv(e.clientX); const tm = (e) => { if (e.touches[0]) mv(e.touches[0].clientX); };
-      o.addEventListener('pointermove', pm); o.addEventListener('touchmove', tm, { passive: true });
-      const kd = (e) => { if (e.key === 'ArrowLeft') ctrl = clamp(ctrl - .15, -1.6, 1.6); if (e.key === 'ArrowRight') ctrl = clamp(ctrl + .15, -1.6, 1.6); };
-      addEventListener('keydown', kd);
+        <div class="tc-intro"><h2>${U('mg').taca}</h2><p>${U('tacaRegra')}</p><p class="tc-nota">${U('tacaNota')}</p><button class="cta tc-go">${U('tacaGo')}</button></div>`;
+      const g = o.querySelector('.tc-g'), vinho = o.querySelector('.tc-vinho'), barra = o.querySelector('.tc-barra i'), gotas = o.querySelector('.tc-gotas'), pont = o.querySelector('.tc-ponteiro');
+      const amp = 1.15 + Math.min(st.peso, 4) * .14 + (document.body.classList.contains('frio') ? .2 : 0);
+      let tilt = 0, vel = 0, gust = 0, dir = 0, t0 = 0, raf = 0, fora = 0, acabou = false, last = 0, teclas = new Set(), toques = new Set();
+      const DUR = 7000, LIM = 1, MAXT = 1.8;
+      const recalcula = () => { const l = teclas.has(-1) || toques.has(-1), r = teclas.has(1) || toques.has(1); dir = l && !r ? -1 : r && !l ? 1 : 0; o.querySelector('.tc-esq').classList.toggle('on', dir === -1); o.querySelector('.tc-dir').classList.toggle('on', dir === 1); };
+      o.querySelectorAll('.tc-lado').forEach((el) => {
+        const d = +el.dataset.d;
+        el.addEventListener('pointerdown', (e) => { e.preventDefault(); toques.add(d); recalcula(); });
+        ['pointerup', 'pointercancel', 'pointerleave'].forEach((ev) => el.addEventListener(ev, () => { toques.delete(d); recalcula(); }));
+      });
+      const kd = (e) => { const d = (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') ? -1 : (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') ? 1 : 0; if (d) { e.preventDefault(); e.stopPropagation(); teclas.add(d); recalcula(); } };
+      const ku = (e) => { const d = (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') ? -1 : (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') ? 1 : 0; if (d) { teclas.delete(d); recalcula(); } };
+      addEventListener('keydown', kd, true); addEventListener('keyup', ku, true);
       const termina = (derramou) => {
-        if (acabou) return; acabou = true; cancelAnimationFrame(raf); removeEventListener('keydown', kd);
+        if (acabou) return; acabou = true; cancelAnimationFrame(raf); removeEventListener('keydown', kd, true); removeEventListener('keyup', ku, true);
         st.taca = { derramou }; if (derramou) { st.afeto = (st.afeto || 0) + 1; st.f.derramou = true; A.sfx('vinho-derrama', .6, () => A.hiss(.9, 900, .6, .06)); }
         else A.sfx('brinde', .5, () => [1320, 1760].forEach((f, k) => A.tone(f, 1.2, 'sine', .03, k * .05)));
         registrar('taca', derramou ? 'derramou' : 'firme'); salvar();
@@ -925,9 +932,10 @@ const MG = {
       };
       const anda = (now) => {
         const dt = Math.min(.05, (now - last) / 1000 || 0); last = now;
-        vel += (Math.random() - .5) * amp * 22 * dt - ruido * .9 * dt; ruido += vel * dt * 2.2; ruido = clamp(ruido, -2.2, 2.2);
-        const tilt = ruido - ctrl * .9, ang = tilt * 26;
-        vinho.setAttribute('transform', `rotate(${ang.toFixed(2)})`); g.setAttribute('transform', `rotate(${(-ctrl * 8).toFixed(2)})`);
+        gust = clamp(gust + (Math.random() - .5) * dt * 9, -1, 1);
+        vel += (gust * amp + tilt * .55 - dir * 3.4) * dt; vel *= (1 - 1.3 * dt); tilt = clamp(tilt + vel * dt, -MAXT, MAXT);
+        vinho.setAttribute('transform', `rotate(${(tilt * 26).toFixed(2)})`); g.setAttribute('transform', `rotate(${(-dir * 4).toFixed(2)})`);
+        pont.style.left = (50 + tilt / MAXT * 50).toFixed(1) + '%';
         fora = Math.abs(tilt) > LIM ? fora + dt : Math.max(0, fora - dt * 2);
         o.classList.toggle('perigo', Math.abs(tilt) > LIM * .75);
         if (fora > .35) { gotas.innerHTML = '<circle cx="66" cy="-60" r="5"/><circle cx="74" cy="-34" r="4"/><circle cx="70" cy="-8" r="6"/>'.replace(/66|74|70/g, (m) => (tilt > 0 ? m : '-' + m)); return termina(true); }
@@ -935,8 +943,8 @@ const MG = {
         if (k >= 1) return termina(false);
         raf = requestAnimationFrame(anda);
       };
-      const comeca = () => { o.querySelector('.tc-tut').classList.add('some'); t0 = performance.now(); last = t0; raf = requestAnimationFrame(anda); };
-      if (!st.f.tutTaca) { st.f.tutTaca = true; o.querySelector('.tc-tut').classList.add('on'); setTimeout(comeca, 2200); } else setTimeout(comeca, 600);
+      o.querySelector('.tc-go').onclick = () => { o.querySelector('.tc-intro').remove(); o.classList.add('jogando'); t0 = performance.now(); last = t0; raf = requestAnimationFrame(anda); };
+      window.__TACA = { tilt: () => tilt, dir: (d) => { toques.clear(); if (d) toques.add(d); recalcula(); }, acabou: () => acabou }; // testes automáticos
     });
   },
 };
