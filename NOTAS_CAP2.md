@@ -272,6 +272,6 @@ Aplicados os itens aprovados de `claude/REVISAO_CAP2_CAP3_PROMPT_MESTRE.md` (os 
 - c06 (mentir): “não pergunta mais”, “do que preciso”. c08: “a garganta ainda dói”. Tela final: “O que Laura engoliu hoje…”.
 - c05b 🎙: PT “Vou precisar.” (EN gravado igual).
 
-### Regravar quando houver sessão de vozes
-- a01 (line1): “os alfinetes presos na boca como espinhos de um animal pequeno” → Laura não tem imagem literária. Troca sugerida: “os alfinetes presos entre os lábios”.
-- c05b (vou-precisar): EN “I’m going to need to be.” → “I’m going to need it.”
+### Regravações feitas (23/10)
+- a01 (`line1.mp3`): trecho novo “the cold tape against my skin, the pins held between his lips” emendado na faixa original (texto PT/EN atualizado).
+- c05b (`vou-precisar.mp3`): nova gravação “I’m going to need it.” (texto PT/EN atualizado). Original em `backup_audio/`.

@@ -70,8 +70,8 @@ window.LIVRO = {
     { id: 'a01', zona: 'alfaiataria', fundo: { img: 'assets/images/alfaiate-gideon.jpg', kb: 'in', foco: '62% 35%', lado: 'dir', clima: 'poeira' },
       narracao: 'assets/audio/narration/line1.mp3', narracaoLang: 'en', capitular: true,
       texto: [
-        T('O alfaiate mede cada centímetro do meu corpo pela milésima vez nesta semana, a fita métrica fria contra a pele, os alfinetes presos na boca como espinhos de um animal pequeno. Daqui a um mês acontece o Torneio Real, e minha mãe, a Mãe-Rainha Dolores D’Orrose, parece mais ansiosa do que eu. Quer que eu esteja impecável diante do novo General-Rei.',
-          'The tailor measures every inch of my body for the thousandth time this week, the cold tape against my skin, the pins held in his mouth like the spines of some small animal. In a month the Royal Tournament takes place, and my mother, the Mother-Queen Dolores D’Orrose, seems more anxious than I am. She wants me flawless before the new General-King.'),
+        T('O alfaiate mede cada centímetro do meu corpo pela milésima vez nesta semana, a fita métrica fria contra a pele, os alfinetes presos entre os lábios. Daqui a um mês acontece o Torneio Real, e minha mãe, a Mãe-Rainha Dolores D’Orrose, parece mais ansiosa do que eu. Quer que eu esteja impecável diante do novo General-Rei.',
+          'The tailor measures every inch of my body for the thousandth time this week, the cold tape against my skin, the pins held between his lips. In a month the Royal Tournament takes place, and my mother, the Mother-Queen Dolores D’Orrose, seems more anxious than I am. She wants me flawless before the new General-King.'),
       ] },
 
     { id: 'a02', zona: 'alfaiataria', fundo: { img: 'assets/images/alfaiate-olhar.jpg', kb: 'none', foco: '35% 40%', dim: .55, clima: 'poeira' }, pulso: .5, avancaDepois: true,
@@ -663,7 +663,7 @@ window.LIVRO = {
 
     { id: 'c05b', zona: 'laranjal', se: (st) => !!(st.duelo && st.duelo.resultado && st.duelo.resultado !== 'deixou'),
       fundo: { img: 'assets/images/laranjal-lua.jpg', kb: 'in', foco: '60% 45%', dim: .55, clima: 'poeira-azul' }, pulso: .6,
-      texto: [T('— Espero que você esteja certo, irmãozinho. Vou precisar.', '— I hope you’re right, little brother. I’m going to need to be.')],
+      texto: [T('— Espero que você esteja certo, irmãozinho. Vou precisar.', '— I hope you’re right, little brother. I’m going to need it.')],
       vozAuto: 'vou-precisar', vozAtraso: 500 }, // canon
 
     { id: 'c06', zona: 'laranjal', fundo: { img: 'assets/images/laranjal-lua.jpg', kb: 'in', foco: '60% 45%', dim: .55, clima: 'poeira-azul' }, pulso: 1,
