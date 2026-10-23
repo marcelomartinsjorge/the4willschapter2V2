@@ -260,3 +260,18 @@ Recomendo **não misturar**. O Cap. 3 é outro ponto de vista (o Cavaleiro) e fu
 - Lenço de Justine: guardado em "bolso interno do vestido" (Laura usa manga curta). Flag `guardar` inalterada.
 - Jogo da taça reescrito: segurar ◀/▶ (setas, A/D, ou tocar nos lados) para inclinar a taça de volta; medidor com faixa verde; tela de regra antes de começar; 7 s. Derramar não encerra a história (só muda Justine/Dolores). Teste: robô atento vence, parado derrama (PC e celular, 0 erros).
 - aula.jpg trocada por versão com manga curta (backup: aula_manga_longa_backup.jpg).
+
+## v19 · revisão pelo Prompt Mestre v2 (23/10)
+Aplicados os itens aprovados de `claude/REVISAO_CAP2_CAP3_PROMPT_MESTRE.md` (os itens 2 e 4 foram retirados; a cronologia oficial agora está no Prompt Mestre).
+- Lenço: no treino ele vai enrolado na mão (e não no cabo); Simon aponta a mão; no quarto, ela desenrola da mão.
+- Crônica dos Lúmae: “em mais de um século”.
+- Jantar: Godric cochila; a colher repetida saiu; a ordem dos lugares ficou clara (Lorde Avellan nomeado); Markus “agradece pelo nome”; o Avellan fala “desde que chegou”; Simon “sentado bem reto”; brinde sem “como quem lê” e sem “frias como a prata”.
+- a02/a03: palmos no lugar de metro; a03 sem “milésima” e sem “pesadelo”.
+- Gideon: “a senhora”. Promessa: “Pesa atrás do peito”.
+- Justine: “sem deboche nenhum” / “Nós estudamos essa regra”; a fala da Juíza que “pesou errado”; d05 no imperativo formal.
+- c06 (mentir): “não pergunta mais”, “do que preciso”. c08: “a garganta ainda dói”. Tela final: “O que Laura engoliu hoje…”.
+- c05b 🎙: PT “Vou precisar.” (EN gravado igual).
+
+### Regravar quando houver sessão de vozes
+- a01 (line1): “os alfinetes presos na boca como espinhos de um animal pequeno” → Laura não tem imagem literária. Troca sugerida: “os alfinetes presos entre os lábios”.
+- c05b (vou-precisar): EN “I’m going to need to be.” → “I’m going to need it.”
