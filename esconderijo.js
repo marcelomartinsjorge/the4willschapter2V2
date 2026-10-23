@@ -11,7 +11,7 @@
       r4: ['Quando a luz da tocha chegar', 'segure até ela passar'],
       regra: 'Tenho que ficar calma. Meu coração não pode disparar.', comecar: 'Encostar na pedra', teclas: 'Barra de espaço ou toque no coração. Para segurar, mantenha pressionado.',
       dica: 'Toque quando o anel encontrar o coração.', luz: 'A luz chega. Segure!', solta: 'Pode soltar.',
-      soltouCedo: 'Solto o ar alto demais.', naoSegurou: 'A luz passa por nós e eu esqueço de respirar.',
+      soltouCedo: 'Solto o ar alto demais.', soltaJa: 'Solte. Ainda não.', naoSegurou: 'A luz passa por nós e eu esqueço de respirar.',
       firme: 'firme', quase: 'quase', fora: 'fora de hora', perdeu: 'perdida',
       tocha: 'a tocha', bpm: 'batidas por minuto', venceu: 'A tocha passou.', descobertos: 'Não aguento.',
     },
@@ -21,7 +21,7 @@
       r4: ['When the torchlight comes', 'hold until it passes'],
       regra: 'I have to stay calm. My heart can’t start racing.', comecar: 'Press against the stone', teclas: 'Space bar or tap the heart. To hold, keep it pressed.',
       dica: 'Tap when the ring meets the heart.', luz: 'The light is here. Hold!', solta: 'You can let go.',
-      soltouCedo: 'I let my breath out too loud.', naoSegurou: 'The light passes over us and I forget to breathe.',
+      soltouCedo: 'I let my breath out too loud.', soltaJa: 'Let go. Not yet.', naoSegurou: 'The light passes over us and I forget to breathe.',
       firme: 'steady', quase: 'almost', fora: 'off beat', perdeu: 'missed',
       tocha: 'the torch', bpm: 'beats per minute', venceu: 'The torch has passed.', descobertos: 'I can’t hold it.',
     },
@@ -63,7 +63,7 @@
 
       const S = { firmes: 0, quase: 0, falhas: 0, fora: 0, holdsOk: 0, holdsFail: 0, bpmMax: 0, bpmFinal: 0, venceu: false };
       let bpm = 88 + Math.min(opts.peso || 0, 4) * 5, t0 = 0, rodando = false, acabou = false, apertado = false, raf = 0;
-      let proxBatida = 0; const batidas = [];
+      let proxBatida = 0; const batidas = []; let desde = 0, avisouFolego = false, ultT = 0; // desde: quando o botão foi apertado
       let vidDur = 8.9; const eventos = VID_LUZ.map((v) => ({ v, t: v / vidDur * DUR, estado: 'espera', ini: 0 }));
       const ajustaVideo = () => { if (vid.duration && isFinite(vid.duration)) { vidDur = vid.duration; if (!rodando) DUR = vidDur / RATE; eventos.forEach((e) => { e.t = e.v / vidDur * DUR; }); } try { vid.playbackRate = RATE; } catch (e) {} };
       vid.addEventListener('loadedmetadata', ajustaVideo);
@@ -83,12 +83,12 @@
         if (eventoAtivo(t)) return; // na hora da luz, tocar não conta: é segurar
         let melhor = null, dmin = 9;
         for (const b of batidas) if (!b.julgada) { const d = Math.abs(t - b.t); if (d < dmin) { dmin = d; melhor = b; } }
-        if (melhor && dmin <= .11) { melhor.julgada = 'firme'; S.firmes++; muda(-1.6); fol.textContent = T.firme; fol.className = 'ez-fol on ok'; }
+        if (melhor && dmin <= .11) { melhor.julgada = 'firme'; S.firmes++; muda(-3); fol.textContent = T.firme; fol.className = 'ez-fol on ok'; }
         else if (melhor && dmin <= .2) { melhor.julgada = 'quase'; S.quase++; muda(-.4); fol.textContent = T.quase; fol.className = 'ez-fol on'; }
         else { S.fora++; muda(3); fol.textContent = T.fora; fol.className = 'ez-fol on mal'; }
         clearTimeout(toque.id); toque.id = setTimeout(() => (fol.className = 'ez-fol'), 380);
       };
-      const aperta = (e) => { if (e) e.preventDefault(); if (apertado) return; apertado = true; btn.classList.add('apertado'); toque(); };
+      const aperta = (e) => { if (e) e.preventDefault(); if (apertado) return; apertado = true; desde = agora(); avisouFolego = false; btn.classList.add('apertado'); toque(); };
       const solta = () => { apertado = false; btn.classList.remove('apertado'); };
       btn.addEventListener('pointerdown', aperta);
       ['pointerup', 'pointercancel', 'pointerleave'].forEach((ev) => btn.addEventListener(ev, solta));
@@ -123,7 +123,7 @@
           }
           if (!b.julgada && t > b.t + .22) {
             if (ev || eventos.some((e) => b.t >= e.t && b.t <= e.t + SEGURA + JANELA)) b.julgada = 'ignorada';
-            else { b.julgada = 'falha'; S.falhas++; muda(5); fol.textContent = T.perdeu; fol.className = 'ez-fol on mal'; clearTimeout(toque.id); toque.id = setTimeout(() => (fol.className = 'ez-fol'), 380); }
+            else { b.julgada = 'falha'; S.falhas++; muda(9); fol.textContent = T.perdeu; fol.className = 'ez-fol on mal'; clearTimeout(toque.id); toque.id = setTimeout(() => (fol.className = 'ez-fol'), 380); }
           }
         }
         while (batidas.length && batidas[0].julgada && batidas[0].soou && t - batidas[0].t > 1) batidas.shift();
@@ -131,6 +131,12 @@
         const prox = batidas.find((b) => !b.julgada && b.t >= t - .05);
         if (prox && !ev) { const k = Math.max(0, (prox.t - t) / LEAD); anel.style.transform = `scale(${1 + k * 2.2})`; anel.style.opacity = String(Math.min(1, (1 - k) * 1.6)); }
         else anel.style.opacity = '0';
+        // prender o fôlego sem a luz: segurar o botão fora da hora faz o coração subir (não dá para vencer só segurando)
+        const dtP = Math.max(0, t - ultT); ultT = t;
+        if (apertado && !ev && !eventos.some((e) => e.estado === 'segurando') && t - desde > .5) {
+          muda(6 * dtP);
+          if (!avisouFolego) { avisouFolego = true; aviso(T.soltaJa, 1400, 'mal'); }
+        }
         // a luz na estátua: segurar
         for (const e of eventos) {
           if (e.estado === 'espera' && t >= e.t) {
@@ -140,7 +146,7 @@
           } else if (e.estado === 'segurando') {
             const k = Math.min(1, (t - e.ini) / SEGURA); btn.style.setProperty('--seg', k.toFixed(3));
             if (!apertado) { e.estado = 'falhou'; S.holdsFail++; muda(16); o.classList.remove('ez-luz'); btn.style.setProperty('--seg', 0); aviso(T.soltouCedo, 1600, 'mal'); }
-            else if (k >= 1) { e.estado = 'ok'; S.holdsOk++; muda(-6); o.classList.remove('ez-luz'); btn.style.setProperty('--seg', 0); aviso(T.solta, 900); }
+            else if (k >= 1) { e.estado = 'ok'; S.holdsOk++; muda(-6); desde = t; o.classList.remove('ez-luz'); btn.style.setProperty('--seg', 0); aviso(T.solta, 900); }
           }
         }
         // a tocha avança; o coração aparece em número e em cor

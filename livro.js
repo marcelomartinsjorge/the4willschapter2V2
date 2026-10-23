@@ -775,6 +775,7 @@ const MG = {
       lenco: st.escolhas.lenco === 'guardar',
       fundo: p.duelo.fundo,
       janela: ((st.aula && st.aula.leu) || []).includes('janela'),
+      derrotas: st.tentativas || 0,
     }).then((res) => {
       if (res.resultado === 'perdeu') { registrar('duelo_tentativa', 'perdeu'); st.tentativas = (st.tentativas || 0) + 1; salvar(); return MG.duelo(p); } // vencer é canon: perdeu, tenta de novo
       st.duelo = res; st.duelo.tentativas = st.tentativas || 0; registrar('duelo', res.resultado); if (res.resultado === 'deixou') mudaPeso(1);
@@ -852,7 +853,8 @@ const MG = {
         o.querySelector('.pq-num').textContent = `${k + 1} / ${Q.lista.length}`; qEl.textContent = tr(q.q);
         const embaralha = q.ops.map((t, i) => ({ t, i })).sort(() => Math.random() - .5);
         ops.innerHTML = embaralha.map((x) => `<button class="opt" data-i="${x.i}">${esc(tr(x.t))}</button>`).join('');
-        const t0 = performance.now(), dur = q.justine * 1000; let fechado = false;
+        const reduzQ = matchMedia('(prefers-reduced-motion: reduce)').matches ? 1.4 : 1;
+        const t0 = performance.now() + 1200, dur = q.justine * 1000 * reduzQ; let fechado = false; // Justine também lê a pergunta antes de erguer a mão
         const durs = { justine: dur, cecily: dur * (1.35 + Math.random() * .45), maud: dur * (1.35 + Math.random() * .45) };
         if (k === surpresa.k) durs[surpresa.g] = dur * (.5 + Math.random() * .15);
         const fora = new Set(); // quem já levantou a mão e errou nesta pergunta
@@ -875,7 +877,7 @@ const MG = {
           outra.classList.add('on');
         };
         const anda = () => {
-          const t = performance.now() - t0;
+          const t = Math.max(0, performance.now() - t0);
           for (const g of ['cecily', 'maud']) {
             if (fora.has(g)) continue;
             const f = clamp(t / durs[g], 0, 1); barEl(g).style.transform = `scaleX(${f.toFixed(4)})`;

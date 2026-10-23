@@ -275,3 +275,12 @@ Aplicados os itens aprovados de `claude/REVISAO_CAP2_CAP3_PROMPT_MESTRE.md` (os 
 ### Regravações feitas (23/10)
 - a01 (`line1.mp3`): trecho novo “the cold tape against my skin, the pins held between his lips” emendado na faixa original (texto PT/EN atualizado).
 - c05b (`vou-precisar.mp3`): nova gravação “I’m going to need it.” (texto PT/EN atualizado). Original em `backup_audio/`.
+
+## v20 · segunda revisão (texto pelo Prompt Mestre v4 + game design) · 23/10
+Aplicado de `claude/REVISAO_CAP2_CAP3_v2_TEXTO_E_JOGO.md` (Marcelo: item 4 mantido; D1 = mudar; jogo = P0 + P1).
+**Roupa (trava):** vestido de manga curta de dia e no jantar; no treino, camisa cinza com a manga até o cotovelo, calça, descalça.
+**Texto:** c08 sem “devagar”; tela de resultados (“Nenhuma das duas recuou”, “Markus sentiu os calos”, e a janela: quem fica no vidro sempre tem a nota “Ficaram as duas na janela…”); d04 “Acho que falei baixo”; quatro “de novo” a menos (a02, b01e, c08 ×2); dicas do olhar e do esconderijo sem repetir a página.
+**Esconderijo:** segurar fora da luz faz o coração subir (+6/s depois de 0,5 s) com o aviso “Solte. Ainda não.”; toque firme −3; batida perdida +9. Robôs: perfeito vence (peso 0 e 4); metade dos toques e uma luz atrasada vence (peso 0 e 4); só as luzes vence com peso 0 e perde com peso 4; segurar sempre perde; parado perde.
+**Duelo:** a tela de entrada tem três regras (os avisos de Simon saíram dela); na primeira vez de cada aviso, a palavra aparece com a pose (“O pé arrasta: vem de cima.” etc.) e o golpe vem 0,2 s mais devagar; quem leu a janela no estudo vê a palavra a luta inteira; da terceira tentativa em diante, o primeiro golpe de cada turno de Simon vem 10% mais devagar.
+**Perguntas:** Justine começa a erguer a mão 1,2 s depois da pergunta; com redução de movimento, os tempos dela são 1,4× maiores.
+Conferido: sintaxe, 40 páginas em PT e EN, três rotas inteiras (PT/PC, EN/celular, PT/celular) sem erro de JavaScript e sem arquivo faltando.

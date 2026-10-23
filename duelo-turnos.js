@@ -19,9 +19,6 @@ const TX = {
     regras: [
       ['Seu turno', 'escolha o golpe e acerte o tempo quando o anel fechar'],
       ['Turno dele', 'Simon avisa com o corpo. Desviar é mais fácil; aparar devolve o golpe'],
-      ['O pé esquerdo arrasta', 'vem de cima: aparar vale o dobro'],
-      ['O ombro cai', 'vem a estocada'],
-      ['Os joelhos dobram', 'ele quer as pernas: só dá para desviar'],
       ['O coração', 'quanto mais alto, menos tempo para responder. Respirar acalma'],
     ],
     comecar: 'Em guarda', teclas: 'Teclado: 1 a 4 escolhem · Espaço golpeia · ↑ apara · ↓ desvia.',
@@ -38,7 +35,7 @@ const TX = {
     desviou: 'Desviou', aparou: 'Aparado', contra: 'Aparado. Ele perde o pé.', acertou: 'Simon acerta', pernas: 'Não dá para aparar nas pernas',
     simonVem: 'Simon ataca.', furia: 'Simon perde a paciência.', mordeu: 'Ele morde a finta.',
     intencao: { alto: 'Ele vai vir por cima.', estocada: 'Ele vai estocar.', baixo: 'Ele vai buscar as pernas.' },
-    peDeTras: 'O pé de trás.', respirou: 'Laura respira. O coração desce.',
+    peDeTras: 'O pé de trás.', sinal: { alto: 'O pé arrasta: vem de cima.', estocada: 'O ombro cai: vem a estocada.', baixo: 'Os joelhos dobram: só desviar.' }, respirou: 'Laura respira. O coração desce.',
     quebrou: 'A guarda dele cede. A costela abre.', toque: 'Toque', escapou: 'Ele se recupera a tempo.',
     congela: 'A costela dele, aberta.', tocar: 'Tocar a costela', baixar: 'Baixar a espada',
     guarda: 'Guarda', toques: 'Toques', coracao: 'Coração', marcas: 'Marcas',
@@ -51,9 +48,6 @@ const TX = {
     regras: [
       ['Your turn', 'pick a move and hit the timing when the ring closes'],
       ['His turn', 'Simon warns you with his body. Dodging is easier; parrying strikes back'],
-      ['His left foot drags', 'it comes from above: a parry counts double'],
-      ['His shoulder drops', 'the thrust is coming'],
-      ['His knees bend', 'he wants your legs: you can only dodge'],
       ['Your heart', 'the higher it runs, the less time you have. Breathing calms it'],
     ],
     comecar: 'En garde', teclas: 'Keyboard: 1 to 4 choose · Space strikes · ↑ parries · ↓ dodges.',
@@ -70,7 +64,7 @@ const TX = {
     desviou: 'Dodged', aparou: 'Parried', contra: 'Parried. He loses his footing.', acertou: 'Simon lands it', pernas: 'You can’t parry at the legs',
     simonVem: 'Simon attacks.', furia: 'Simon loses his patience.', mordeu: 'He bites on the feint.',
     intencao: { alto: 'He’ll come from above.', estocada: 'He’ll thrust.', baixo: 'He’ll go for the legs.' },
-    peDeTras: 'The back foot.', respirou: 'Laura breathes. Her heart slows.',
+    peDeTras: 'The back foot.', sinal: { alto: 'His foot drags: from above.', estocada: 'His shoulder drops: the thrust.', baixo: 'His knees bend: dodge only.' }, respirou: 'Laura breathes. Her heart slows.',
     quebrou: 'His guard gives. His ribs open.', toque: 'Touch', escapou: 'He recovers in time.',
     congela: 'His ribs, wide open.', tocar: 'Touch his ribs', baixar: 'Lower the sword',
     guarda: 'Guard', toques: 'Touches', coracao: 'Heart', marcas: 'Marks',
@@ -127,7 +121,7 @@ function start(root, opts) {
 
     // ---- estado
     const S = { toques: 0, sofridos: 0, leituras: 0, maxCombo: 0, combo: 0, aparos: 0, fintasLidas: 0, maos: 0, perfeitos: 0 };
-    let guarda = 100, bpm = bpm0, fase = 1, intencao = null, avisouPe = false, acabou = false;
+    let guarda = 100, bpm = bpm0, fase = 1, intencao = null, acabou = false; const sinaisVistos = new Set(); let derrotas = opts.derrotas || 0;
     let musica = null, entrada = null, ultimoAlvo = 0, ultimoTipo = ''; // entrada: o que o jogo espera agora (função que recebe 'golpe' | 'aparar' | 'desviar')
 
     // ---- sprites
@@ -261,11 +255,13 @@ function start(root, opts) {
     };
 
     // ---- turno de Simon: avisa com o corpo, e Laura responde na hora
-    const umAtaque = async (tipo, pressa) => {
+    const umAtaque = async (tipo, pressa, i0) => {
       const at = ATAQUES[tipo];
       let dur = at.dur * [1, .88, .78][fase - 1] * pressa * (intencao === tipo ? 1.25 : 1);
       pose('simon', at.aviso, -4); som.passo();
-      if (tipo === 'alto' && opts.janela && !avisouPe) { avisouPe = true; mostra(T.peDeTras, 'dica'); dur += 200; }
+      // o aviso do corpo: na primeira vez de cada um, a palavra acompanha a pose (e dá um respiro). Quem leu a janela no estudo vê a palavra a luta inteira.
+      if (!sinaisVistos.has(tipo) || opts.janela) { mostra(T.sinal[tipo], 'dica'); if (!sinaisVistos.has(tipo)) dur += 200; sinaisVistos.add(tipo); }
+      if (derrotas >= 2 && i0) dur *= 1.1; // a partir da terceira tentativa, o primeiro golpe do turno vem um pouco mais devagar
       botoesAcao([['desviar', T.desviar, '↓'], ['aparar', T.aparar, '↑']]);
       const alvo = anelEm(figL, .55, .4, dur, 'def ' + tipo);
       const j = janela();
@@ -290,7 +286,7 @@ function start(root, opts) {
       await espera(650);
       for (let i = 0; i < n; i++) {
         const tipo = i === 0 && intencao ? intencao : ['alto', 'estocada', 'baixo'][Math.floor(Math.random() * 3)];
-        const r = await umAtaque(tipo, i === 0 ? 1 : .82);
+        const r = await umAtaque(tipo, i === 0 ? 1 : .82, i === 0);
         intencao = null;
         if (r === 'hit') { S.sofridos++; S.combo = 0; bpm += 16; hud(); await espera(700); parado(); if (S.sofridos >= 3) return 'perdeu'; break; }
         S.combo++; S.maxCombo = Math.max(S.maxCombo, S.combo); hud();
