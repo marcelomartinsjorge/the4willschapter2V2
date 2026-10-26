@@ -911,7 +911,7 @@ const MG = {
         <div class="tc-medidor" aria-hidden="true"><i class="tc-seguro"></i><b class="tc-ponteiro"></b></div>
         <p class="tc-ajuda">${U('tacaAjuda')}</p>
         <div class="tc-barra"><i></i></div>
-        <div class="tc-intro"><h2>${U('mg').taca}</h2><p>${U('tacaRegra')}</p><p class="tc-nota">${U('tacaNota')}</p><button class="cta tc-go">${U('tacaGo')}</button></div>`;
+        <div class="tc-intro"><h2>${U('mg').taca}</h2><p>${U('tacaRegra')}</p><button class="cta tc-go">${U('tacaGo')}</button></div>`;
       const g = o.querySelector('.tc-g'), vinho = o.querySelector('.tc-vinho'), barra = o.querySelector('.tc-barra i'), gotas = o.querySelector('.tc-gotas'), pont = o.querySelector('.tc-ponteiro');
       const amp = 1.15 + Math.min(st.peso, 4) * .14 + (document.body.classList.contains('frio') ? .2 : 0);
       let tilt = 0, vel = 0, gust = 0, dir = 0, t0 = 0, raf = 0, fora = 0, acabou = false, last = 0, teclas = new Set(), toques = new Set();
@@ -1114,7 +1114,16 @@ const comecar = (continuar) => {
   A.init(); A.resume();
   st = continuar && salvo ? salvo : novoEstado();
   salvar();
-  $('#cover').classList.add('hide'); document.body.classList.remove('na-capa'); A.virar(); Coracao.start(); render(1);
+  $('#cover').classList.add('hide'); document.body.classList.remove('na-capa');
+  const segue = () => { A.virar(); Coracao.start(); render(1); };
+  // tela preta de abertura (só num começo novo): quanto tempo passou desde o capítulo anterior
+  if (!continuar && L.abertura) {
+    const d = document.createElement('div'); d.id = 'abertura';
+    d.innerHTML = paras(L.abertura).map((t, k) => `<p style="animation-delay:${(.4 + k * 1.1).toFixed(1)}s">${esc(t)}</p>`).join('');
+    document.body.appendChild(d);
+    let foi = false; const fecha = () => { if (foi) return; foi = true; d.classList.add('sai'); setTimeout(() => d.remove(), 900); segue(); };
+    d.addEventListener('click', fecha); setTimeout(fecha, 5600);
+  } else segue();
 };
 $('#cvGo').onclick = () => comecar(false);
 $('#cvCont').onclick = () => comecar(true);

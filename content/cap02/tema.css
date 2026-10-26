@@ -553,3 +553,11 @@ body.engolindo #no { animation: noAperta .9s ease; }
 #mg.taca .tc-intro h2 { margin: 0; font-family: var(--serif); font-weight: 500; font-size: clamp(26px, 4vw, 38px); color: #fbf1df; }
 #mg.taca .tc-intro p { margin: 0; max-width: 460px; font-family: var(--serif); font-size: 19px; line-height: 1.5; color: #eadcc3; }
 #mg.taca .tc-intro .tc-nota { font-size: 16px; font-style: italic; color: #b7a78c; }
+
+/* v21 · tela preta de abertura (quanto tempo passou desde o Cap. I) */
+#abertura { position: fixed; inset: 0; z-index: 9000; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 24px; text-align: center; cursor: pointer; transition: opacity .9s; }
+#abertura p { margin: 0; opacity: 0; animation: abIn 1.4s ease forwards; font-family: var(--serif); color: #eadcc3; font-size: clamp(20px, 3.2vw, 30px); line-height: 1.4; max-width: 680px; }
+#abertura p + p { font-family: var(--sans); font-size: 13px; letter-spacing: .22em; text-transform: uppercase; color: #a8957a; }
+#abertura.sai { opacity: 0; pointer-events: none; }
+@keyframes abIn { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { #abertura p { animation-duration: .01s; } }

@@ -284,3 +284,7 @@ Aplicado de `claude/REVISAO_CAP2_CAP3_v2_TEXTO_E_JOGO.md` (Marcelo: item 4 manti
 **Duelo:** a tela de entrada tem três regras (os avisos de Simon saíram dela); na primeira vez de cada aviso, a palavra aparece com a pose (“O pé arrasta: vem de cima.” etc.) e o golpe vem 0,2 s mais devagar; quem leu a janela no estudo vê a palavra a luta inteira; da terceira tentativa em diante, o primeiro golpe de cada turno de Simon vem 10% mais devagar.
 **Perguntas:** Justine começa a erguer a mão 1,2 s depois da pergunta; com redução de movimento, os tempos dela são 1,4× maiores.
 Conferido: sintaxe, 40 páginas em PT e EN, três rotas inteiras (PT/PC, EN/celular, PT/celular) sem erro de JavaScript e sem arquivo faltando.
+
+## v21 · 26/10
+- Tela preta de abertura (só em começo novo; some sozinha em ~5,6 s ou com um toque): “Trinta e um anos depois de Aheryn deixar a Borda do Mundo.” / “Redom · a Capital Branca”. Conta pela Cronologia oficial (Cap. I = ano 0; Cap. II = ano 31).
+- Taça: saiu da tela de regra a frase que explicava a consequência (“Se derramar, a história segue…”). A regra agora só diz como jogar.
