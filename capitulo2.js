@@ -33,7 +33,7 @@ window.LIVRO_UI = {
   pt: { pensaEy: 'Na ponta da língua', tacaRegra: 'O vinho balança sozinho. Segure ◀ ou ▶ para inclinar a taça de volta. Mantenha o ponteiro dentro da faixa verde até a vela acabar.', tacaGo: 'Pegar a taça', tacaAjuda: 'Segure ◀ ou ▶ (setas, A / D, ou toque nos lados)',  seguirLeitura: 'Seguir', vaiFalar: '{n} vai falar', conversaSegue: 'A conversa segue', dizer: 'Dizer', engolir: 'Engolir', pensaDica: 'A conversa não espera. Se Laura não disser a tempo, alguém fala por cima e ela engole. O que ela engole não some: volta, mais tarde, na hora errada.', voceN: 'Laura', maoJustine: 'A mão de Justine', nome_justine: 'Justine', nome_cecily: 'Cecily', nome_maud: 'Maud', outraSobe: 'A mão de {n} sobe antes de todas.', naoN: 'Não, {n}.', maoSobe1: 'Minha mão sobe antes de eu decidir.', maoSobe: 'Ergo a mão.', errou: 'Erro. A mão de Justine já está no ar.', justinePrimeiro: 'A mão de Justine sobe primeiro.', proxPergunta: 'Próxima pergunta', ptsAula: 'A aula', ptsTaca: 'A taça',
     coracaoTut: 'O coração de Laura', coracaoTut2: 'Quando dispara, as palavras dela começam a tremer.', parte: 'Parte', prox: 'Próxima', fim: 'Encerrar o capítulo', voltar: '← Voltar', ouvir: 'Ouvir Laura', cena: '▶ Ver a cena', oque: 'O que Laura faz?', decida: 'Decida', decidir: 'Decidir', escolheu: 'Você escolheu:', resp: 'Responder a', silencio: 'ficar em silêncio', silencioR: 'Silêncio', momento: 'Momento de jogo',
     mg: { olhar: 'Olhar sem se mexer', duelo: 'Ler Simon', esconderijo: 'Prender o coração', estudo: 'Estudar antes do sino', perguntas: 'Responder antes de Justine', taca: 'Segurar a taça' },
-    dica: { estudo: 'Leia o que puder antes de a vela acabar. Não dá tempo para tudo.', perguntas: 'A primeira mão erguida responde. A de Justine já está subindo.', taca: 'Mantenha o vinho na taça.', olhar: 'Passe os olhos pela sala. São quatro olhares antes de Gideon terminar.', duelo: 'Por turnos. No seu, escolha o golpe e acerte o tempo. No dele, leia o corpo de Simon e desvie ou apare na hora. Três toques vencem.', esconderijo: 'Acompanhe cada batida para acalmar o coração, e prenda o fôlego quando a luz chegar.', preceT: 'Toque e segure. Solte quando quiser parar de rezar.', preceK: 'Segure o botão ou a barra de espaço. Solte quando quiser parar de rezar.' },
+    dica: { estudo: 'Leia o que puder antes de a vela acabar. Não dá tempo para tudo.', perguntas: 'Responda antes que a mão de Justine termine de subir.', taca: 'Mantenha o vinho na taça.', olhar: 'Passe os olhos pela sala. São quatro olhares antes de Gideon terminar.', duelo: 'Por turnos. No seu, escolha o golpe e acerte o tempo. No dele, leia o corpo de Simon e desvie ou apare na hora. Três toques vencem.', esconderijo: 'Acompanhe cada batida para acalmar o coração, e prenda o fôlego quando a luz chegar.', preceT: 'Toque e segure. Solte quando quiser parar de rezar.', preceK: 'Segure o botão ou a barra de espaço. Solte quando quiser parar de rezar.' },
     olhares: (n) => (n === 1 ? 'resta 1 olhar' : `restam ${n} olhares`), deslize: 'Deslize para ver a sala inteira',
     coverEye: 'As Quatro Vontades · Livro I · Capítulo II', coverLede: 'Leia. Decida por Laura. E, no laranjal, lute.', coverGo: 'Entrar na Casa D’Orrose', coverCont: 'Continuar de onde parei', coverRestart: 'Começar do início', coverHint: 'Use fones. Avance com o botão, com a seta → ou deslizando para o lado.',
     confirm: 'Recomeçar o capítulo? Suas escolhas serão apagadas.', capN: 'Capítulo II', fimCap: 'Fim do Capítulo II', ficou: 'O que ficou atrás do peito', suas: 'O que você escolheu', reler: 'Reler e escolher diferente', mesmo: (p) => `${p}% dos leitores fizeram o mesmo`,
@@ -472,7 +472,7 @@ window.LIVRO = {
               T('— Rezando. Então sentem.', '— Praying. Then sit.')] },
           { id: 'cala', silencio: true,
             resultado: [T('Justine responde antes que o silêncio fique comprido.', 'Justine answers before the silence gets too long.'),
-              T('— Estávamos no oratório, Mãe-Rainha. Eu pedi que Laura rezasse comigo.', '— We were in the shrine, Mother-Queen. I asked Laura to pray with me.'),
+              T('— Eu pedi que Laura rezasse comigo no oratório, Mãe-Rainha.', '— We were in the shrine, Mother-Queen. I asked Laura to pray with me.'),
               T('Ela não pediu nada. Não olha para mim quando diz isso.', 'She didn’t ask me anything. She doesn’t look at me when she says it.'),
               T('— Rezar não é atraso — minha mãe diz. — Sentem.', '— Praying is never late — my mother says. — Sit.')] },
         ] } },
@@ -501,7 +501,7 @@ window.LIVRO = {
         { pensa: { id: 'lei', quem: T('Joseph', 'Joseph'), t: T('A lei não é sua para rir dela.', 'The law isn’t yours to laugh at.'),
           dizer: { voz: 'jantar-lei', peso: 1, pulso: 3, flag: 'defendeuLei', resultado: [
             T('— A lei diz que vence o melhor. Se o senhor não acredita nela, não devia se inscrever.', '— The law says the best one wins. If you don’t believe in it, you shouldn’t enter.'),
-            T('O garfo da minha mãe para no ar. Joseph olha para mim pela primeira vez desde a sopa, e o sorriso dele demora a voltar.', 'My mother’s fork stops in the air. Joseph looks at me for the first time since the soup, and his smile takes a while to come back.'),
+            T('O garfo da minha mãe para no ar. Joseph olha para mim, e o sorriso dele demora a voltar.', 'My mother’s fork stops in the air. Joseph looks at me for the first time since the soup, and his smile takes a while to come back.'),
             T('— A princesinha tem dentes.', '— The little princess has teeth.'),
             T('— Laura — diz minha mãe. Só o nome.', '— Laura — says my mother. Just the name.'),
             T('Ao meu lado, Markus pousa a faca e vira o rosto para mim.', 'Beside me, Markus sets down his knife and turns his face to me.')] },
@@ -621,8 +621,8 @@ window.LIVRO = {
         se((st) => st.escolhas.lenco === 'guardar', T('— Isso na sua mão tem um J bordado. É da Justine?', '— That thing on your hand has a J stitched on it. Is it Justine’s?')),
         se((st) => st.escolhas.lenco === 'guardar', T('Sinto o rosto esquentar e não respondo.', 'I feel my face go hot, and I don’t answer.')),
         (st) => (st.f.arsenalTrancado
-          ? T('— Mamãe brigou com você, Laura? Ela trancou o arsenal inteiro — ele pergunta enquanto aquecemos, ainda trocando golpes de propósito, devagar.', '— Did mother fight with you, Laura? She locked the whole armory — he asks while we warm up, still trading slow blows on purpose.')
-          : T('— Mamãe brigou com você, Laura? — ele pergunta enquanto aquecemos, ainda trocando golpes de propósito, devagar.', '— Did mother fight with you, Laura? — he asks while we warm up, still trading slow blows on purpose.')),
+          ? T('— Mamãe brigou com você, Laura? Ela trancou o arsenal inteiro — ele pergunta enquanto aquecemos, trocando golpes leves de propósito.', '— Did mother fight with you, Laura? She locked the whole armory — he asks while we warm up, still trading slow blows on purpose.')
+          : T('— Mamãe brigou com você, Laura? — ele pergunta enquanto aquecemos, trocando golpes leves de propósito.', '— Did mother fight with you, Laura? — he asks while we warm up, still trading slow blows on purpose.')),
         T('— Como ela descobriu?', '— How did she find out?'),
         T('— Espada sem fio ainda deixa marca, irmã. E você não tem sido branda comigo.', '— A blunt sword still leaves a mark, sister. And you haven’t been gentle with me.'),
         T('— É o que você quer? — Rio no meio da frase, sem conseguir evitar. — Ela disse que você, como homem bem alimentado, vai ficar mais forte a cada dia.', '— Is that what you want? — I laugh in the middle of the sentence, unable to help it. — She said that you, being a well-fed man, will get stronger every day.'),
@@ -679,13 +679,13 @@ window.LIVRO = {
             T('— Porque daqui a um mês eu vou lutar no Torneio Real.', '— Because in a month I’m going to fight in the Royal Tournament.'),
             T('Ele me olha um tempo. Depois cai na gargalhada, tão alto que eu preciso tapar a boca dele com a mão.', 'He looks at me for a while. Then he bursts out laughing, so loud I have to cover his mouth with my hand.'),
             T('— E eu vou ser a Mãe-Rainha! — ele diz por entre os meus dedos.', '— And I’ll be the Mother-Queen! — he says through my fingers.'),
-            T('Rio também. O peito, por dentro, fica leve pela primeira vez no dia.', 'I laugh too. Inside my chest, it goes light for the first time all day.'),
+            T('Rio também. O peito, por dentro, fica leve.', 'I laugh too. Inside my chest, it goes light for the first time all day.'),
           ] }, // NOVO
         { id: 'mentira', lagrimas: true, aviso: T('Simon vai lembrar disso.', 'Simon will remember that.'), peso: 1, txt: T('Dizer que a esgrima acalma', 'Say that fencing calms me'),
           txtNervoso: T('Dizer que a esgrima acalma, rápido demais', 'Say that fencing calms me, too fast'),
           resultadoNervoso: [
             T('— Me acalma. Já disse. Me acalma.', '— It calms me. I told you. It calms me.'),
-            T('Falo rápido demais. Simon franze a testa e fica me olhando, esperando o resto. Viro de costas para guardar as espadas antes que ele pergunte de novo.', 'I say it too fast. Simon frowns and keeps looking at me, waiting for the rest. I turn my back to put the swords away before he can ask again.'),
+            T('Falo rápido demais. Simon franze a testa e fica me olhando, esperando o resto. Viro de costas para guardar as espadas antes que ele repita a pergunta.', 'I say it too fast. Simon frowns and keeps looking at me, waiting for the rest. I turn my back to put the swords away before he can ask again.'),
           ], // NOVO (versão com o peito apertado)
           resultado: [
             T('— Já disse. Me acalma.', '— I told you. It calms me.'),
@@ -694,7 +694,7 @@ window.LIVRO = {
         { id: 'ataque', aviso: T('Simon vai lembrar disso.', 'Simon will remember that.'), txt: T('Atacar em vez de responder', 'Attack instead of answering'),
           resultado: [
             T('Em vez de responder, ataco. Ele grita, rola para o lado, levanta rindo e se defende.', 'Instead of answering, I attack. He yelps, rolls aside, gets up laughing and defends himself.'),
-            T('Não pergunta de novo.', 'He doesn’t ask again.'),
+            T('Ele não volta à pergunta.', 'He doesn’t come back to the question.'),
           ] }, // NOVO
       ] } },
 
@@ -766,10 +766,10 @@ window.LIVRO = {
     const notas = [];
     const pr = st.escolhas.promessa;
     notas.push(pr === 'recusar' ? L('Dolores trancou o arsenal e guarda a chave.', 'Dolores locked the armory and keeps the key.') : pr === 'calar' ? L('Dolores tomou o silêncio da filha por palavra.', 'Dolores took her daughter’s silence as her word.') : L('Dolores acredita na promessa da filha.', 'Dolores believes her daughter’s promise.'));
-    notas.push(st.f.justineDesconfia ? L('Justine desconfia de alguma coisa.', 'Justine suspects something.') : st.escolhas.perto === 'levantar' ? L('Justine chegou perto. Nenhuma das duas recuou.', 'Justine came close. Neither of them stepped back.') : st.escolhas.perto === 'esconder' ? L('Justine saiu sem tocar em Laura.', 'Justine left without touching Laura.') : L('Entre Laura e Justine, tudo como sempre foi.', 'Between Laura and Justine, everything as it always was.'));
+    notas.push(st.f.justineDesconfia ? L('Justine desconfia de alguma coisa.', 'Justine suspects something.') : st.escolhas.perto === 'levantar' ? L('Justine chegou perto. Nenhuma das duas recuou.', 'Justine came close. Neither of them stepped back.') : st.escolhas.perto === 'esconder' ? L('Justine saiu sem tocar em Laura.', 'Justine left without touching Laura.') : L('Justine pegou as mãos de Laura e não perguntou nada.', 'Between Laura and Justine, everything as it always was.'));
     if (st.f.visto) notas.push(L('Um guarda viu duas sombras no jardim.', 'A guard saw two shadows in the garden.'));
     const a = st.aula || {};
-    if (a.venceu) notas.push(a.venceu === 'laura' ? L(`Laura venceu Justine na aula, ${a.laura} a ${a.justine}.`, `Laura beat Justine in the lesson, ${a.laura} to ${a.justine}.`) : a.venceu === 'empate' ? L('Empate na aula. Justine não gostou.', 'A tie in the lesson. Justine didn’t like it.') : L('Justine venceu a aula. De novo.', 'Justine won the lesson. Again.'));
+    if (a.venceu) notas.push(a.venceu === 'laura' ? L(`Laura venceu Justine na aula, ${a.laura} a ${a.justine}.`, `Laura beat Justine in the lesson, ${a.laura} to ${a.justine}.`) : a.venceu === 'empate' ? L('Empate na aula. Justine não gostou.', 'A tie in the lesson. Justine didn’t like it.') : L('Justine venceu a aula, como costuma vencer.', 'Justine won the lesson, as she usually does.'));
     notas.push(L('Justine será dada a Joseph depois do Torneio.', 'Justine is to be given to Joseph after the Tournament.'));
     const pz = st.pensas || {};
     if (pz.lei) notas.push(pz.lei === 'disse' ? L('À mesa, Laura defendeu a lei em voz alta.', 'At the table, Laura defended the law out loud.') : L('À mesa, Laura engoliu o que pensava da lei.', 'At the table, Laura swallowed what she thought of the law.'));

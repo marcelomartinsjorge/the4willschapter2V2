@@ -81,10 +81,10 @@ window.CHAPTER_CONFIG = {
             "O Torneio Real é o mecanismo pelo qual Redom escolhe seu General-Rei. Não existe coroa hereditária no trono militar: quando o General-Rei morre ou fica incapaz de liderar, o reino convoca o Torneio, que costuma acontecer um ano após a convocação. Somente nobres podem se inscrever para disputar o cargo mais alto que Redom oferece."
           ],
           [
-            "A disputa se divide em duas fases. Na primeira, individual e por pontuação, os candidatos são avaliados em tiro ao alvo, circuito a cavalo e uma prova geral de lógica, estratégia militar e primeiros socorros. Os quatro mais bem pontuados avançam para a segunda fase — semifinal e final, combate direto em armadura completa, com escudo e espada longa. O vencedor não herda o trono: conquista. É essa filosofia — a de que o poder se prova, nunca se recebe — que sustenta toda a legitimidade do sistema aos olhos do povo."
+            "A disputa se divide em duas fases. Na primeira, individual e por pontuação, os candidatos são avaliados em tiro ao alvo, circuito a cavalo e uma prova geral de lógica, estratégia militar e primeiros socorros. Os quatro mais bem pontuados avançam para a segunda fase: semifinal e final, em combate direto, de armadura completa, com escudo e espada longa. O vencedor não herda o trono. Conquista-o, e é nisso que o povo apoia a legitimidade do cargo."
           ],
           [
-            "Ao lado do General-Rei vencedor governa a Mãe-Rainha, escolhida por linhagem e preparo, nunca por combate. O Torneio, portanto, decide metade do trono; a outra metade responde a uma lógica completamente diferente."
+            "Ao lado do General-Rei vencedor governa a Mãe-Rainha, escolhida por linhagem e preparo, nunca por combate. O Torneio decide metade do trono; a outra metade segue as regras de sucessão da Mãe-Rainha."
           ]
         ]
       }
@@ -118,7 +118,7 @@ window.CHAPTER_CONFIG = {
             "O General-Rei é o vencedor do Torneio Real. O título nasceu numa era em que a aliança entre os humanos e os Lúmae sustentava a sobrevivência humana contra os Grakh."
           ],
           [
-            "Na origem, os dois cargos eram um só — um casal que reinava junto e gerava herdeiros para os dois ofícios. Com o tempo, guerra e administração cresceram demais para uma coroa unificada sustentar, e os dois se separaram. O que sobrevive hoje como Lorde-Marechal e Alta Regente é o eco fóssil desse trono que já foi único."
+            "Na origem, os dois cargos eram um só: um casal que reinava junto e gerava herdeiros para os dois ofícios. Com o tempo, a guerra e a administração cresceram demais para uma coroa só, e os dois se separaram. Os cargos de Lorde-Marechal e de Alta Regente vêm dessa divisão."
           ]
         ]
       }
@@ -149,10 +149,10 @@ window.CHAPTER_CONFIG = {
         "eyebrow": "Redom · Trono civil",
         "pages": [
           [
-            "A Mãe-Rainha reina ao lado do General-Rei, mas chega ao trono por um caminho oposto ao dele: não combate, não conquista — é escolhida por linhagem e preparo, sob a crença de que mulheres administram e cuidam da população com mais sabedoria do que qualquer homem."
+            "A Mãe-Rainha reina ao lado do General-Rei, mas chega ao trono por outro caminho: não combate. É escolhida por linhagem e preparo, porque Redom acredita que as mulheres administram e cuidam da população com mais sabedoria que os homens."
           ],
           [
-            "A regra de sucessão não é simétrica. Se o General-Rei morre primeiro, a Mãe-Rainha sobrevivente escolhe sua sucessora por costume — quase sempre a própria filha, que casará com o próximo vencedor do Torneio, sem qualquer parentesco com ela. Mas se é a Mãe-Rainha quem morre primeiro, o General-Rei ainda no trono precisa de nova esposa. Nesse caso, um conselho de matriarcas e casas nobres escolhe, entre as Candidatas — mulheres criadas desde cedo sob a tutela das matriarcas para isso —, qual é a mais adequada para governar."
+            "A regra de sucessão não é simétrica. Se o General-Rei morre primeiro, a Mãe-Rainha sobrevivente escolhe sua sucessora por costume — quase sempre a própria filha, que casará com o próximo vencedor do Torneio, sem qualquer parentesco com ela. Mas se é a Mãe-Rainha quem morre primeiro, o General-Rei ainda no trono precisa de nova esposa. Nesse caso, um conselho de matriarcas e Casas nobres escolhe, entre as Candidatas, a mais adequada para governar. As Candidatas são moças criadas desde cedo sob a tutela das matriarcas para esse fim."
           ]
         ]
       }
@@ -183,7 +183,7 @@ window.CHAPTER_CONFIG = {
         "eyebrow": "Deus de Redom",
         "pages": [
           [
-            "O Cavaleiro é um dos dois deuses cultuados em Redom, adorado lado a lado com a Juíza. Aparece como um guerreiro de armadura impecável — sempre limpa, cintilante —, montado sobre um cavalo branco imponente, o rosto sempre oculto sob o elmo."
+            "O Cavaleiro é um dos dois deuses cultuados em Redom, adorado lado a lado com a Juíza. Nas estátuas e nos vitrais, aparece como um guerreiro de armadura limpa e reluzente, montado num cavalo branco, com o rosto fechado sob o elmo."
           ],
           [
             "As preces a Ele costumam pedir coragem ou penitência."
@@ -248,7 +248,7 @@ window.CHAPTER_CONFIG = {
         "eyebrow": "Redom · Conflito com os Grakh",
         "pages": [
           [
-            "A Guerra Eterna é o nome que Redom dá ao conflito milenar contra os Grakh — um confronto tão antigo que ninguém vivo se lembra de um tempo sem ele. Começou como disputa por terras férteis. O senso comum acredita que a guerra está, finalmente, perto do fim: os Grakh não são mais considerados uma ameaça séria e vivem afastados no deserto. As aulas de história ensinam isso a cada nova geração como sinal de que a vitória definitiva de Redom está próxima."
+            "A Guerra Eterna é o nome que Redom dá ao conflito contra os Grakh, mais antigo que o registro mais velho das Casas. Começou como disputa por terras férteis. As aulas de história ensinam que a guerra está perto do fim e que os Grakh, recuados no deserto, já não oferecem perigo real."
           ]
         ]
       }
@@ -276,7 +276,7 @@ window.CHAPTER_CONFIG = {
         "eyebrow": "Redom · História ensinada",
         "pages": [
           [
-            "O Apagar das Luzes é o nome popular, ensinado às crianças de Redom, para o desaparecimento dos Lúmae. A versão oficial atribui o desaparecimento a uma maldição: o resultado inevitável de um povo que usou magia. A cada aula de história, o Apagar das Luzes serve como lembrete vivo dos perigos da magia e reforço da doutrina anti-magia que Redom ensina a cada geração."
+            "O Apagar das Luzes é o nome que as crianças de Redom aprendem para o desaparecimento dos Lúmae. A versão oficial fala em maldição: um povo que usou magia e foi apagado por ela. A história sustenta a proibição da magia, que vale em todo o reino."
           ]
         ]
       }
@@ -310,13 +310,13 @@ window.CHAPTER_CONFIG = {
         "eyebrow": "A Capital Branca · Império humano",
         "pages": [
           [
-            "Redom é o maior império humano do mundo conhecido — uma teia de cidades governadas a partir da capital que dá nome ao reino inteiro, erguida em pedra calcária branca que cega ao meio-dia. Não nasceu com coroa hereditária: o poder se prova, não se herda, e é essa lógica que sustenta tanto o Torneio Real quanto a fé do povo em si mesmo."
+            "Redom é o maior império humano do mundo conhecido: uma rede de cidades governadas a partir da capital, que dá nome ao reino. A capital é de pedra calcária branca e ofusca ao meio-dia. O trono militar não é hereditário: passa pelo Torneio Real."
           ],
           [
-            "A arquitetura de Redom é toda em pedra clara e linhas retas — muralhas altas, ângulos severos, nada de ornamento que não sirva à defesa ou à glória militar. Onde outros povos enfeitam, Redom reforça."
+            "A arquitetura de Redom é de pedra clara e linhas retas: muralhas altas, ângulos severos, nenhum ornamento que não sirva à defesa ou à glória militar."
           ],
           [
-            "O povo de Redom se acredita o único verdadeiramente lúcido do mundo — o único que enxerga a realidade sem as \"muletas\" que os outros povos usam. Rejeita toda magia por princípio, considerando-a fraqueza e porta de entrada pra loucura. Vence pela disciplina, pela honra e pelo aço."
+            "O povo de Redom se considera o único lúcido do mundo, o único que enxerga a realidade sem as \"muletas\" que os outros povos usam. Rejeita toda magia por princípio, como fraqueza e porta de entrada para a loucura, e confia na disciplina, na honra e no aço."
           ]
         ]
       }
@@ -347,10 +347,10 @@ window.CHAPTER_CONFIG = {
         "eyebrow": "A Boca Seca · Povo do deserto",
         "pages": [
           [
-            "Os Grakh são um povo do grande deserto ao sul de Redom — muito maiores que qualquer humano, em média perto de 2,10 metros de altura. Grandes e assimétricos, em crescimento perpétuo: o corpo nunca para de mudar, os ossos engrossam, os músculos se remodelam ao longo da vida inteira, sem nunca acumular gordura. A pele é acinzentada. Têm dois estômagos e comem quase o tempo todo — a fome é quase constante, e a força física que carregam é descomunal."
+            "Os Grakh são um povo do grande deserto ao sul de Redom, muito maiores que qualquer humano: um Grakh adulto passa um homem alto por uma cabeça. São assimétricos e crescem a vida toda: os ossos engrossam, os músculos se remodelam, e o corpo não acumula gordura. A pele é acinzentada. Têm dois estômagos, comem quase o tempo todo, e a força física deles é descomunal."
           ],
           [
-            "Amadurecem rápido, mas raramente ultrapassam os quarenta invernos. Vivem em estrutura tribal, organizados em hordas móveis lideradas pelo guerreiro mais forte do momento, sem cidades fixas. Creem só na força e no apetite, e desprezam ciência e magia como covardia de quem é fraco demais pra resolver na base do próprio corpo. Não formam um exército único e numeroso — vêm em levas pequenas e constantes, geração após geração, sem nunca parar."
+            "Amadurecem rápido, mas raramente ultrapassam os quarenta invernos. Vivem em estrutura tribal, organizados em hordas móveis lideradas pelo guerreiro mais forte do momento, sem cidades fixas. Creem só na força e no apetite, e desprezam ciência e magia como covardia de quem é fraco demais para resolver as coisas com o próprio corpo. Não formam um exército único: vêm em levas pequenas e constantes, geração após geração."
           ]
         ]
       }

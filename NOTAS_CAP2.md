@@ -288,3 +288,14 @@ Conferido: sintaxe, 40 páginas em PT e EN, três rotas inteiras (PT/PC, EN/celu
 ## v21 · 26/10
 - Tela preta de abertura (só em começo novo; some sozinha em ~5,6 s ou com um toque): “Trinta e um anos depois de Aheryn deixar a Borda do Mundo.” / “Redom · a Capital Branca”. Conta pela Cronologia oficial (Cap. I = ano 0; Cap. II = ano 31).
 - Taça: saiu da tela de regra a frase que explicava a consequência (“Se derramar, a história segue…”). A regra agora só diz como jogar.
+
+## v22 · terceira revisão (Prompt Mestre v5.2 + script) · 26/10
+Aplicado de `claude/REVISAO_CAP2_CAP3_v3_PROMPT_v5.md`, itens 1 a 9, com as recomendações (D1, D2 e D3 = A).
+- Muletas: “de novo” 12 → 7 (+2 em motivo), “devagar” 10 → 8, “ninguém” 10 → 4 (+5 em motivo), “inteiro” 9 → 7. Nenhuma acima do limite, nenhuma frase com duas.
+- Tela final: “Justine venceu a aula, como costuma vencer.”; quem fica ajoelhada vê “Justine pegou as mãos de Laura e não perguntou nada.”; quem diz “Joseph é um bom cavaleiro” vê “Justine tirou a mão do vidro e foi embora.”.
+- c03 sem a frase dos “golpes leves de propósito”; c06 e d02 sem “pela primeira vez”; abertura do duelo: “— Você vai ver, irmã.” (a provocação dos catorze anos fica só na c03b).
+- d01: “— Eu pedi que Laura rezasse comigo no oratório, Mãe-Rainha.”
+- Dica do quiz: “Responda antes que a mão de Justine termine de subir.”
+- Codex reescrito: sem travessões, sem “pra”, sem metros, sem frases de efeito, sem repetir a narração da b01.
+- Motivos e gestos do capítulo declarados no Anexo A do `PROMPT_MESTRE_ESCRITA.md` (blocos `motivos cap02` e `gestos cap02`), incluindo os avisos de Simon (a c04 ensina, o duelo lembra).
+- Nada dublado mudou.

@@ -22,7 +22,7 @@ const TX = {
       ['O coração', 'quanto mais alto, menos tempo para responder. Respirar acalma'],
     ],
     comecar: 'Em guarda', teclas: 'Teclado: 1 a 4 escolhem · Espaço golpeia · ↑ apara · ↓ desvia.',
-    fala0: '— Me mostra o que um homem de catorze anos consegue fazer.',
+    fala0: '— Você vai ver, irmã.',
     pergunta: 'O que Laura faz?',
     golpes: {
       estocada: ['Estocada', 'Rápida. Um tempo.'],
