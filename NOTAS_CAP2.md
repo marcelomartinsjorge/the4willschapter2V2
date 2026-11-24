@@ -318,3 +318,13 @@ Aplicado de `claude/CAP2_MAPA_DE_EMOCOES.md`: E1, E2 v2, E3 (v23), E5 e S1 a S6.
 - **S6 · dobradiça:** range na a04 e na a08, depois do Continuar, para todo jogador (a palavra só aparece para quem olhou a porta).
 - Motivos do capítulo em `tools/motivos_cap2.txt` (o bloco `motivos cap02` do Prompt Mestre v5.6 está vazio).
 - Conferido: sintaxe; as 40 páginas percorridas em PT/PC e EN/celular, com todas as etapas novas, sem erro de JavaScript; muletas sem ACIMA e sem frase com duas.
+
+## v25 · a Laura do Cap. II (24/11)
+Rodada 3 do `claude/CAP2_MAPA_DE_EMOCOES.md`, aprovada inteira. Norte: o mundo ainda é grande e perigoso, ela tem medo, e a dor é o futuro escrito no corpo, sem a princesa rebelde.
+- L1 · a03: sem plano de fuga. Ela conta o caminho e ele acaba no cavalo; "Nunca passei do Portão Sul sem a guarda." Saiu a tríade "Fui preparada a vida inteira…".
+- L2 · a04: no lugar do bocejo, Gideon segura o vestido na frente dela diante do espelho: "Do pescoço para baixo, sou o vestido. Fecho as mãos, para sentir os calos."
+- L3 · a06: ela fala com a mãe olhando para o chão; "— Não tem cicatriz, mãe. Ele nunca me acerta." / "Sai com mais orgulho do que eu queria."
+- L4 · c03: descalça, de camisa e calças, "respiro até o fundo, coisa que o vestido de Gideon não deixa".
+- L5 · c08: a camisa e as calças debaixo do colchão; o vestido de amanhã em cima da arca.
+- L6 · capa: "Um mês antes do Torneio, a filha da Mãe-Rainha é medida para o vestido." / "A month before the Tournament, the Mother-Queen’s daughter is measured for the gown."
+- Conferido: 40 páginas em PT e EN sem erro; muletas sem ACIMA.

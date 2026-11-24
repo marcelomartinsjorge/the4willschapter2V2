@@ -35,7 +35,7 @@ window.LIVRO_UI = {
     mg: { olhar: 'Olhar sem se mexer', duelo: 'Ler Simon', esconderijo: 'Prender o coração', estudo: 'Estudar antes do sino', perguntas: 'Responder antes de Justine', taca: 'Segurar a taça' },
     dica: { estudo: 'Leia o que puder antes de a vela acabar. Não dá tempo para tudo.', perguntas: 'Responda antes que a mão de Justine termine de subir.', taca: 'Mantenha o vinho na taça.', olhar: 'Passe os olhos pela sala. São quatro olhares antes de Gideon terminar.', duelo: 'Por turnos. No seu, escolha o golpe e acerte o tempo. No dele, leia o corpo de Simon e desvie ou apare na hora. Três toques vencem.', esconderijo: 'Acompanhe cada batida para acalmar o coração, e prenda o fôlego quando a luz chegar.', preceT: 'Toque e segure. Solte quando quiser parar de rezar.', preceK: 'Segure o botão ou a barra de espaço. Solte quando quiser parar de rezar.' },
     olhares: (n) => (n === 1 ? 'resta 1 olhar' : `restam ${n} olhares`), deslize: 'Deslize para ver a sala inteira',
-    coverEye: 'As Quatro Vontades · Livro I · Capítulo II', coverLede: 'Leia. Decida por Laura. E, no laranjal, lute.', coverGo: 'Entrar na Casa D’Orrose', coverCont: 'Continuar de onde parei', coverRestart: 'Começar do início', coverHint: 'Use fones. Avance com o botão, com a seta → ou deslizando para o lado.',
+    coverEye: 'As Quatro Vontades · Livro I · Capítulo II', coverLede: 'Um mês antes do Torneio, a filha da Mãe-Rainha é medida para o vestido.', coverGo: 'Entrar na Casa D’Orrose', coverCont: 'Continuar de onde parei', coverRestart: 'Começar do início', coverHint: 'Use fones. Avance com o botão, com a seta → ou deslizando para o lado.',
     confirm: 'Recomeçar o capítulo? Suas escolhas serão apagadas.', capN: 'Capítulo II', fimCap: 'Fim do Capítulo II', ficou: 'O que ficou atrás do peito', suas: 'O que você escolheu', reler: 'Reler e escolher diferente', mesmo: (p) => `${p}% dos leitores fizeram o mesmo`,
     pontos: 'Pontuação do capítulo', jornada: 'Jornada (Capítulos I e II)', posicao: (p, n) => `${p}º de ${n} leitores`, ptsDuelo: 'O duelo', ptsEsconde: 'O esconderijo', ptsCap1: 'Capítulo I (o hino do gelo)', semCap1: 'Jogue o Capítulo I neste navegador para somar a jornada.',
   },
@@ -44,7 +44,7 @@ window.LIVRO_UI = {
     mg: { olhar: 'Look without moving', duelo: 'Read Simon', esconderijo: 'Hold your heart', estudo: 'Study before the bell', perguntas: 'Answer before Justine', taca: 'Hold the cup' },
     dica: { estudo: 'Read what you can before the candle burns down. There isn’t time for everything.', perguntas: 'The first hand raised answers. Justine’s is already rising.', taca: 'Keep the wine in the cup.', olhar: 'Let your eyes move around the room. Four looks before Gideon finishes.', duelo: 'Turn by turn. On yours, pick a move and hit the timing. On his, read Simon’s body and dodge or parry in time. Three touches win.', esconderijo: 'Keep time with each beat to calm her heart, and hold your breath when the light comes.', preceT: 'Touch and hold. Let go when you want to stop praying.', preceK: 'Hold the button or the space bar. Let go when you want to stop praying.' },
     olhares: (n) => (n === 1 ? '1 look left' : `${n} looks left`), deslize: 'Swipe to see the whole room',
-    coverEye: 'The Four Wills · Book I · Chapter II', coverLede: 'Read. Decide for Laura. And in the orangery, fight.', coverGo: 'Enter House D’Orrose', coverCont: 'Continue where I left off', coverRestart: 'Start from the beginning', coverHint: 'Wear headphones. Move on with the button, the → key, or a swipe.',
+    coverEye: 'The Four Wills · Book I · Chapter II', coverLede: 'A month before the Tournament, the Mother-Queen’s daughter is measured for the gown.', coverGo: 'Enter House D’Orrose', coverCont: 'Continue where I left off', coverRestart: 'Start from the beginning', coverHint: 'Wear headphones. Move on with the button, the → key, or a swipe.',
     confirm: 'Restart the chapter? Your choices will be erased.', capN: 'Chapter II', fimCap: 'End of Chapter II', ficou: 'What stayed behind her ribs', suas: 'What you chose', reler: 'Read again and choose differently', mesmo: (p) => `${p}% of readers did the same`,
     pontos: 'Chapter score', jornada: 'Journey (Chapters I and II)', posicao: (p, n) => `#${p} of ${n} readers`, ptsDuelo: 'The duel', ptsEsconde: 'The hiding place', ptsCap1: 'Chapter I (the ice hymn)', semCap1: 'Play Chapter I in this browser to add up the journey.',
   },
@@ -110,17 +110,19 @@ window.LIVRO = {
       cena: 'assets/video/alfaiataria-medidas.mp4',
       texto: [
         (st) => (['janela', 'telhado', 'vinha'].every((r) => rotas(st).includes(r))
-          ? T('Vinte passos, quatro palmos, a vinha até o chão, um cavalo. Não seria problema desaparecer por Redom, se todo mundo não soubesse quem eu sou. A filha da Mãe-Rainha.', 'Twenty steps, four hands’ breadths, the ivy to the ground, a horse. It wouldn’t be hard to vanish into Redom, if everyone didn’t know exactly who I am. The Mother-Queen’s daughter.')
-          : T('O resto do caminho eu sei de cor, mesmo sem olhar. Não seria problema desaparecer por Redom, se todo mundo não soubesse quem eu sou. A filha da Mãe-Rainha.', 'The rest of the way I know by heart, even without looking. It wouldn’t be hard to vanish into Redom, if everyone didn’t know exactly who I am. The Mother-Queen’s daughter.')),
-        T('A cada prova de vestido, traço o mesmo plano de fuga. Vou casar e dar filhos ao homem que vencer um Torneio que eu nunca vou poder disputar. Fui preparada a vida inteira para isso, e não estou pronta. Tento me recompor, e os olhos se enchem de lágrimas.',
-          'Every fitting, I trace the same escape plan. I’m going to marry and bear children for whichever man wins a Tournament I will never be allowed to fight in. I was raised my whole life for this, and I’m not ready. I try to compose myself, and my eyes fill with tears.'),
+          ? T('Vinte passos, quatro palmos, a vinha até o chão, um cavalo. Depois do cavalo, toda Redom sabendo quem eu sou. A filha da Mãe-Rainha.', 'Twenty steps, four hands’ breadths, the ivy to the ground, a horse. After the horse, all of Redom knowing who I am. The Mother-Queen’s daughter.')
+          : T('O resto do caminho eu sei de cor, mesmo sem olhar. Depois do cavalo, toda Redom sabendo quem eu sou. A filha da Mãe-Rainha.', 'The rest of the way I know by heart, even without looking. After the horse, all of Redom knowing who I am. The Mother-Queen’s daughter.')),
+        T('A cada prova de vestido, conto o mesmo caminho, e ele sempre acaba no cavalo. Do muro para fora, eu só conheço o que a Mestra desenha no mapa. Nunca passei do Portão Sul sem a guarda.',
+          'Every fitting, I count the same route, and it always ends at the horse. Past the wall, I only know what the Mistress draws on the map. I’ve never gone through the South Gate without the guard.'), // v25 · L1
+        T('Vou casar e dar filhos ao homem que vencer um Torneio que eu nunca vou poder disputar. Tento me recompor, e os olhos se enchem de lágrimas.',
+          'I’m going to marry and bear children for whichever man wins a Tournament I will never be allowed to fight in. I try to compose myself, and my eyes fill with tears.'),
       ] },
 
     { id: 'a04', zona: 'alfaiataria', fundo: { img: 'assets/images/alfaiate-reverencia.jpg', kb: 'out', foco: '40% 40%', dim: .5, lado: 'dir' }, pulso: .8,
       texto: [
         T('— Ah — o alfaiate se afasta e me olha dos pés à cabeça. — A senhora vai ser a Mãe-Rainha mais bela da história. Sem dúvida, o vestido com os adornos de esmeralda é a melhor escolha. Combina com os olhos esverdeados da senhora, e o dourado do cabelo fica ainda mais vivo ao lado dele.',
           '— Ah — the tailor steps back and looks me over, head to foot. — You’ll be the most beautiful Mother-Queen in history. No question, the gown with the emerald trim is the finest choice. It matches your green eyes, and the gold in your hair looks brighter still beside it.'),
-        T('Respondo com um bocejo comprido e esfrego os olhos com as costas da mão. Mas complemento:', 'I answer with a long yawn and rub my eyes with the back of my hand. But I add:'),
+        T('Ele tira o vestido do manequim e segura na frente do meu corpo, diante do espelho. Do pescoço para baixo, sou o vestido. Fecho as mãos, para sentir os calos.', 'He takes the gown off the mannequin and holds it in front of my body, before the mirror. From the neck down, I am the gown. I close my hands, to feel the calluses.'), // v25 · L2
         T('— Você é muito gentil, senhor Gideon.', '— You’re very kind, Master Gideon.'),
       ],
       seq: [{ cont: true, som: 'dobradica', texto: [(st) => (st.f.viuPorta
@@ -142,10 +144,11 @@ window.LIVRO = {
     { id: 'a06', zona: 'alfaiataria', fundo: { img: 'assets/images/dolores-maos.jpg', kb: 'out', foco: '72% 40%', dim: 0.45 }, pulso: 1.6,
       texto: [
         T('— Você andou treinando esgrima com seu irmão outra vez? Olhe só, cheia de calos. Laura!', '— Have you been fencing with your brother again? Look at this, covered in calluses. Laura!'),
-        T('— Foi só ontem à noite, mãe. Você sabe que a esgrima me acalma, e estou muito nervosa para o Torneio Real.', '— It was only last night, mother. You know fencing calms me, and I’m very nervous about the Royal Tournament.'),
+        T('— Foi só ontem à noite, mãe. — Falo para o chão. — A esgrima me acalma.', '— It was only last night, mother. — I say it to the floor. — Fencing calms me.'), // v25 · L3
         T('— Você sabe que isso não é justificativa! Tenho certeza de que todas as suas professoras já lhe explicaram muito bem que uma Mãe-Rainha não toca em armas. E não tem calos! Preciso conferir de novo se você não esconde nenhuma cicatriz pelo corpo?', '— You know that’s no excuse! I’m sure every one of your tutors has explained very clearly that a Mother-Queen does not touch weapons. And has no calluses! Do I need to check again that you’re not hiding a single scar on your body?'),
         T('É a deixa que Gideon esperava para sair da sala de fininho, ainda curvado.', 'It’s the cue Gideon has been waiting for, and he slips out of the room, still bowing.'),
-        T('— Posso garantir que meu corpo está igual à última vez que você conferiu, mãe. Só treino com Simon, e ele não consegue me acertar.', '— I can promise my body looks exactly like it did the last time you checked, mother. I only train with Simon, and he can never land a hit.'),
+        T('— Não tem cicatriz, mãe. Ele nunca me acerta.', '— There’s no scar, mother. He never hits me.'),
+        T('Sai com mais orgulho do que eu queria.', 'It comes out prouder than I meant it to.'), // v25 · L3
         T('— Seu irmão está crescendo. Como homem bem alimentado, fica mais forte a cada dia.', '— Your brother is growing. A well-fed man gets stronger every day.'),
       ] },
 
@@ -623,6 +626,7 @@ window.LIVRO = {
 
     { id: 'c03', zona: 'laranjal', fundo: { img: 'assets/images/laranjal-lua.jpg', kb: 'in', foco: '50% 45%', dim: .5, clima: 'poeira-azul' }, pulso: (st) => (st.escolhas.lenco === 'guardar' ? 2 : .5),
       texto: [
+        T('Tiro as botas na porta. De camisa e calças, com os pés na pedra fria, respiro até o fundo, coisa que o vestido de Gideon não deixa.', 'I take my boots off at the door. In shirt and trousers, feet on the cold stone, I breathe all the way down, which Gideon’s gown won’t let me do.'), // v25 · L4
         T('Poeira flutua clara na primeira luz que entra pelos janelões.', 'Dust drifts pale in the first light coming through the tall windows.'),
         T('Simon tira da camisa um pão do jantar, achatado de tanto ficar ali, e parte no meio. A metade maior vem para mim.', 'Simon pulls a roll from dinner out of his shirt, flattened from riding there, and tears it in half. The bigger half comes to me.'), // v23 · E1
         T('— Você mal tocou no prato.', '— You barely touched your plate.'),
@@ -752,6 +756,7 @@ window.LIVRO = {
           ];
           return null;
         },
+        T('Dobro a camisa e as calças e escondo debaixo do colchão, onde ficam de dia. Em cima da arca, o vestido de amanhã já está estendido.', 'I fold the shirt and trousers and hide them under the mattress, where they stay by day. On the chest, tomorrow’s gown is already laid out.'), // v25 · L5
         (st) => (st.f.registro
           ? [T('Conto nos dedos os dias até o oficial do Registro vir buscar os mantos de Gideon. Nove.', 'I count on my fingers the days until the Registry officer comes for Gideon’s cloaks. Nine.'), T('Depois, os dias até o Torneio. Trinta. Conto de novo e dá o mesmo.', 'Then the days to the Tournament. Thirty. I count again and get the same.')]
           : T('Conto nos dedos os dias até o Torneio. Trinta. Conto de novo e dá o mesmo.', 'I count the days to the Tournament on my fingers. Thirty. I count again and get the same.')),
