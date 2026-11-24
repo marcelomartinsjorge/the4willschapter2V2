@@ -299,3 +299,22 @@ Aplicado de `claude/REVISAO_CAP2_CAP3_v3_PROMPT_v5.md`, itens 1 a 9, com as reco
 - Codex reescrito: sem travessões, sem “pra”, sem metros, sem frases de efeito, sem repetir a narração da b01.
 - Motivos e gestos do capítulo declarados no Anexo A do `PROMPT_MESTRE_ESCRITA.md` (blocos `motivos cap02` e `gestos cap02`), incluindo os avisos de Simon (a c04 ensina, o duelo lembra).
 - Nada dublado mudou.
+
+## v23 · mapa de emoções (23/11)
+- c02 (E3): atrás da estátua, Laura acalma Simon com as últimas palavras do pai: "— Firmes. É só o escuro." / "Foram as últimas palavras do meu pai. Os que voltaram contaram à minha mãe. Eu ouvi atrás da porta." (o Cap. VIII grita a mesma ordem no eclipse).
+- Duelo: o inglês da fala de abertura ficou igual ao português da v22 ("— You’ll see, sister.").
+
+## v24 · mapa de emoções aplicado (23/11)
+Aplicado de `claude/CAP2_MAPA_DE_EMOCOES.md`: E1, E2 v2, E3 (v23), E5 e S1 a S6. E4 e E6 foram cortados pelo Marcelo.
+- **E1 · c03:** Simon parte um pão do jantar e dá a metade maior à Laura ("— Você mal tocou no prato.").
+- **E2 · o sinal:** no duelo, depois do 1º e do 2º toque da Laura, aparece "Simon bate dois dedos no peito, duas vezes. Mais uma.". Na c06, ele faz o sinal, o jogador responde tocando duas vezes (cada toque é uma batida do coração), e vem a rodada sem placar e "Daqui a um mês, eu não vou estar aqui para dizer sim." A pergunta "Por que você treina tanto?" vem depois de um Continuar.
+- **E5 · d01:** a cadeira do pai na cabeceira, que ninguém conta entre os doze, com Dolores sentada ao lado.
+- **Motor (livro.js):** passo `cont` (botão Continuar; o som da linha só toca depois do toque), passo `sinal` (dois toques), `silencio` por página, `A.silencio`/`A.solta`, dobradiça sintetizada (usa `sfx/dobradica.mp3` se existir), sino longe abafado, e todo minijogo devolve o som do lugar ao começar.
+- **S1 · d04:** "As taças sobem…" e "Agora eu sei o que ela pedia à Juíza." depois do Continuar, com o brinde, o salão abafado quase em silêncio e o efeito frio. O som volta no minijogo da taça.
+- **S2 · c06:** o laranjal quase some até o sinal e volta na rodada.
+- **S3 · c08:** a última frase vem depois do Continuar; o quarto cala e o sino toca longe (nas variantes do sino; em "durmo antes de o sino bater" ele toca depois, já com ela dormindo).
+- **S4 · c02:** as palavras do pai depois do Continuar, com o jardim em silêncio; o minijogo da ronda vem em seguida.
+- **S5 · avisos:** "X vai lembrar disso" agora tem um toque fixo de duas notas graves, e o fundo baixa meio segundo.
+- **S6 · dobradiça:** range na a04 e na a08, depois do Continuar, para todo jogador (a palavra só aparece para quem olhou a porta).
+- Motivos do capítulo em `tools/motivos_cap2.txt` (o bloco `motivos cap02` do Prompt Mestre v5.6 está vazio).
+- Conferido: sintaxe; as 40 páginas percorridas em PT/PC e EN/celular, com todas as etapas novas, sem erro de JavaScript; muletas sem ACIMA e sem frase com duas.

@@ -36,7 +36,7 @@ const TX = {
     simonVem: 'Simon ataca.', furia: 'Simon perde a paciência.', mordeu: 'Ele morde a finta.',
     intencao: { alto: 'Ele vai vir por cima.', estocada: 'Ele vai estocar.', baixo: 'Ele vai buscar as pernas.' },
     peDeTras: 'O pé de trás.', sinal: { alto: 'O pé arrasta: vem de cima.', estocada: 'O ombro cai: vem a estocada.', baixo: 'Os joelhos dobram: só desviar.' }, respirou: 'Laura respira. O coração desce.',
-    quebrou: 'A guarda dele cede. A costela abre.', toque: 'Toque', escapou: 'Ele se recupera a tempo.',
+    quebrou: 'A guarda dele cede. A costela abre.', toque: 'Toque', escapou: 'Ele se recupera a tempo.', maisUma: 'Simon bate dois dedos no peito, duas vezes. Mais uma.',
     congela: 'A costela dele, aberta.', tocar: 'Tocar a costela', baixar: 'Baixar a espada',
     guarda: 'Guarda', toques: 'Toques', coracao: 'Coração', marcas: 'Marcas',
     venceu: 'Você venceu Simon.', marcasFim: 'Você venceu Simon, mas ele te acertou.', deixou: 'Você deixou Simon ganhar.', perdeu: 'Simon venceu.',
@@ -51,7 +51,7 @@ const TX = {
       ['Your heart', 'the higher it runs, the less time you have. Breathing calms it'],
     ],
     comecar: 'En garde', teclas: 'Keyboard: 1 to 4 choose · Space strikes · ↑ parries · ↓ dodges.',
-    fala0: '— Show me what a fourteen-year-old man can do.',
+    fala0: '— You’ll see, sister.',
     pergunta: 'What does Laura do?',
     golpes: {
       estocada: ['Thrust', 'Fast. One beat.'],
@@ -65,7 +65,7 @@ const TX = {
     simonVem: 'Simon attacks.', furia: 'Simon loses his patience.', mordeu: 'He bites on the feint.',
     intencao: { alto: 'He’ll come from above.', estocada: 'He’ll thrust.', baixo: 'He’ll go for the legs.' },
     peDeTras: 'The back foot.', sinal: { alto: 'His foot drags: from above.', estocada: 'His shoulder drops: the thrust.', baixo: 'His knees bend: dodge only.' }, respirou: 'Laura breathes. Her heart slows.',
-    quebrou: 'His guard gives. His ribs open.', toque: 'Touch', escapou: 'He recovers in time.',
+    quebrou: 'His guard gives. His ribs open.', toque: 'Touch', escapou: 'He recovers in time.', maisUma: 'Simon taps two fingers on his chest, twice. One more.',
     congela: 'His ribs, wide open.', tocar: 'Touch his ribs', baixar: 'Lower the sword',
     guarda: 'Guard', toques: 'Touches', coracao: 'Heart', marcas: 'Marks',
     venceu: 'You beat Simon.', marcasFim: 'You beat Simon, but he landed a hit.', deixou: 'You let Simon win.', perdeu: 'Simon won.',
@@ -249,7 +249,7 @@ function start(root, opts) {
       const r = await aguarda(alvo, j.bom + 40, ['golpe']); someAnel(); limpaCmd();
       if (r.tipo && Math.abs(r.dt) <= j.bom + 40) {
         pose('laura', 'tocar', 80); pose('simon', 'atingido', -12); som.toque(); clarao('ouro'); S.toques++; mostra(T.toque, 'ouro grande'); hud();
-        await espera(900); guarda = 100; fase = Math.min(3, fase + 1); musica && musica.fase(fase); parado(); hud(); return 'toque';
+        await espera(900); msg(T.maisUma); await espera(1300); guarda = 100; fase = Math.min(3, fase + 1); musica && musica.fase(fase); parado(); hud(); return 'toque';
       }
       mostra(T.escapou, 'ruim'); guarda = 34; hud(); await espera(500); parado(); return 'escapou';
     };

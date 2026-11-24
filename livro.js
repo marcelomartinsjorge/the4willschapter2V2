@@ -99,8 +99,17 @@ const A = {
   // sfx: se o arquivo existir em assets/audio/sfx, toca ele; senão, um som sintetizado de reserva
   async sfx(nome, vol = .6, reserva) { if (!this.ctx) return; const d = await this.once('assets/audio/sfx/' + nome + '.mp3', vol); if (!d && reserva) reserva(); },
   virar() { this.sfx('pagina', .35, () => this.hiss(.35, 2400, .7, .05)); },
+  // silêncio de cena: o fundo baixa (e pode abafar) só enquanto a linha-chave está na tela
+  silencio(nivel = .06, abafar = false) { if (!this.ctx) return; this._sil = true; const t = this.ctx.currentTime; this.bed.gain.cancelScheduledValues(t); this.bed.gain.setTargetAtTime(nivel, t, .6); if (abafar) this.abafa(true); },
+  solta() { if (!this.ctx || !this._sil) return; this._sil = false; const t = this.ctx.currentTime; this.bed.gain.cancelScheduledValues(t); this.bed.gain.setTargetAtTime(1, t, .9); if (this._abaf && !document.body.classList.contains('quente')) this.abafa(false); },
+  // a dobradiça de baixo da porta (arquivo sfx/dobradica.mp3, se existir; senão, rangido sintetizado)
+  dobradica() { this.sfx('dobradica', .55, () => { this.tone(210, .9, 'sawtooth', .022, 0, .72); this.tone(330, .55, 'sawtooth', .012, .12, .8); this.hiss(.8, 900, 6, .03); }); },
+  // o sino da torre, longe e abafado (o mesmo da aula)
+  async sinoLonge(vol = .22) { if (!this.ctx) return; const b = await this.buf('assets/audio/sfx/sino-tarde.mp3'); if (!b) return; const s = this.ctx.createBufferSource(); s.buffer = b; const f = this.ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 900; const g = this.ctx.createGain(); g.gain.value = vol; s.connect(f); f.connect(g); g.connect(this.fx); s.start(); },
+  // som de cena pedido por uma linha (p.seq com cont)
+  cena(nome) { const m = { silencio: () => this.silencio(.06), silencioAbafa: () => this.silencio(.04, true), solta: () => this.solta(), dobradica: () => this.dobradica(), sinoLonge: () => this.sinoLonge(), batida: () => this.batida(.55), brinde: () => this.sfx('brinde', .5, () => [1320, 1760].forEach((f, k) => this.tone(f, 1.2, 'sine', .03, k * .05))), sinoDepois: () => setTimeout(() => this.sinoLonge(.15), 3200) }; [].concat(nome).forEach((n) => m[n] && m[n]()); },
   escolha() { this.tone(392, .5, 'sine', .05); this.tone(587, .6, 'sine', .035, .06); },
-  aviso() { this.tone(440, .9, 'triangle', .03); },
+  aviso() { if (!this.ctx) return; this.tone(196, .5, 'sine', .12); this.tone(147, .9, 'sine', .1, .22); if (!this._sil) { const t = this.ctx.currentTime; this.bed.gain.cancelScheduledValues(t); this.bed.gain.setTargetAtTime(.35, t, .08); this.bed.gain.setTargetAtTime(1, t + .6, .4); } },
   // o peso: um baque surdo, grave, dentro do peito
   peso() { this.sfx('peso', .7, () => { this.tone(48, 1.4, 'sine', .32, 0, .7); this.hiss(.9, 120, .6, .18, 0, 'lowpass'); }); },
   // batida do coração (sintetizada): tum-tum
@@ -301,7 +310,7 @@ function render(dir = 1) {
   clearTimers(); A.stopNarr(); linkUsados.clear(); pensaEl.className = ''; aplicaNo();
   const p = P[st.i]; if (!p) return;
   setFundo(resolveFundo(p));
-  if (A.ctx) { A.setZone(p.zona); if (p.som && dir > 0) A.once(p.som, .55); }
+  if (A.ctx) { A.solta(); A.setZone(p.zona); if (p.som && dir > 0) A.once(p.som, .55); if (p.silencio != null && dir >= 0) A.silencio(p.silencio); }
   document.body.dataset.zona = p.zona;
   Coracao.set(typeof p.pulso === 'function' ? p.pulso(st) : p.pulso); Coracao.extra(0);
   { let k = st.i; while (k > 0 && !P[k].parte) k--; $('#parte').textContent = U('parte') + ' ' + (P[k].parte || 'I'); }
@@ -437,6 +446,8 @@ function renderSeq(p) {
     if (k >= p.seq.length) { box.innerHTML = box.querySelector('.feita') ? box.innerHTML : ''; setNext(true); return; }
     const it = p.seq[k], next = () => run(k + 1);
     if (it.se && !it.se(st)) return next();
+    if (it.cont) return contEtapa(it, p, k, next);
+    if (it.sinal) return sinalEtapa(it, p, k, next);
     if (it.texto) { appendParas(it.texto); return later(next, Math.min(2400, paras(it.texto).length * 450 + 300)); }
     if (it.pensa) return pensaEtapa(it.pensa, next);
     if (it.escolha) return escolhaEtapa(it.escolha, next);
@@ -448,6 +459,26 @@ function renderSeq(p) {
   const passoTxt = document.body.classList.contains('quente') ? .6 : .35;
   later(() => run(0), jaFeita ? 0 : Math.round((txt.children.length * passoTxt + .9) * 1000));
   return false;
+}
+// "Continuar": o som da linha só toca depois do toque do leitor, nunca por estimativa do tempo de leitura
+function contEtapa(it, p, k, next) {
+  const chave = 'cont:' + p.id + ':' + k, segue = () => later(next, Math.min(2400, paras(it.texto).length * 450 + 300));
+  if (st.feitos[chave]) { appendParas(it.texto); return next(); }
+  box.innerHTML = `<button class="cta cont">${U('continuar')}</button>`;
+  box.querySelector('.cont').onclick = () => { st.feitos[chave] = 1; salvar(); box.innerHTML = ''; const som = typeof it.som === 'function' ? it.som(st) : it.som; if (A.ctx && A.on && som) A.cena(som); if (it.frio) Sensa.frio(true); appendParas(it.texto); segue(); };
+}
+// o sinal do laranjal: o jogador bate dois dedos no peito, duas vezes (cada toque, uma batida do coração)
+function sinalEtapa(it, p, k, next) {
+  const chave = 'sinal:' + p.id + ':' + k;
+  if (st.feitos[chave]) { if (A.ctx) A.solta(); return next(); }
+  box.innerHTML = `<p class="eyebrow">${esc(tr(it.sinal))}</p><button class="cta sinal"><span class="sn-d"><i></i><i></i></span>${U('sinalTxt')}</button>`;
+  const b = box.querySelector('.sinal'); let n = 0;
+  b.onclick = () => {
+    n++; b.querySelectorAll('.sn-d i')[n - 1].classList.add('on'); if (A.ctx && A.on) A.batida(.7);
+    document.body.classList.remove('bate'); void document.body.offsetWidth; document.body.classList.add('bate');
+    if (n < 2) return; b.disabled = true; st.feitos[chave] = 1; salvar();
+    later(() => { box.innerHTML = ''; if (A.ctx) A.solta(); next(); }, 650);
+  };
 }
 function escolhaEtapa(e, next) {
   const feita = st.escolhas[e.id];
@@ -529,7 +560,7 @@ function mgEtapa(tipo, p, next) {
   const key = 'mg:' + p.id + ':' + tipo;
   if (st.feitos[key]) { const dep = p[tipo] && p[tipo].depois; if (dep) appendParas(val(dep)); return next(); }
   box.innerHTML = `<p class="eyebrow">${U('momento')}</p><button class="opt jogar" id="mgGo"><span class="k">▶</span>${U('mg')[tipo]}</button><p class="dica">${val(U('dica')[tipo])}</p>`;
-  $('#mgGo').onclick = () => { box.innerHTML = ''; MG[tipo](p).then(() => {
+  $('#mgGo').onclick = () => { box.innerHTML = ''; A.solta(); MG[tipo](p).then(() => {
     st.feitos[key] = 1; salvar();
     const dep = p[tipo] && p[tipo].depois; if (dep) appendParas(val(dep));
     later(next, dep ? paras(val(dep)).length * 450 + 700 : 200);

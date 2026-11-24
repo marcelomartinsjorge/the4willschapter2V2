@@ -30,7 +30,7 @@ const afeto = (st) => st.afeto || 0;
 const faixa = (st) => (afeto(st) >= 8 ? 'semnome' : afeto(st) >= 4 ? 'amiga' : 'rival');
 
 window.LIVRO_UI = {
-  pt: { pensaEy: 'Na ponta da língua', tacaRegra: 'O vinho balança sozinho. Segure ◀ ou ▶ para inclinar a taça de volta. Mantenha o ponteiro dentro da faixa verde até a vela acabar.', tacaGo: 'Pegar a taça', tacaAjuda: 'Segure ◀ ou ▶ (setas, A / D, ou toque nos lados)',  seguirLeitura: 'Seguir', vaiFalar: '{n} vai falar', conversaSegue: 'A conversa segue', dizer: 'Dizer', engolir: 'Engolir', pensaDica: 'A conversa não espera. Se Laura não disser a tempo, alguém fala por cima e ela engole. O que ela engole não some: volta, mais tarde, na hora errada.', voceN: 'Laura', maoJustine: 'A mão de Justine', nome_justine: 'Justine', nome_cecily: 'Cecily', nome_maud: 'Maud', outraSobe: 'A mão de {n} sobe antes de todas.', naoN: 'Não, {n}.', maoSobe1: 'Minha mão sobe antes de eu decidir.', maoSobe: 'Ergo a mão.', errou: 'Erro. A mão de Justine já está no ar.', justinePrimeiro: 'A mão de Justine sobe primeiro.', proxPergunta: 'Próxima pergunta', ptsAula: 'A aula', ptsTaca: 'A taça',
+  pt: { continuar: 'Continuar', sinalTxt: 'Dois dedos no peito', pensaEy: 'Na ponta da língua', tacaRegra: 'O vinho balança sozinho. Segure ◀ ou ▶ para inclinar a taça de volta. Mantenha o ponteiro dentro da faixa verde até a vela acabar.', tacaGo: 'Pegar a taça', tacaAjuda: 'Segure ◀ ou ▶ (setas, A / D, ou toque nos lados)',  seguirLeitura: 'Seguir', vaiFalar: '{n} vai falar', conversaSegue: 'A conversa segue', dizer: 'Dizer', engolir: 'Engolir', pensaDica: 'A conversa não espera. Se Laura não disser a tempo, alguém fala por cima e ela engole. O que ela engole não some: volta, mais tarde, na hora errada.', voceN: 'Laura', maoJustine: 'A mão de Justine', nome_justine: 'Justine', nome_cecily: 'Cecily', nome_maud: 'Maud', outraSobe: 'A mão de {n} sobe antes de todas.', naoN: 'Não, {n}.', maoSobe1: 'Minha mão sobe antes de eu decidir.', maoSobe: 'Ergo a mão.', errou: 'Erro. A mão de Justine já está no ar.', justinePrimeiro: 'A mão de Justine sobe primeiro.', proxPergunta: 'Próxima pergunta', ptsAula: 'A aula', ptsTaca: 'A taça',
     coracaoTut: 'O coração de Laura', coracaoTut2: 'Quando dispara, as palavras dela começam a tremer.', parte: 'Parte', prox: 'Próxima', fim: 'Encerrar o capítulo', voltar: '← Voltar', ouvir: 'Ouvir Laura', cena: '▶ Ver a cena', oque: 'O que Laura faz?', decida: 'Decida', decidir: 'Decidir', escolheu: 'Você escolheu:', resp: 'Responder a', silencio: 'ficar em silêncio', silencioR: 'Silêncio', momento: 'Momento de jogo',
     mg: { olhar: 'Olhar sem se mexer', duelo: 'Ler Simon', esconderijo: 'Prender o coração', estudo: 'Estudar antes do sino', perguntas: 'Responder antes de Justine', taca: 'Segurar a taça' },
     dica: { estudo: 'Leia o que puder antes de a vela acabar. Não dá tempo para tudo.', perguntas: 'Responda antes que a mão de Justine termine de subir.', taca: 'Mantenha o vinho na taça.', olhar: 'Passe os olhos pela sala. São quatro olhares antes de Gideon terminar.', duelo: 'Por turnos. No seu, escolha o golpe e acerte o tempo. No dele, leia o corpo de Simon e desvie ou apare na hora. Três toques vencem.', esconderijo: 'Acompanhe cada batida para acalmar o coração, e prenda o fôlego quando a luz chegar.', preceT: 'Toque e segure. Solte quando quiser parar de rezar.', preceK: 'Segure o botão ou a barra de espaço. Solte quando quiser parar de rezar.' },
@@ -39,7 +39,7 @@ window.LIVRO_UI = {
     confirm: 'Recomeçar o capítulo? Suas escolhas serão apagadas.', capN: 'Capítulo II', fimCap: 'Fim do Capítulo II', ficou: 'O que ficou atrás do peito', suas: 'O que você escolheu', reler: 'Reler e escolher diferente', mesmo: (p) => `${p}% dos leitores fizeram o mesmo`,
     pontos: 'Pontuação do capítulo', jornada: 'Jornada (Capítulos I e II)', posicao: (p, n) => `${p}º de ${n} leitores`, ptsDuelo: 'O duelo', ptsEsconde: 'O esconderijo', ptsCap1: 'Capítulo I (o hino do gelo)', semCap1: 'Jogue o Capítulo I neste navegador para somar a jornada.',
   },
-  en: { pensaEy: 'On the tip of her tongue', tacaRegra: 'The wine sways on its own. Hold ◀ or ▶ to tilt the cup back. Keep the marker inside the green band until the candle burns out.', tacaGo: 'Take the cup', tacaAjuda: 'Hold ◀ or ▶ (arrow keys, A / D, or touch the sides)',  seguirLeitura: 'Continue', vaiFalar: '{n} is about to speak', conversaSegue: 'The conversation moves on', dizer: 'Say it', engolir: 'Swallow it', pensaDica: 'The conversation won’t wait. If Laura doesn’t say it in time, someone talks over her and she swallows it. What she swallows doesn’t go away: it comes back, later, at the wrong moment.', voceN: 'Laura', maoJustine: 'Justine’s hand', nome_justine: 'Justine', nome_cecily: 'Cecily', nome_maud: 'Maud', outraSobe: '{n}’s hand goes up before anyone’s.', naoN: 'No, {n}.', maoSobe1: 'My hand goes up before I decide.', maoSobe: 'I raise my hand.', errou: 'Wrong. Justine’s hand is already up.', justinePrimeiro: 'Justine’s hand goes up first.', proxPergunta: 'Next question', ptsAula: 'The lesson', ptsTaca: 'The cup',
+  en: { continuar: 'Continue', sinalTxt: 'Two fingers on the chest', pensaEy: 'On the tip of her tongue', tacaRegra: 'The wine sways on its own. Hold ◀ or ▶ to tilt the cup back. Keep the marker inside the green band until the candle burns out.', tacaGo: 'Take the cup', tacaAjuda: 'Hold ◀ or ▶ (arrow keys, A / D, or touch the sides)',  seguirLeitura: 'Continue', vaiFalar: '{n} is about to speak', conversaSegue: 'The conversation moves on', dizer: 'Say it', engolir: 'Swallow it', pensaDica: 'The conversation won’t wait. If Laura doesn’t say it in time, someone talks over her and she swallows it. What she swallows doesn’t go away: it comes back, later, at the wrong moment.', voceN: 'Laura', maoJustine: 'Justine’s hand', nome_justine: 'Justine', nome_cecily: 'Cecily', nome_maud: 'Maud', outraSobe: '{n}’s hand goes up before anyone’s.', naoN: 'No, {n}.', maoSobe1: 'My hand goes up before I decide.', maoSobe: 'I raise my hand.', errou: 'Wrong. Justine’s hand is already up.', justinePrimeiro: 'Justine’s hand goes up first.', proxPergunta: 'Next question', ptsAula: 'The lesson', ptsTaca: 'The cup',
     coracaoTut: 'Laura’s heart', coracaoTut2: 'When it races, her words begin to shake.', parte: 'Part', prox: 'Next', fim: 'Close the chapter', voltar: '← Back', ouvir: 'Listen to Laura', cena: '▶ Watch the scene', oque: 'What does Laura do?', decida: 'Decide', decidir: 'Decide', escolheu: 'You chose:', resp: 'Answer', silencio: 'stay silent', silencioR: 'Silence', momento: 'Moment of play',
     mg: { olhar: 'Look without moving', duelo: 'Read Simon', esconderijo: 'Hold your heart', estudo: 'Study before the bell', perguntas: 'Answer before Justine', taca: 'Hold the cup' },
     dica: { estudo: 'Read what you can before the candle burns down. There isn’t time for everything.', perguntas: 'The first hand raised answers. Justine’s is already rising.', taca: 'Keep the wine in the cup.', olhar: 'Let your eyes move around the room. Four looks before Gideon finishes.', duelo: 'Turn by turn. On yours, pick a move and hit the timing. On his, read Simon’s body and dodge or parry in time. Three touches win.', esconderijo: 'Keep time with each beat to calm her heart, and hold your breath when the light comes.', preceT: 'Touch and hold. Let go when you want to stop praying.', preceK: 'Hold the button or the space bar. Let go when you want to stop praying.' },
@@ -122,10 +122,10 @@ window.LIVRO = {
           '— Ah — the tailor steps back and looks me over, head to foot. — You’ll be the most beautiful Mother-Queen in history. No question, the gown with the emerald trim is the finest choice. It matches your green eyes, and the gold in your hair looks brighter still beside it.'),
         T('Respondo com um bocejo comprido e esfrego os olhos com as costas da mão. Mas complemento:', 'I answer with a long yawn and rub my eyes with the back of my hand. But I add:'),
         T('— Você é muito gentil, senhor Gideon.', '— You’re very kind, Master Gideon.'),
-        (st) => (st.f.viuPorta
+      ],
+      seq: [{ cont: true, som: 'dobradica', texto: [(st) => (st.f.viuPorta
           ? T('Ele se curva para a frente, a mão no peito, e aproveita o gesto para já se virar, ainda curvado, na direção da porta. A dobradiça de baixo range. Minha mãe acaba de entrar.', 'He bows forward, a hand to his chest, and uses the motion to turn, still bent, toward the door. The lower hinge creaks. My mother has just walked in.')
-          : T('Ele se curva para a frente, a mão no peito, e aproveita o gesto para já se virar, ainda curvado, na direção da porta, onde minha mãe acaba de entrar.', 'He bows forward, a hand to his chest, and uses the motion to turn, still bent, toward the door, where my mother has just walked in.')),
-      ] },
+          : T('Ele se curva para a frente, a mão no peito, e aproveita o gesto para já se virar, ainda curvado, na direção da porta, onde minha mãe acaba de entrar.', 'He bows forward, a hand to his chest, and uses the motion to turn, still bent, toward the door, where my mother has just walked in.'))] }] }, // v23 · S6: a dobradiça range depois do Continuar
 
     { id: 'a05', zona: 'alfaiataria', fundo: { img: 'assets/images/dolores-maos.jpg', kb: 'in', foco: '72% 40%', dim: 0.4 }, pulso: 1.6,
       texto: [
@@ -183,17 +183,17 @@ window.LIVRO = {
           ? T('Ela não ajeita meu cabelo antes de sair, como faz sempre. Vai direto para a porta.', 'She doesn’t tuck my hair back before leaving, the way she always does. She goes straight to the door.')
           : T('Ela ajeita uma mecha do meu cabelo atrás da orelha, o mesmo gesto de quando eu era pequena, e vai até a porta.', 'She tucks a strand of my hair behind my ear, the same gesture as when I was small, and goes to the door.')), // NOVO
       ],
-      escolha: { id: 'outro', pergunta: T('Ela está quase na porta.', 'She’s almost at the door.'), opcoes: [
+      seq: [{ escolha: { id: 'outro', pergunta: T('Ela está quase na porta.', 'She’s almost at the door.'), opcoes: [
         { id: 'perguntar', eixo: 'mostra', flag: 'perguntouOutro', txt: T('Perguntar: “E se outro vencer?”', 'Ask: “What if someone else wins?”'),
           resultado: [
             T('— Mãe. E se outro vencer?', '— Mother. What if someone else wins?'),
             T('Ela para com a mão na maçaneta.', 'She stops with her hand on the latch.'),
-            T('— Então você se casa com outro, minha filha. É assim que Redom continua de pé.', '— Then you marry someone else, my daughter. That’s how Redom stays standing.'),
-            (st) => (st.f.viuPorta ? T('A dobradiça de baixo range quando ela sai, como eu sabia que ia ranger.', 'The lower hinge creaks as she leaves, the way I knew it would.') : T('A porta fecha atrás dela.', 'The door closes behind her.')),
+            T('— Então você se casa com outro, minha filha. É assim que Redom continua de pé.', '— Then you marry someone else, my daughter. That’s how Redom stays standing.')
           ] },
         { id: 'cala', txt: T('Deixar que ela vá', 'Let her go'),
-          resultado: [(st) => (st.f.viuPorta ? T('A dobradiça de baixo range quando ela sai, como eu sabia que ia ranger.', 'The lower hinge creaks as she leaves, the way I knew it would.') : T('A porta fecha atrás dela.', 'The door closes behind her.'))] },
-      ] } }, // NOVO (a pergunta agora é escolha visível)
+          resultado: [] },
+      ] } },
+        { cont: true, som: 'dobradica', texto: [(st) => (st.f.viuPorta ? T('A dobradiça de baixo range quando ela sai, como eu sabia que ia ranger.', 'The lower hinge creaks as she leaves, the way I knew it would.') : T('A porta fecha atrás dela.', 'The door closes behind her.'))] }] }, // v23 · S6 (a escolha agora é etapa; a dobradiça vem depois do Continuar)
 
     // ===================================================== II · O ORATÓRIO
     { id: 'parte-II', parte: 'II', zona: 'castelo', fundo: { video: 'assets/video/aula-sala.mp4', img: 'assets/images/aula-sala.jpg', alt: 'assets/images/aula.jpg', kb: 'in', dim: .62, foco: '50% 40%', clima: 'poeira' },
@@ -478,6 +478,7 @@ window.LIVRO = {
         ] } },
         { texto: [
         T('O jantar é no salão pequeno, que minha mãe chama de pequeno: doze lugares, duas lareiras, as tapeçarias da Ponte de Andrey nas paredes.', 'Dinner is in the small hall, which my mother calls small: twelve places, two hearths, the tapestries of Andrey Bridge on the walls.'),
+        T('Na cabeceira fica a cadeira do meu pai, que ninguém conta entre os doze. Minha mãe senta ao lado dela, como sentava quando ele estava vivo.', 'At the head of the table stands my father’s chair, which nobody counts among the twelve. My mother sits beside it, the way she sat when he was alive.'), // v23 · E5
         T('Ela me sentou à direita de Markus. Do outro lado da mesa, Joseph, e ao lado dele, Justine. Lorde Avellan, o pai dela, fica de pé atrás da cadeira da filha, como se o jantar ainda não tivesse começado.', 'She has seated me on Markus’s right. Across the table, Joseph, and beside him, Justine. Lord Avellan, her father, stands behind his daughter’s chair, as if the dinner hadn’t started yet.'),
         T('Mesmo de pé, Lorde Avellan fala de lã com Lady Hollin desde que chegou. Sir Godric, que lutou contra os Grakh quando meu pai ainda era escudeiro, cochila na ponta da mesa. A Madre Ysolde benze o pão em nome da Juíza e come antes de terminar a bênção.', 'Even standing, Lord Avellan has been talking wool with Lady Hollin since he arrived. Sir Godric, who fought the Grakh when my father was still a squire, dozes at the end of the table. Mother Ysolde blesses the bread in the Judge’s name and eats before she finishes the blessing.'),
         T('Simon ficou na outra ponta, ao lado da Madre Ysolde, sentado bem reto, com as mãos no colo.', 'Simon was put at the other end, beside Mother Ysolde, sitting very straight, hands in his lap.'),
@@ -533,8 +534,6 @@ window.LIVRO = {
       texto: [
         T('Lorde Avellan se levanta com a taça. Justine tem a testa dele e mais nada.', 'Lord Avellan stands with his cup. Justine has his forehead and nothing else of him.'),
         T('— Ao Torneio. E ao contrato que se assina depois dele. — Ergue a taça para Joseph. — A Casa Avellan dá a mão de Justine a Sir Joseph, depois do Torneio, com a bênção da Mãe-Rainha.', '— To the Tournament. And to the contract to be signed after it. — He raises his cup to Joseph. — House Avellan gives Justine’s hand to Sir Joseph, after the Tournament, with the Mother-Queen’s blessing.'),
-        T('As taças sobem. Justine segura a dela junto do peito e não ergue. Olha para o prato.', 'The cups rise. Justine holds hers against her chest and doesn’t lift it. She looks at her plate.'),
-        T('Agora eu sei o que ela pedia à Juíza.', 'Now I know what she was asking the Judge for.'),
       ],
       taca: {
         img: 'assets/images/taca.jpg', alt: 'assets/images/dolores-maos.jpg',
@@ -543,6 +542,7 @@ window.LIVRO = {
           : [T('Ergo a taça junto com os outros. O vinho nem se mexe. As minhas mãos estão frias.', 'I raise my cup with the others. The wine doesn’t even move. My hands are cold.')]),
       },
       seq: [
+        { cont: true, som: ['brinde', 'silencioAbafa'], frio: true, texto: [T('As taças sobem. Justine segura a dela junto do peito e não ergue. Olha para o prato.', 'The cups rise. Justine holds hers against her chest and doesn’t lift it. She looks at her plate.'), T('Agora eu sei o que ela pedia à Juíza.', 'Now I know what she was asking the Judge for.')] }, // v23 · S1
         { mg: 'taca' },
         { pensa: { id: 'noiva', quem: T('Minha mãe', 'My mother'), t: T('Ela não pode.', 'She can’t.'),
           dizer: { voz: 'jantar-escolher', afeto: 2, peso: 1, pulso: 3.2, flag: 'justineDesconfia', aviso: T('Justine vai lembrar disso.', 'Justine will remember that.'), resultado: [
@@ -598,7 +598,15 @@ window.LIVRO = {
         T('Perto da estátua da Juíza, a luz de uma tocha aparece no fim da aleia. Passos de bota no cascalho. O guarda da ronda vem na nossa direção, e Simon agarra meu braço.', 'Near the statue of the Judge, torchlight appears at the end of the path. Boots on gravel. The night guard is coming our way, and Simon grabs my arm.'),
         T('Puxo Simon para trás da estátua. A pedra da base está fria nas minhas costas. Ponho o dedo nos lábios.', 'I pull Simon behind the statue. The stone of the base is cold against my back. I put a finger to my lips.'), // NOVO
       ],
-      minijogo: 'esconderijo', esconderijo: { video: 'assets/video/esconderijo.mp4', img: 'assets/images/esconderijo.jpg' },
+      seq: [
+        { cont: true, som: 'silencio', texto: [
+        T('Simon treme contra o meu ombro. Falo quase sem voz, na orelha dele:', 'Simon is shaking against my shoulder. I speak almost without a voice, into his ear:'),
+        T('— Firmes. É só o escuro.', '— Steady. It’s only the dark.'),
+        T('Foram as últimas palavras do meu pai. Os que voltaram contaram à minha mãe. Eu ouvi atrás da porta.', 'Those were my father’s last words. The ones who came back told my mother. I heard them behind the door.'), // v23 · E3 (o Cap. VIII grita a mesma ordem no eclipse)
+        ] }, // v23 · S4: o jardim cala na fala do pai
+        { mg: 'esconderijo' },
+      ],
+      esconderijo: { video: 'assets/video/esconderijo.mp4', img: 'assets/images/esconderijo.jpg',
       depois: (st) => (st.f.visto
         ? [ // perdeu o minijogo: o coração vence, e eles correm (Dolores vai saber)
           T('O coração bate tão alto que tenho certeza de que ele escuta. Não aguento. Levanto e corro, e puxo Simon comigo.', 'My heart beats so loud I’m sure he can hear it. I can’t hold it. I get up and run, and pull Simon with me.'),
@@ -611,11 +619,14 @@ window.LIVRO = {
           T('A luz da tocha passa pela balança dela, pelo rosto dela, e segue.', 'The torchlight passes over her scales, over her face, and moves on.'),
           T('O guarda passa a três passos de nós. Sinto o cheiro de resina queimada da tocha. Ele não vira a cabeça.', 'The guard passes three steps from us. I can smell the burning pitch of the torch. He doesn’t turn his head.'),
           T('Quando os passos somem, Simon me olha com a boca aberta. Eu conto até vinte e sigo.', 'When the steps are gone, Simon stares at me with his mouth open. I count to twenty and keep going.'),
-        ]) }, // NOVO (a ronda: sempre se escondem; o minijogo decide se o guarda vê)
+        ]) } }, // NOVO (a ronda: sempre se escondem; o minijogo decide se o guarda vê)
 
     { id: 'c03', zona: 'laranjal', fundo: { img: 'assets/images/laranjal-lua.jpg', kb: 'in', foco: '50% 45%', dim: .5, clima: 'poeira-azul' }, pulso: (st) => (st.escolhas.lenco === 'guardar' ? 2 : .5),
       texto: [
         T('Poeira flutua clara na primeira luz que entra pelos janelões.', 'Dust drifts pale in the first light coming through the tall windows.'),
+        T('Simon tira da camisa um pão do jantar, achatado de tanto ficar ali, e parte no meio. A metade maior vem para mim.', 'Simon pulls a roll from dinner out of his shirt, flattened from riding there, and tears it in half. The bigger half comes to me.'), // v23 · E1
+        T('— Você mal tocou no prato.', '— You barely touched your plate.'),
+        T('Ele também não tocou no dele. Eu vi a carne cortada até sumir. Comemos de pé, antes de aquecer.', 'He didn’t touch his either. I saw the meat cut down to nothing. We eat standing up, before we warm up.'),
         se((st) => st.escolhas.lenco === 'guardar', T('Antes de começar, enrolo o lenço de Justine na palma da mão, por cima da bolha que abriu ontem.', 'Before we start, I wrap Justine’s handkerchief around my palm, over the blister that opened yesterday.')), // NOVO
         se((st) => st.escolhas.lenco === 'guardar', T('Simon aponta minha mão com o queixo.', 'Simon nods at my hand.')),
         se((st) => st.escolhas.lenco === 'guardar', T('— Isso na sua mão tem um J bordado. É da Justine?', '— That thing on your hand has a J stitched on it. Is it Justine’s?')),
@@ -669,11 +680,23 @@ window.LIVRO = {
       vozAuto: 'vou-precisar', vozAtraso: 500 }, // canon
 
     { id: 'c06', zona: 'laranjal', fundo: { img: 'assets/images/laranjal-lua.jpg', kb: 'in', foco: '60% 45%', dim: .55, clima: 'poeira-azul' }, pulso: 1,
+      silencio: .08, // v23 · S2: o laranjal some até o sinal; volta na rodada
       texto: [
-        T('Simon senta no chão, as costas na parede, ainda ofegante, e me olha com uma cara que eu conheço.', 'Simon sits on the floor, back against the wall, still panting, and looks at me with a face I know.'),
-        T('— Por que você treina tanto, Laura? Rainha não luta.', '— Why do you train so much, Laura? Queens don’t fight.'),
-      ], // NOVO
-      escolha: { id: 'simon', pergunta: T('A pergunta de Simon', 'Simon’s question'), opcoes: [
+        T('A luz já entra cinza pelos janelões. Mais um pouco, o primeiro sino bate.', 'The light comes in grey through the tall windows. A little more, and the first bell rings.'),
+        T('Simon, ainda ofegante, bate dois dedos no peito, duas vezes.', 'Simon, still panting, taps two fingers on his chest, twice.'),
+      ], // v23 · E2
+      seq: [
+        { sinal: T('Responder', 'Answer') },
+        { texto: [
+          T('Respondo com os mesmos dois dedos no meu. Ele nunca me pediu essa rodada sem eu dizer sim.', 'I answer with the same two fingers on mine. He has never asked me for that round without me saying yes.'),
+          T('Lutamos sem contar os toques. Não leio os pés dele. A ponta da espada dele raspa a minha manga, e ele grita como se tivesse ganhado o Torneio. Deixo ele gritar.', 'We fight without counting the touches. I don’t read his feet. The tip of his sword grazes my sleeve, and he shouts as if he’d won the Tournament. I let him shout.'),
+          T('Daqui a um mês, eu não vou estar aqui para dizer sim.', 'A month from now, I won’t be here to say yes.'),
+        ] },
+        { cont: true, texto: [
+          T('Ele senta no chão, as costas na parede, ainda ofegante, e me olha com uma cara que eu conheço.', 'He sits on the floor with his back to the wall, still panting, and gives me a look I know.'),
+          T('— Por que você treina tanto, Laura? Rainha não luta.', '— Why do you train so much, Laura? Queens don’t fight.'),
+        ] },
+        { escolha: { id: 'simon', pergunta: T('A pergunta de Simon', 'Simon’s question'), opcoes: [
         { id: 'verdade', aviso: T('Simon vai lembrar disso.', 'Simon will remember that.'), eixo: 'mostra', flag: 'contou', peso: -1, voz: 'torneio', vozAtraso: 500, txt: T('Contar a verdade', 'Tell him the truth'),
           resultado: [
             T('— Porque daqui a um mês eu vou lutar no Torneio Real.', '— Because in a month I’m going to fight in the Royal Tournament.'),
@@ -696,7 +719,7 @@ window.LIVRO = {
             T('Em vez de responder, ataco. Ele grita, rola para o lado, levanta rindo e se defende.', 'Instead of answering, I attack. He yelps, rolls aside, gets up laughing and defends himself.'),
             T('Ele não volta à pergunta.', 'He doesn’t come back to the question.'),
           ] }, // NOVO
-      ] } },
+      ] } }] },
 
     { id: 'c07', zona: 'laranjal', fundo: { video: 'assets/video/brancarda.mp4', img: 'assets/images/brancarda.jpg', kb: 'none', foco: '75% 60%', dim: .45 }, efeito: { flag: 'brancarda' }, pulso: (st) => (st.f.visto ? 2 : .4),
       texto: [
@@ -733,12 +756,14 @@ window.LIVRO = {
           ? [T('Conto nos dedos os dias até o oficial do Registro vir buscar os mantos de Gideon. Nove.', 'I count on my fingers the days until the Registry officer comes for Gideon’s cloaks. Nine.'), T('Depois, os dias até o Torneio. Trinta. Conto de novo e dá o mesmo.', 'Then the days to the Tournament. Thirty. I count again and get the same.')]
           : T('Conto nos dedos os dias até o Torneio. Trinta. Conto de novo e dá o mesmo.', 'I count the days to the Tournament on my fingers. Thirty. I count again and get the same.')),
         se((st) => (st.engoliu || []).length >= 2, T('Quando apago a vela, a garganta ainda dói.', 'When I blow out the candle, my throat still aches.')), // NOVO (o que ela engoliu hoje)
+
+      ],
+      seq: [{ cont: true, som: (st) => (st.peso >= 3 || (st.duelo && st.duelo.sofridos >= 2) ? ['silencio', 'sinoLonge'] : st.peso === 0 ? ['silencio', 'sinoDepois'] : ['silencio']), texto: [
         (st) => (st.peso >= 3 || (st.duelo && st.duelo.sofridos >= 2)
           ? T('Deito de lado, depois do outro, depois de costas. Quando o sino bate longe, meus olhos já estão fechando.', 'I lie on one side, then the other, then on my back. When the bell rings far away, my eyes are already closing.')
           : st.peso === 0
             ? T('Deito sem tirar a poeira dos pés e durmo antes de o sino bater.', 'I lie down without brushing the dust off my feet and fall asleep before the bell.')
-            : T('Deito de costas e fico olhando o teto até os olhos fecharem sozinhos.', 'I lie on my back and watch the ceiling until my eyes close on their own.')),
-      ] }, // NOVO (termina dormindo: o Cap. III é quase um sonho de infância)
+            : T('Deito de costas e fico olhando o teto até os olhos fecharem sozinhos.', 'I lie on my back and watch the ceiling until my eyes close on their own.'))] }] }, // v23 · S3 (termina dormindo: o Cap. III é quase um sonho de infância)
   ],
 
   // ---------------------------------------------------------------- o que este capítulo deixa para os próximos
