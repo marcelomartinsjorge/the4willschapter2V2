@@ -328,3 +328,16 @@ Rodada 3 do `claude/CAP2_MAPA_DE_EMOCOES.md`, aprovada inteira. Norte: o mundo a
 - L5 · c08: a camisa e as calças debaixo do colchão; o vestido de amanhã em cima da arca.
 - L6 · capa: "Um mês antes do Torneio, a filha da Mãe-Rainha é medida para o vestido." / "A month before the Tournament, the Mother-Queen’s daughter is measured for the gown."
 - Conferido: 40 páginas em PT e EN sem erro; muletas sem ACIMA.
+
+## v26 · auditoria de interação e HUD aplicada (26/11)
+Tudo de `claude/CAP2_AUDITORIA_INTERACAO_E_HUD.md`, com as mídias do Marcelo.
+- **O3 · o eixo esconder/mostrar volta** (`tendencia` = mostra − esconde): b04 (a Justine: "Você nunca escondeu essas mãos de mim." / "Você esconde as mãos até de mim, Laura."), d01 (a mão da mãe encontra a mão fechada ou já aberta), c08 (com tendência ≥ 3 a camisa fica em cima da arca), tela final ("Laura deixou ver mais do que devia." / "Laura escondeu quase tudo hoje. Até as mãos.").
+- **O14 · avisos com "guardar":** "Minha mãe guardou a promessa / o meu silêncio / a chave.", "Justine guardou isso.", "Justine guardou o lenço de volta.", "Guardei o lenço dela.", "Simon guardou o segredo / a dúvida / a pergunta." O toque do aviso é o de duas notas da v24.
+- **O5 · olhar a Justine na aula:** custa vela (salta), dá uma batida fora do compasso e, na segunda vez, o texto muda ("Ela tira a pena da boca e me pega olhando…").
+- **O6:** a Justine perde duas tiradas ("— Reparei agora." e "— Isso nós vamos ver, Laura." viraram gesto).
+- **H1 · aperto:** as laterais da tela fecham na alfaiataria (a01–a03; mais leve no a04) e a tela abre no laranjal quando ela respira descalça (c03).
+- **H2 · engolir:** a metade não dita da frase desce letra a letra e some; no Joseph (corredor), mais devagar.
+- **Mídias novas:** `alfaiate-espelho.jpg` (a04; a reverência do Gideon entra no Continuar da dobradiça), `laranjal-descalca.jpg` (c03; estendida à esquerda para o painel não cobrir a Laura), `laranjal-sinal.jpg` (c06; o retrato virou paisagem com o Simon à esquerda), `jantar-joseph.jpg` nova (d02; o Simon coerente com o resto do capítulo).
+- **Vozes da Laura:** `vestido.mp3` (a04, "From the neck down, I am the gown."), `firmes.mp3` (c02, "Steady. It's only the dark."), `dizer-sim.mp3` (c06, "A month from now, I won't be here to say yes."; o "Tomorrow…" do começo da gravação foi cortado, porque a tela não tem essa palavra). Volumes igualados às outras falas (≈ −23 LUFS; o sussurro do c02 fica em −25). Cada uma toca depois de um Continuar.
+- **Pendentes (não vieram):** o tema da Laura (violoncelo), os sons da alfaiataria e a dobradiça gravada. Sem eles, a dobradiça segue sintetizada e não há música; os prompts estão na auditoria.
+- Conferido: 40 páginas em PT/PC e EN/celular sem erro; o eixo testado nas duas pontas; as três vozes tocam na linha certa; muletas sem ACIMA.

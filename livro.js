@@ -310,6 +310,8 @@ function render(dir = 1) {
   clearTimers(); A.stopNarr(); linkUsados.clear(); pensaEl.className = ''; aplicaNo();
   const p = P[st.i]; if (!p) return;
   setFundo(resolveFundo(p));
+  document.body.classList.toggle('seda', !!p.seda); document.body.classList.toggle('seda-leve', p.seda === 'leve');
+  document.body.classList.remove('respira'); if (p.respira && dir >= 0) { later(() => document.body.classList.add('respira'), 600); later(() => document.body.classList.remove('respira'), 9000); }
   if (A.ctx) { A.solta(); A.setZone(p.zona); if (p.som && dir > 0) A.once(p.som, .55); if (p.silencio != null && dir >= 0) A.silencio(p.silencio); }
   document.body.dataset.zona = p.zona;
   Coracao.set(typeof p.pulso === 'function' ? p.pulso(st) : p.pulso); Coracao.extra(0);
@@ -463,9 +465,9 @@ function renderSeq(p) {
 // "Continuar": o som da linha só toca depois do toque do leitor, nunca por estimativa do tempo de leitura
 function contEtapa(it, p, k, next) {
   const chave = 'cont:' + p.id + ':' + k, segue = () => later(next, Math.min(2400, paras(it.texto).length * 450 + 300));
-  if (st.feitos[chave]) { appendParas(it.texto); return next(); }
+  if (st.feitos[chave]) { if (it.fundo) setFundo(it.fundo); appendParas(it.texto); return next(); }
   box.innerHTML = `<button class="cta cont">${U('continuar')}</button>`;
-  box.querySelector('.cont').onclick = () => { st.feitos[chave] = 1; salvar(); box.innerHTML = ''; const som = typeof it.som === 'function' ? it.som(st) : it.som; if (A.ctx && A.on && som) A.cena(som); if (it.frio) Sensa.frio(true); appendParas(it.texto); segue(); };
+  box.querySelector('.cont').onclick = () => { st.feitos[chave] = 1; salvar(); box.innerHTML = ''; const som = typeof it.som === 'function' ? it.som(st) : it.som; if (A.ctx && A.on && som) A.cena(som); if (it.voz) fala(it.voz, it.vozAtraso || 250); if (it.fundo) setFundo(it.fundo); if (it.frio) Sensa.frio(true); appendParas(it.texto); segue(); };
 }
 // o sinal do laranjal: o jogador bate dois dedos no peito, duas vezes (cada toque, uma batida do coração)
 function sinalEtapa(it, p, k, next) {
@@ -525,7 +527,7 @@ function pensaEtapa(pz, next) {
   const frase = tr(val(pz.t)), quem = pz.quem ? tr(val(pz.quem)) : '';
   const corte = Math.max(3, Math.round(frase.length * .62));
   box.innerHTML = `<p class="eyebrow">${U('pensaEy')}</p>
-    <p class="pz-frase"><span class="pz-dash">—</span> <span class="pz-dito">${esc(frase.slice(0, corte))}</span><span class="pz-resto">${esc(frase.slice(corte))}</span><span class="pz-cur" aria-hidden="true"></span></p>
+    <p class="pz-frase"><span class="pz-dash">—</span> <span class="pz-dito">${esc(frase.slice(0, corte))}</span><span class="pz-resto${pz.lento ? ' lenta' : ''}">${[...frase.slice(corte)].map((c, k) => (c === ' ' ? ' ' : `<i style="--k:${k}">${esc(c)}</i>`)).join('')}</span><span class="pz-cur" aria-hidden="true"></span></p>
     <div class="pz-vez" aria-hidden="true"><span class="pz-quem">${esc(quem ? U('vaiFalar').replace('{n}', quem) : U('conversaSegue'))}</span><span class="pz-barra"><i style="animation-duration:${dur}s"></i></span></div>
     <div class="pensa-bts"><button class="opt pz-dizer" data-id="dizer"><span class="pz-ico" aria-hidden="true">${ICO_BOCA}</span>${U('dizer')}</button>
     <button class="opt pz-engolir" data-id="engolir"><span class="pz-ico" aria-hidden="true">${ICO_ENGOLIR}</span>${U('engolir')}</button></div>
@@ -835,7 +837,8 @@ const MG = {
         const img = it.img ? val(it.img) : null; const im = card.querySelector('.es-img');
         im.style.backgroundImage = img ? `url('${img}')${it.imgAlt ? `, url('${it.imgAlt}')` : ''}` : ''; im.hidden = !img;
         card.querySelector('h3').textContent = tr(it.nome);
-        const palavras = paras(val(it.texto)).join(' ').split(/(\s+)/);
+        if (it.lento) { aula.vezesJ = (aula.vezesJ || 0) + 1; t0 -= 2500; if (A.ctx && A.on) A.batida(.8); document.body.classList.remove('bate'); void document.body.offsetWidth; document.body.classList.add('bate'); }
+        const palavras = paras(val(it.lento && aula.vezesJ > 1 && it.texto2 ? it.texto2 : it.texto)).join(' ').split(/(\s+)/);
         const tx = card.querySelector('.es-txt'); tx.innerHTML = '';
         const ms = it.lento ? 120 : 22; // olhar Justine: o texto entra devagar, e o tempo corre igual
         if (it.quente) Sensa.quente(true);

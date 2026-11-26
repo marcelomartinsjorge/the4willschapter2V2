@@ -561,3 +561,16 @@ body.engolindo #no { animation: noAperta .9s ease; }
 #abertura.sai { opacity: 0; pointer-events: none; }
 @keyframes abIn { to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { #abertura p { animation-duration: .01s; } }
+
+/* v26 · H1 · o vestido aperta: as laterais fecham enquanto Gideon mede; no laranjal (respira) a tela abre */
+#aperto::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity 1.4s ease;
+  box-shadow: inset 9vw 0 7vw -3vw rgba(6,2,2,.72), inset -9vw 0 7vw -3vw rgba(6,2,2,.72); }
+body.seda #aperto::before { opacity: 1; }
+body.seda-leve #aperto::before { opacity: .55; }
+body.respira #aperto { box-shadow: none; transition: box-shadow 2.6s ease; }
+body.respira #coracao { opacity: .35; transition: opacity 2.6s ease; }
+/* v26 · H2 · engolir: a parte não dita desce letra a letra e some */
+.pz-resto i { font-style: normal; display: inline-block; transition: transform .55s cubic-bezier(.5,0,.9,.4), opacity .55s; transition-delay: calc(var(--k) * 40ms); }
+.pz-resto.lenta i { transition-duration: .9s; transition-delay: calc(var(--k) * 85ms); }
+.pz-frase.engolida .pz-resto i { transform: translateY(1.6em); opacity: 0; }
+@media (prefers-reduced-motion: reduce) { #aperto::before, body.respira #aperto, .pz-resto i { transition: none; } .pz-frase.engolida .pz-resto i { transform: none; } }
