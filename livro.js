@@ -106,8 +106,18 @@ const A = {
   dobradica() { this.sfx('dobradica', .55, () => { this.tone(210, .9, 'sawtooth', .022, 0, .72); this.tone(330, .55, 'sawtooth', .012, .12, .8); this.hiss(.8, 900, 6, .03); }); },
   // o sino da torre, longe e abafado (o mesmo da aula)
   async sinoLonge(vol = .22) { if (!this.ctx) return; const b = await this.buf('assets/audio/sfx/sino-tarde.mp3'); if (!b) return; const s = this.ctx.createBufferSource(); s.buffer = b; const f = this.ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 900; const g = this.ctx.createGain(); g.gain.value = vol; s.connect(f); f.connect(g); g.connect(this.fx); s.start(); },
+  // v27 · o tema da Laura (violoncelo): trechos do mesmo arquivo, entra baixo por cima do fundo e sai sozinho
+  async tema(ini = 0, dur = 12, vol = .34) {
+    if (!this.ctx || !this.on) return; this.paraTema(.4);
+    const b = await this.buf('assets/audio/tema-laura.mp3'); if (!b) return;
+    const t = this.ctx.currentTime, s = this.ctx.createBufferSource(), g = this.ctx.createGain(), d = Math.min(dur, b.duration - ini);
+    s.buffer = b; g.gain.setValueAtTime(.0001, t); g.gain.linearRampToValueAtTime(vol, t + 1.4); g.gain.setValueAtTime(vol, t + Math.max(1.5, d - 3)); g.gain.linearRampToValueAtTime(.0001, t + d);
+    s.connect(g); g.connect(this.master); s.start(t, ini, d); this._tema = { s, g };
+    this.bed.gain.cancelScheduledValues(t); this.bed.gain.setTargetAtTime(.5, t, .8); this.bed.gain.setTargetAtTime(1, t + d - 1, 1.2);
+  },
+  paraTema(fade = 1.2) { const h = this._tema; if (!h || !this.ctx) return; this._tema = null; const t = this.ctx.currentTime; h.g.gain.cancelScheduledValues(t); h.g.gain.setValueAtTime(Math.max(.0001, h.g.gain.value), t); h.g.gain.linearRampToValueAtTime(.0001, t + fade); try { h.s.stop(t + fade + .05); } catch (e) {} },
   // som de cena pedido por uma linha (p.seq com cont)
-  cena(nome) { const m = { silencio: () => this.silencio(.06), silencioAbafa: () => this.silencio(.04, true), solta: () => this.solta(), dobradica: () => this.dobradica(), sinoLonge: () => this.sinoLonge(), batida: () => this.batida(.55), brinde: () => this.sfx('brinde', .5, () => [1320, 1760].forEach((f, k) => this.tone(f, 1.2, 'sine', .03, k * .05))), sinoDepois: () => setTimeout(() => this.sinoLonge(.15), 3200) }; [].concat(nome).forEach((n) => m[n] && m[n]()); },
+  cena(nome) { const m = { silencio: () => this.silencio(.06), silencioAbafa: () => this.silencio(.04, true), solta: () => this.solta(), dobradica: () => this.dobradica(), tema1: () => this.tema(0, 12), tema2: () => this.tema(4, 12), tema3: () => this.tema(8, 12.2, .3), sinoLonge: () => this.sinoLonge(), batida: () => this.batida(.55), brinde: () => this.sfx('brinde', .5, () => [1320, 1760].forEach((f, k) => this.tone(f, 1.2, 'sine', .03, k * .05))), sinoDepois: () => setTimeout(() => this.sinoLonge(.15), 3200) }; [].concat(nome).forEach((n) => m[n] && m[n]()); },
   escolha() { this.tone(392, .5, 'sine', .05); this.tone(587, .6, 'sine', .035, .06); },
   aviso() { if (!this.ctx) return; this.tone(196, .5, 'sine', .12); this.tone(147, .9, 'sine', .1, .22); if (!this._sil) { const t = this.ctx.currentTime; this.bed.gain.cancelScheduledValues(t); this.bed.gain.setTargetAtTime(.35, t, .08); this.bed.gain.setTargetAtTime(1, t + .6, .4); } },
   // o peso: um baque surdo, grave, dentro do peito
@@ -312,7 +322,7 @@ function render(dir = 1) {
   setFundo(resolveFundo(p));
   document.body.classList.toggle('seda', !!p.seda); document.body.classList.toggle('seda-leve', p.seda === 'leve');
   document.body.classList.remove('respira'); if (p.respira && dir >= 0) { later(() => document.body.classList.add('respira'), 600); later(() => document.body.classList.remove('respira'), 9000); }
-  if (A.ctx) { A.solta(); A.setZone(p.zona); if (p.som && dir > 0) A.once(p.som, .55); if (p.silencio != null && dir >= 0) A.silencio(p.silencio); }
+  if (A.ctx) { A.solta(); A.paraTema(); A.setZone(p.zona); if (p.som && dir > 0) A.once(p.som, .55); if (p.silencio != null && dir >= 0) A.silencio(p.silencio); }
   document.body.dataset.zona = p.zona;
   Coracao.set(typeof p.pulso === 'function' ? p.pulso(st) : p.pulso); Coracao.extra(0);
   { let k = st.i; while (k > 0 && !P[k].parte) k--; $('#parte').textContent = U('parte') + ' ' + (P[k].parte || 'I'); }
@@ -434,6 +444,7 @@ function escolher(p, id) {
   box.querySelectorAll('.opt').forEach((b) => { b.disabled = true; b.classList.toggle('sel', b.dataset.id === id); });
   if (!sel) box.innerHTML = `<p class="feita">${U('escolheu')} ${esc(rotulo(o, e.id))}</p>`;
   if (o.som) A.sfx(o.som, .7);
+  if (o.cena && A.ctx && A.on) A.cena(o.cena);
   if (o.pulso != null) Coracao.extra(o.pulso);
   aplicar(o); A.escolha(); registrar(e.id, id); salvar();
   later(() => { appendParas(resultadoDe(o, e.id)); setNext(true); }, 450);
@@ -492,6 +503,7 @@ function escolhaEtapa(e, next) {
     if (o.fundo) { const pg = P[st.i]; (st.fundoPag = st.fundoPag || {})[pg.id] = o.fundo; setFundo(o.fundo); }
     box.querySelectorAll('.opt').forEach((x) => { x.disabled = true; x.classList.toggle('sel', x === b); });
     if (o.pulso != null) Coracao.extra(o.pulso);
+    if (o.cena && A.ctx && A.on) A.cena(o.cena);
     aplicar(o); A.escolha(); registrar(e.id, o.id); salvar();
     fala(vozDeOpcao(o, e.id), o.vozAtraso || 600);
     later(() => { box.innerHTML = `<p class="feita">${U('escolheu')} ${esc(rotulo(o, e.id))}</p>`; const r = paras(resultadoDe(o, e.id)); appendParas(resultadoDe(o, e.id)); later(next, r.length * 450 + 700); }, 450);

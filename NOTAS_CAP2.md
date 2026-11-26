@@ -341,3 +341,15 @@ Tudo de `claude/CAP2_AUDITORIA_INTERACAO_E_HUD.md`, com as mídias do Marcelo.
 - **Vozes da Laura:** `vestido.mp3` (a04, "From the neck down, I am the gown."), `firmes.mp3` (c02, "Steady. It's only the dark."), `dizer-sim.mp3` (c06, "A month from now, I won't be here to say yes."; o "Tomorrow…" do começo da gravação foi cortado, porque a tela não tem essa palavra). Volumes igualados às outras falas (≈ −23 LUFS; o sussurro do c02 fica em −25). Cada uma toca depois de um Continuar.
 - **Pendentes (não vieram):** o tema da Laura (violoncelo), os sons da alfaiataria e a dobradiça gravada. Sem eles, a dobradiça segue sintetizada e não há música; os prompts estão na auditoria.
 - Conferido: 40 páginas em PT/PC e EN/celular sem erro; o eixo testado nas duas pontas; as três vozes tocam na linha certa; muletas sem ACIMA.
+
+## v27 · tema da Laura, alfaiataria e dobradiça gravadas
+
+- `assets/audio/tema-laura.mp3` (20 s, violoncelo): três entradas por `A.tema(ini, dur, vol)`, por cima do fundo (que baixa), sempre por trecho diferente e sem repetir o começo.
+  - a04, ao tocar Continuar no espelho: `som: 'tema1'` (0 a 12 s), junto com a voz "vestido".
+  - d05, ao escolher "Encostar a mão no vidro": `cena: 'tema2'` (4 a 16 s).
+  - c06, na linha "Daqui a um mês, eu não vou estar aqui para dizer sim.": `som: 'tema3'` (8 s ao fim, que termina sem resolver).
+  - Sai com fade ao trocar de página (`A.paraTema()` no render).
+- `assets/audio/sfx/dobradica.mp3`: a dobradiça gravada (1,8 s, sem cauda). O sintetizado fica só como reserva; o 404 de antes sumiu.
+- `Sons_de_alfaiataria.mp3` foi cortado em 5: `alfaiate-seda.mp3` (3,8 s, toca na entrada do a01) e `alfaiate-1` a `4` (curtos), que entraram no sorteio de sons soltos da zona `alfaiataria`.
+- Engine: `cena` aceita `tema1/2/3`; opções de `seq` aceitam `cena:` (antes só as de página aceitavam `som:`).
+- Volumes: tema em torno de -31 LUFS na mistura (a voz fica em -23), seda -23, curtos -24 a -29.

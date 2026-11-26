@@ -8,7 +8,11 @@ window.CHAPTER_CONFIG = {
       "src": "assets/audio/alfaiataria-loop.mp3",
       "oneShot": [
         "assets/audio/tecido-farfalhar.mp3",
-        "assets/audio/relogio-alfaiataria.mp3"
+        "assets/audio/relogio-alfaiataria.mp3",
+        "assets/audio/sfx/alfaiate-1.mp3",
+        "assets/audio/sfx/alfaiate-2.mp3",
+        "assets/audio/sfx/alfaiate-3.mp3",
+        "assets/audio/sfx/alfaiate-4.mp3"
       ]
     },
     "castelo": {

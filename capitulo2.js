@@ -70,7 +70,7 @@ window.LIVRO = {
     { id: 'parte-I', parte: 'I', zona: 'alfaiataria', fundo: { img: 'assets/images/capa.jpg', kb: 'in', dim: .62, clima: 'poeira' },
       cartao: { num: 'I', nome: T('A Fita', 'The Tape'), epigrafe: T('Quem herda, veste. Quem conquista, sangra.', 'Who inherits, wears it. Who conquers, bleeds for it.'), fonte: T('ditado dos pátios de armas de Redom', 'saying of the training yards of Redom') } }, // NOVO (epígrafe)
 
-    { id: 'a01', zona: 'alfaiataria', seda: true, fundo: { img: 'assets/images/alfaiate-gideon.jpg', kb: 'in', foco: '62% 35%', lado: 'dir', clima: 'poeira' },
+    { id: 'a01', zona: 'alfaiataria', seda: true, som: 'assets/audio/sfx/alfaiate-seda.mp3', fundo: { img: 'assets/images/alfaiate-gideon.jpg', kb: 'in', foco: '62% 35%', lado: 'dir', clima: 'poeira' },
       narracao: 'assets/audio/narration/line1.mp3', narracaoLang: 'en', capitular: true,
       texto: [
         T('O alfaiate mede cada centímetro do meu corpo pela milésima vez nesta semana, a fita métrica fria contra a pele, os alfinetes presos entre os lábios. Daqui a um mês acontece o Torneio Real, e minha mãe, a Mãe-Rainha Dolores D’Orrose, parece mais ansiosa do que eu. Quer que eu esteja impecável diante do novo General-Rei.',
@@ -124,7 +124,7 @@ window.LIVRO = {
         T('— Ah — o alfaiate se afasta e me olha dos pés à cabeça. — A senhora vai ser a Mãe-Rainha mais bela da história. Sem dúvida, o vestido com os adornos de esmeralda é a melhor escolha. Combina com os olhos esverdeados da senhora, e o dourado do cabelo fica ainda mais vivo ao lado dele.',
           '— Ah — the tailor steps back and looks me over, head to foot. — You’ll be the most beautiful Mother-Queen in history. No question, the gown with the emerald trim is the finest choice. It matches your green eyes, and the gold in your hair looks brighter still beside it.'),
       ],
-      seq: [{ cont: true, voz: 'vestido', vozAtraso: 350, texto: [T('Ele tira o vestido do manequim e segura na frente do meu corpo, diante do espelho. Do pescoço para baixo, sou o vestido. Fecho as mãos, para sentir os calos.', 'He takes the gown off the mannequin and holds it in front of my body, before the mirror. From the neck down, I am the gown. I close my hands, to feel the calluses.'), // v25 · L2
+      seq: [{ cont: true, som: 'tema1', voz: 'vestido', vozAtraso: 350, texto: [T('Ele tira o vestido do manequim e segura na frente do meu corpo, diante do espelho. Do pescoço para baixo, sou o vestido. Fecho as mãos, para sentir os calos.', 'He takes the gown off the mannequin and holds it in front of my body, before the mirror. From the neck down, I am the gown. I close my hands, to feel the calluses.'), // v25 · L2
         T('— Você é muito gentil, senhor Gideon.', '— You’re very kind, Master Gideon.')] }, // v26 · voz vestido.mp3
         { cont: true, som: 'dobradica', fundo: { img: 'assets/images/alfaiate-reverencia.jpg', kb: 'out', foco: '40% 40%', dim: .5, lado: 'dir' }, texto: [(st) => (st.f.viuPorta
           ? T('Ele se curva para a frente, a mão no peito, e aproveita o gesto para já se virar, ainda curvado, na direção da porta. A dobradiça de baixo range. Minha mãe acaba de entrar.', 'He bows forward, a hand to his chest, and uses the motion to turn, still bent, toward the door. The lower hinge creaks. My mother has just walked in.')
@@ -583,7 +583,7 @@ window.LIVRO = {
       ],
       seq: [
         { escolha: { id: 'corredor', pergunta: T('Justine', 'Justine'), opcoes: [
-          { id: 'ficar', afeto: 2, quente: true, fundo: { img: 'assets/images/vidro-maos.jpg', alt: 'assets/images/corredor-noite.jpg', kb: 'in', dim: .45, foco: '62% 45%', lado: 'esq' }, txt: T('Encostar a mão no vidro, ao lado da dela', 'Rest my hand on the glass, beside hers'),
+          { id: 'ficar', afeto: 2, quente: true, cena: 'tema2', fundo: { img: 'assets/images/vidro-maos.jpg', alt: 'assets/images/corredor-noite.jpg', kb: 'in', dim: .45, foco: '62% 45%', lado: 'esq' }, txt: T('Encostar a mão no vidro, ao lado da dela', 'Rest my hand on the glass, beside hers'),
             resultado: [T('Fico. O vidro está frio. Ficamos as duas com a mão nele até a vela do corredor apagar.', 'I stay. The glass is cold. We both keep our hands on it until the corridor candle goes out.')] },
           { id: 'mes', afeto: 1, flag: 'justineDesconfia', aviso: T('Justine guardou isso.', 'Justine kept that.'), voz: 'corredor-mes', txt: T('— Ainda falta um mês. Muita coisa acontece em um mês.', '— There’s still a month. A lot can happen in a month.'),
             resultado: [T('Ela vira devagar.', 'She turns slowly.'), T('— O que você está fazendo, Laura?', '— What are you doing, Laura?'), T('Eu não respondo.', 'I don’t answer.')] },
@@ -704,7 +704,7 @@ window.LIVRO = {
           T('Respondo com os mesmos dois dedos no meu. Ele nunca me pediu essa rodada sem eu dizer sim.', 'I answer with the same two fingers on mine. He has never asked me for that round without me saying yes.'),
           T('Lutamos sem contar os toques. Não leio os pés dele. A ponta da espada dele raspa a minha manga, e ele grita como se tivesse ganhado o Torneio. Deixo ele gritar.', 'We fight without counting the touches. I don’t read his feet. The tip of his sword grazes my sleeve, and he shouts as if he’d won the Tournament. I let him shout.'),
         ] },
-        { cont: true, voz: 'dizer-sim', vozAtraso: 300, texto: [T('Daqui a um mês, eu não vou estar aqui para dizer sim.', 'A month from now, I won’t be here to say yes.')] }, // v26 · voz dizer-sim.mp3
+        { cont: true, som: 'tema3', voz: 'dizer-sim', vozAtraso: 300, texto: [T('Daqui a um mês, eu não vou estar aqui para dizer sim.', 'A month from now, I won’t be here to say yes.')] }, // v26 · voz dizer-sim.mp3
         { cont: true, texto: [
           T('Ele senta no chão, as costas na parede, ainda ofegante, e me olha com uma cara que eu conheço.', 'He sits on the floor with his back to the wall, still panting, and gives me a look I know.'),
           T('— Por que você treina tanto, Laura? Rainha não luta.', '— Why do you train so much, Laura? Queens don’t fight.'),
